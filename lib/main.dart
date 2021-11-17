@@ -24,11 +24,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     ThemeData darkThemeData = ThemeData(
       brightness: Brightness.dark,
       primarySwatch: pastelDarkTheme,
       toggleableActiveColor: Color(pastelDarkThemePrimaryValue),
+      cardTheme: Theme.of(context).cardTheme.copyWith(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 4),
     );
     return MaterialApp(
       title: 'Draw Near',
@@ -43,14 +46,29 @@ class MyApp extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             elevation: 4),
       ),
-      darkTheme: darkThemeData.copyWith(colorScheme: darkThemeData.colorScheme.copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
-      home: initializeApp(),
+      darkTheme: darkThemeData.copyWith(
+          colorScheme: darkThemeData.colorScheme
+              .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
+      routes: {
+        '/home': (context) => const BaseHome(),
+        '/devotion': (context) => const BaseHome(),
+      },
+      home: Initializer(),
     );
   }
+}
 
-  /// checks for first time usage | logged in user | logged out user and returns the appropriate widget
-  Widget initializeApp() {
-    Hive.openBox('draw_near_' + UserService.instance.userLocale.toString());
+/// checks for first time usage | logged in user | logged out user and returns the appropriate widget
+class Initializer extends StatefulWidget {
+  const Initializer({Key? key}) : super(key: key);
+
+  @override
+  _InitializerState createState() => _InitializerState();
+}
+
+class _InitializerState extends State<Initializer> {
+  @override
+  Widget build(BuildContext context) {
     return BaseHome();
   }
 }
