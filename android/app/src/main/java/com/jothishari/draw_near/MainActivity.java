@@ -1,4 +1,4 @@
-package com.jothishari.draw_near;
+package com.techcatalyst.draw_near;
 
 import io.flutter.embedding.android.FlutterActivity;
 
