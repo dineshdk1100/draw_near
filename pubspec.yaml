@@ -27,10 +27,11 @@ dependencies:
   hive_flutter:
   easy_localization:
   cross_connectivity:
-  firebase_core:
-  firebase_auth:
+  firebase_core: ^1.10.0
+  firebase_auth: ^3.2.0
   flutter_facebook_auth:
-  cloud_firestore:
+  cloud_firestore: ^3.1.0
+  firebase_analytics: ^8.3.4
   json_annotation: 4.3.0
   carousel_slider: 4.0.0
   octo_image: 1.0.0+1
