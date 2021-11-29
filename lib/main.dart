@@ -1,6 +1,7 @@
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/devotion.dart';
 import 'package:draw_near/screens/home.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -9,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('draw_near');
