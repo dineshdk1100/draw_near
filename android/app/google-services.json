@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "650269932862",
+    "project_id": "draw-near-4742a",
+    "storage_bucket": "draw-near-4742a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650269932862:android:c9077fb1bfb77e0d4bc06f",
+        "android_client_info": {
+          "package_name": "com.techcatalyst.draw_near"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650269932862-u4js0p4d1bosn83nodjbrp6oqjqf37gn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techcatalyst.draw_near",
+            "certificate_hash": "809544af6fe12d943487fb8f19d2506cbb8cca1d"
+          }
+        },
+        {
+          "client_id": "650269932862-f4miqito3cvalnddo2nqt4cqoavkss2t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDW3i8Gcv_qPuEKJiNLUVQPXg_4fAZO4GY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "650269932862-f4miqito3cvalnddo2nqt4cqoavkss2t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

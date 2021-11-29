@@ -1,3 +1,4 @@
+import 'package:draw_near/screens/calendar.dart';
 import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/screens/settings.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class _BaseHomeState extends State<BaseHome> {
 
   @override
   Widget build(BuildContext context) {
-
+    print(MediaQuery.of(context).platformBrightness.toString());
     MediaQuery.of(context).platformBrightness == Brightness.dark ? navBarColor = Colors.black54 : navBarColor = Colors.white;
     MediaQuery.of(context).platformBrightness == Brightness.dark ? inactiveColor = Colors.white70 : navBarColor = Colors.black38;
 
@@ -55,7 +56,7 @@ class _BaseHomeState extends State<BaseHome> {
   List<Widget> _buildScreens() {
     return [
       HomePage(),
-      Container(),
+      CalendarPage(),
       Settings(),
     ];
   }

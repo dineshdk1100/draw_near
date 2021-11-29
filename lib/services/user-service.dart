@@ -4,20 +4,33 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class UserService {
   static final UserService instance = UserService._internal();
+  late Box _baseBox;
+  late Locale _userLocale;
+  late bool _isOfflineEnabled;
+  late double _fontSize;
+
   factory UserService() {
     return instance;
   }
   UserService._internal(){
-    var baseBox = Hive.box('draw_near');
-    List<String> localeList = baseBox.get('locale', defaultValue: 'en_IN').split('_');
-    userLocale = Locale(localeList[0], localeList[1]);
+    _baseBox = Hive.box('draw_near');
 
-    isOfflineEnabled = baseBox.get('offline', defaultValue: true);
+    _isOfflineEnabled = _baseBox.get('offline', defaultValue: true);
+    _fontSize = _baseBox.get('fontSize', defaultValue: 16.toDouble());
   }
 
-  late Locale userLocale;
-  late bool isOfflineEnabled;
+  bool get isOfflineEnabled => _isOfflineEnabled;
 
+  set isOfflineEnabled(bool value) {
+    _isOfflineEnabled = value;
+    _baseBox.put('offline', value);
+  }
 
+  double get fontSize => _fontSize;
+
+  set fontSize(double value) {
+    _fontSize = value;
+    _baseBox.put('fontSize', value);
+  }
 }
 

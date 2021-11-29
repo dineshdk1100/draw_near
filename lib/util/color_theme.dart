@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-const MaterialColor pastelTheme = MaterialColor(_pastelThemePrimaryValue, <int, Color>{
+const MaterialColor pastelTheme = MaterialColor(pastelThemePrimaryValue, <int, Color>{
   50: Color(0xFFFDF3F3),
   100: Color(0xFFFAE1E1),
   200: Color(0xFFF7CDCD),
   300: Color(0xFFF4B8B8),
   400: Color(0xFFF1A9A9),
-  500: Color(_pastelThemePrimaryValue),
+  500: Color(pastelThemePrimaryValue),
   600: Color(0xFFED9292),
   700: Color(0xFFEB8888),
   800: Color(0xFFE87E7E),
   900: Color(0xFFE46C6C),
 });
- const int _pastelThemePrimaryValue = 0xFFEF9A9A;
+ const int pastelThemePrimaryValue = 0xFFEF9A9A;
 
  const MaterialColor pastelThemeAccent = MaterialColor(_pastelThemeAccentValue, <int, Color>{
   100: Color(0xFFFFFFFF),

@@ -7,6 +7,7 @@ class Devotion {
   DateTime timestamp;
   String title;
   String song;
+  String fullSong;
   String biblePortion;
   String verse;
   String fullVerse;
@@ -21,6 +22,7 @@ class Devotion {
       this.timestamp,
       this.title,
       this.song,
+      this.fullSong,
       this.biblePortion,
       this.verse,
       this.fullVerse,

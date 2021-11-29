@@ -1,4 +1,5 @@
 import 'package:draw_near/screens/base-home.dart';
+import 'package:draw_near/screens/devotion.dart';
 import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
@@ -13,7 +14,6 @@ void main() async {
   await Hive.openBox('draw_near');
 
   runApp(EasyLocalization(
-    startLocale: UserService.instance.userLocale,
     supportedLocales: [Locale('en', 'IN'), Locale('ta', 'IN')],
     fallbackLocale: Locale('en', 'IN'),
     path: 'assets/locales',
@@ -49,10 +49,9 @@ class MyApp extends StatelessWidget {
       darkTheme: darkThemeData.copyWith(
           colorScheme: darkThemeData.colorScheme
               .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
-      routes: {
-        '/home': (context) => const BaseHome(),
-        '/devotion': (context) => const BaseHome(),
-      },
+      // routes: {
+      //   '/home': (context) => const BaseHome(),
+      // },
       home: Initializer(),
     );
   }

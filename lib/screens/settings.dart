@@ -16,6 +16,9 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+      ),
       body: ListView(
         shrinkWrap: true,
         children: [
@@ -25,7 +28,7 @@ class _SettingsState extends State<Settings> {
             children: <Widget>[
               Container(
                 width: mediaQueryData.size.width,
-                height: mediaQueryData.size.width * 0.6,
+                height: mediaQueryData.size.height * 0.2,
                 color: Theme.of(context).primaryColor,
               ),
               Positioned(
@@ -59,7 +62,7 @@ class _SettingsState extends State<Settings> {
             subtitle: Text("change_lang_desc".tr()),
             trailing: DropdownButton(
               onChanged: onSelectLanguage,
-              value: UserService.instance.userLocale.toString(),
+              value: context.locale.toString(),
               items: AVAILABLE_LANGUAGES.keys
                   .map((lang) => DropdownMenuItem(
                         child: Text(
@@ -82,7 +85,6 @@ class _SettingsState extends State<Settings> {
   onSelectLanguage(value){
     if (value == null) return;
     var localeTemp = value.toString().split('_');
-    UserService.instance.userLocale = Locale(localeTemp[0], localeTemp[1]);
-    context.setLocale(UserService.instance.userLocale);
+    context.setLocale(Locale(localeTemp[0], localeTemp[1]));
   }
 }
