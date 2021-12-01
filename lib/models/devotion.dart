@@ -4,34 +4,59 @@ part 'devotion.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Devotion {
-  DateTime timestamp;
+  static DateTime dateStringToDateTime(String dateString) => DateTime.tryParse(dateString) ?? DateTime.now();
+  static String dateTimeToDateString(DateTime dateTime) => "1-1-1";
+
+  @JsonKey(name: 'Record Id')
+  String recordId;
+  @JsonKey(name: 'Date')
+  DateTime date;
+  @JsonKey(name: 'Title')
   String title;
-  String song;
-  String fullSong;
+  @JsonKey(name: 'Number (from Song)')
+  String songNumber;
+  @JsonKey(name: 'Song')
+  List<String> song;
+  @JsonKey(name: 'Bible portion')
   String biblePortion;
-  String verse;
-  String fullVerse;
+  @JsonKey(name: 'Verse line (from Bible verse)')
+  String verseLine;
+  @JsonKey(name: 'Bible verse')
+  List<String> verse;
+  @JsonKey(name: 'Body')
   String body;
+  @JsonKey(name: 'Reflect & Respond')
   String reflectRespond;
+  @JsonKey(name: 'Prayer')
   String prayer;
-  Quote quote;
-  String author;
-  DateTime lastModified;
+  @JsonKey(name: 'Quote')
+  String? quote;
+  @JsonKey(name: 'Quote author')
+  String quoteAuthor;
+  @JsonKey(name: 'Name (from Author)')
+  String authorName;
+  @JsonKey(name: 'Author')
+  List<String> author;
+  @JsonKey(name: 'Last Modified Time')
+  int lastModifiedTime;
 
   Devotion(
-      this.timestamp,
+      this.recordId,
+      this.date,
       this.title,
+      this.songNumber,
       this.song,
-      this.fullSong,
       this.biblePortion,
+      this.verseLine,
       this.verse,
-      this.fullVerse,
       this.body,
       this.reflectRespond,
       this.prayer,
       this.quote,
+      this.quoteAuthor,
+      this.authorName,
       this.author,
-      this.lastModified);
+      this.lastModifiedTime);
 
   factory Devotion.fromJson(Map<String, dynamic> json) =>
       _$DevotionFromJson(json);
@@ -39,14 +64,3 @@ class Devotion {
   Map<String, dynamic> toJson() => _$DevotionToJson(this);
 }
 
-@JsonSerializable()
-class Quote {
-  String body;
-  String author;
-
-  Quote(this.body, this.author);
-
-  factory Quote.fromJson(Map<String, dynamic> json) => _$QuoteFromJson(json);
-
-  Map<String, dynamic> toJson() => _$QuoteToJson(this);
-}

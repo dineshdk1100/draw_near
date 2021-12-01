@@ -16,7 +16,7 @@ class UserService {
     _baseBox = Hive.box('draw_near');
 
     _isOfflineEnabled = _baseBox.get('offline', defaultValue: true);
-    _fontSize = _baseBox.get('fontSize', defaultValue: 16.toDouble());
+    _fontSize = _baseBox.get('fontSize', defaultValue: 0.toDouble());
   }
 
   bool get isOfflineEnabled => _isOfflineEnabled;

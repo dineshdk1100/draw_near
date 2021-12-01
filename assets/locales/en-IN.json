@@ -8,6 +8,8 @@
   "change_lang_desc": "This will change the language for app interface and devotions",
   "unknown_lang": "Unknown language",
   "logout": "Logout",
-  "song": "Song",
-  "about_author": "About the author"
+  "song": "Song #",
+  "author": "Author",
+  "about_author": "About the @:author",
+  "bible_portion": "Bible Portion"
 }
