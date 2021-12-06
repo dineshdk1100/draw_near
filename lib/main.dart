@@ -1,13 +1,14 @@
+import 'dart:async';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/login.dart';
+import 'package:draw_near/screens/onboarding.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:draw_near/provider/google_sign_in.dart';
-import 'package:draw_near/services/home_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,11 +62,54 @@ class MyApp extends StatelessWidget {
         //   '/home': (context) => const BaseHome(),
         // },
 
-        home: LoginPage(),
+        home: SplashScreen(),
       ),
     );
   }
 }
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 3), () {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // logo here
+            Image.asset(
+              'assets/images/logoresize.png',
+              height: 320,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /**
 /// checks for first time usage | logged in user | logged out user and returns the appropriate widget
 class Initializer extends StatefulWidget {

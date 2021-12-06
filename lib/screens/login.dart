@@ -67,34 +67,28 @@ class _LoginPageState extends State<LoginPage>
                     padding: EdgeInsets.all(30),
                     child: Column(
                       children:<Widget>[
-                        SizedBox(height: 60,),
+                        SizedBox(height: 50,),
                         Container(decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [BoxShadow(
-                            color: Color.fromRGBO(225, 90, 22, .3),
-                            blurRadius: 20,
+                            color: Color(0xFFF1A9A9),
+                            blurRadius: 25,
                             offset: Offset(0,10)
-                          )]
+                          ),],
                         ),
                         child: Column(
-                         children:<Widget>[
-                           ElevatedButton.icon(
-                             style: ElevatedButton.styleFrom(
-                               primary:Colors.white,
-                               onPrimary: Colors.black,
-                               minimumSize: Size(120, 50),
-                             ),
-                             icon: FaIcon(FontAwesomeIcons.google, color: Colors.red),
-                             label: Text('Sign In with Google'),
-                             onPressed: (){
-                               final provider= Provider.of<LoginController>(context, listen: false);
-                               provider.googleLogin();
-
-                             },
-                           ),
-                           //SizedBox(height: 20,),
-                         ]
+                          children: [
+                            GestureDetector(
+                                child: Image.asset(
+                                  "assets/images/google.png",
+                                  width: 240,
+                                ),
+                                onTap: () {
+                                  Provider.of<LoginController>(context, listen: false)
+                                      .googleLogin();
+                                }),
+                          ],
                         )
                         ),
                         SizedBox(height: 10,),
@@ -102,62 +96,49 @@ class _LoginPageState extends State<LoginPage>
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [BoxShadow(
-                                color: Color.fromRGBO(225, 90, 22, .3),
-                                blurRadius: 20,
+                                color: Color(0xFFF1A9A9),
+                                blurRadius: 25,
                                 offset: Offset(0,10)
                             )]
                         ),
                             child: Column(
-                                children:<Widget>[
-                                  ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(
-                                      primary:Colors.white,
-                                      onPrimary: Colors.black,
-                                      minimumSize: Size(140, 50),
+                              children: [
+                                GestureDetector(
+                                    child: Image.asset(
+                                      "assets/images/apple.png",
+                                      //height: 40,
+                                      width: 240,
                                     ),
-                                    icon: FaIcon(FontAwesomeIcons.apple, color: Colors.black),
-                                    label: Text('Sign In with apple'),
-                                    onPressed: (){
-                                      final provider= Provider.of<LoginController>(context, listen: false);
-                                      provider.googleLogin();
-                                    },
-                                  ),
+                                    onTap: () {
+                                      Provider.of<LoginController>(context, listen: false)
+                                          .googleLogin();
+                                    }),
                                   //SizedBox(height: 20,),
-
-
                                 ],
-
                             ),
-
                         ),
                         SizedBox(height: 10,),
                         Container(decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [BoxShadow(
-                                color: Color.fromRGBO(225, 90, 22, .3),
-                                blurRadius: 20,
+                                color: Color(0xFFF1A9A9),
+                                blurRadius: 25,
                                 offset: Offset(0,10)
                             )]
                         ),
                           child: Column(
-                              children:<Widget>[
-                                ElevatedButton.icon(
-                                  style: ElevatedButton.styleFrom(
-                                    primary:Colors.white,
-                                    onPrimary: Colors.black,
-                                    minimumSize: Size(120, 50),
-                                  ),
-                                  icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
-                                  label: Text('Sign In with Facebook'),
-                                  onPressed: (){
-                                    final provider= Provider.of<LoginController>(context, listen: false);
-                                    provider.facebooklogin();
-                                  },
-                                ),
+                              children:[
+                                GestureDetector(
+                                    child: Image.asset(
+                                      "assets/images/fb.png",
+                                      width: 240,
+                                    ),
+                                    onTap: () {
+                                      Provider.of<LoginController>(context, listen: false)
+                                          .facebooklogin();
+                                    }),
                                 //SizedBox(height: 20,),
-
-
                               ]
                           ),
                         ),
@@ -205,13 +186,23 @@ class _LoginPageState extends State<LoginPage>
                           margin: EdgeInsets.all(15),
                           width: double.infinity,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.pinkAccent, // background
+                              onPrimary: Colors.white, // foreground
+                            ),
                             onPressed: (){
-                              Navigator.of(context).push(MaterialPageRoute(builder: (c)=> OTPControllerScreen(
-                                phone: _controller.text,
-                                codeDigits: dialCodeDigits,
-                              )));
+                             // if(hasValue()) {
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (c) =>
+                                        OTPControllerScreen(
+                                          phone: _controller.text,
+                                          codeDigits: dialCodeDigits,
+                                        )));
+                             // }
 
                             },
+
+
                             child: Text('Verify',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                           )
                         )

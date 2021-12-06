@@ -1,6 +1,7 @@
 import 'package:draw_near/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 class OTPControllerScreen extends StatefulWidget {
 
@@ -78,20 +79,23 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(padding: const EdgeInsets.all(8.0),
-          child: Image.asset("assets/images/logo.jpeg"),
+          child: Image.asset("assets/images/logoresize.png"),
           ),
 
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: EdgeInsets.only(top: 20, left: 20,right: 20),
             child: Center(
               child: GestureDetector(
                 onTap: () {
                   verifyPhoneNumber();
                 },
+
                 child: Text(
-                  "Verifying : ${widget.codeDigits}-${widget.phone}",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  "  Verification code sent to this phone number : ${widget.codeDigits}-${widget.phone}",
+
+                  style: TextStyle(fontFamily: 'Arial' ,fontWeight: FontWeight.bold, fontSize: 16),
                 ),
+
               ),
             ),
           ),
