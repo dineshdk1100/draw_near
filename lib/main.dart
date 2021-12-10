@@ -1,15 +1,14 @@
-import 'package:draw_near/screens/base-home.dart';
-import 'package:draw_near/screens/devotion.dart';
-import 'package:draw_near/screens/home.dart';
+import 'dart:async';
+import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/login.dart';
+import 'package:draw_near/screens/onboarding.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:draw_near/provider/google_sign_in.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +29,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+  Widget build(BuildContext context) {
     UserService.instance.locale = context.locale.toString();
     ThemeData darkThemeData = ThemeData(
       brightness: Brightness.dark,
@@ -43,7 +46,10 @@ class MyApp extends StatelessWidget {
     );
       return ChangeNotifierProvider(
 
-        create: (context) => GoogleSignInProvider(),
+          create: (context) => LoginController(),
+          child: LoginPage(),
+        )
+      ],
 
         child: MaterialApp(
 
@@ -52,6 +58,27 @@ class MyApp extends StatelessWidget {
           supportedLocales: context.supportedLocales,
           locale: context.locale,
 
+        theme: ThemeData(
+          primarySwatch: pastelTheme,
+          brightness: Brightness.light,
+          cardTheme: Theme
+              .of(context)
+              .cardTheme
+              .copyWith(
+              shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              elevation: 4),
+        ),
+        // darkTheme: darkThemeData.copyWith(
+        //   colorScheme: darkThemeData.colorScheme
+        //     .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
+        // routes: {
+        //   '/home': (context) => const BaseHome(),
+        // },
+
+        home: SplashScreen(),
+      ),
+    );
           theme: ThemeData(
             primarySwatch: pastelTheme,
             brightness: Brightness.light,
@@ -75,8 +102,51 @@ class MyApp extends StatelessWidget {
       );
 }
   }
+}
 
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
 
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 3), () {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // logo here
+            Image.asset(
+              'assets/images/logoresize.png',
+              height: 320,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/**
 /// checks for first time usage | logged in user | logged out user and returns the appropriate widget
 class Initializer extends StatefulWidget {
   const Initializer({Key? key}) : super(key: key);
@@ -90,4 +160,4 @@ class _InitializerState extends State<Initializer> {
   Widget build(BuildContext context) {
     return LoginPage();
   }
-}
+}**/
