@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/login.dart';
 import 'package:draw_near/screens/onboarding.dart';
+import 'package:draw_near/services/user-service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -29,10 +30,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-  Widget build(BuildContext context) {
+
     UserService.instance.locale = context.locale.toString();
     ThemeData darkThemeData = ThemeData(
       brightness: Brightness.dark,
@@ -44,8 +42,9 @@ class MyApp extends StatelessWidget {
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: 4),
     );
-      return ChangeNotifierProvider(
-
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
           create: (context) => LoginController(),
           child: LoginPage(),
         )
@@ -58,27 +57,6 @@ class MyApp extends StatelessWidget {
           supportedLocales: context.supportedLocales,
           locale: context.locale,
 
-        theme: ThemeData(
-          primarySwatch: pastelTheme,
-          brightness: Brightness.light,
-          cardTheme: Theme
-              .of(context)
-              .cardTheme
-              .copyWith(
-              shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              elevation: 4),
-        ),
-        // darkTheme: darkThemeData.copyWith(
-        //   colorScheme: darkThemeData.colorScheme
-        //     .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
-        // routes: {
-        //   '/home': (context) => const BaseHome(),
-        // },
-
-        home: SplashScreen(),
-      ),
-    );
           theme: ThemeData(
             primarySwatch: pastelTheme,
             brightness: Brightness.light,
@@ -94,15 +72,12 @@ class MyApp extends StatelessWidget {
           darkTheme: darkThemeData.copyWith(
               colorScheme: darkThemeData.colorScheme
                   .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
-          // routes: {
-          //   '/home': (context) => const BaseHome(),
-          // },
-          home: Initializer(),
-        ),
-      );
+
+        home: SplashScreen(),
+      ),
+    );
 }
   }
-}
 
 class SplashScreen extends StatefulWidget {
   @override

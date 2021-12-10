@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+
+import 'base-home.dart';
 class OTPControllerScreen extends StatefulWidget {
 
   final String phone;
@@ -45,7 +47,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
         await FirebaseAuth.instance.signInWithCredential(credential).then((value){
           if(value.user !=null)
           {
-            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> HomePage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> BaseHome()));
           }
         });
     }, verificationFailed: (FirebaseAuthException e){
@@ -120,7 +122,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
                       .then((value){
                         if(value.user !=null)
                           {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> HomePage()));
+                            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> BaseHome()));
                           }
                   });
                 }
