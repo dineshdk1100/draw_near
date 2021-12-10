@@ -1,3 +1,4 @@
+import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +21,15 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final TextEditingController _pinOTPCodeController= TextEditingController();
   final FocusNode _pinOTPCodeFocus= FocusNode();
+
   String? verificationCode;
 
   final BoxDecoration pinOTPCodeDecoration = BoxDecoration(
-    color: Colors.blueAccent,
-    borderRadius: BorderRadius.circular(10.0),
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(8.0),
     border: Border.all(
-      color: Colors.grey,
+      color: Colors.black,
+
     )
   );
 
@@ -49,6 +52,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
           }
         });
     }, verificationFailed: (FirebaseAuthException e){
+      print(e.message.toString());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.message.toString()),
@@ -71,40 +75,66 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: AppBar(
         title: Text('OTP Verification'),
+        //backgroundColor: Colors.black,
       ),
       body : Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(padding: const EdgeInsets.all(8.0),
           child: Image.asset("assets/images/logoresize.png"),
           ),
-
+          SizedBox(
+           // width: 350,
+            child: Padding(padding: const EdgeInsets.only(left: 15,right: 15,bottom: 10),
+          child: Text(
+            "Verification code sent to this phone number :  ",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontFamily: '.SF Pro Text' ,fontWeight: FontWeight.w600, fontSize: 18),
+            //SizedBox(Icon(Icons.edit)
+          ),)
+          ),
           Container(
-            margin: EdgeInsets.only(top: 20, left: 20,right: 20),
+
+            margin: EdgeInsets.only(top: 10, left: 20,right: 20, bottom: 20),
+
             child: Center(
               child: GestureDetector(
+
                 onTap: () {
                   verifyPhoneNumber();
+
                 },
 
                 child: Text(
-                  "  Verification code sent to this phone number : ${widget.codeDigits}-${widget.phone}",
+                  " ${widget.codeDigits}-${widget.phone}   Resend OTP ",
 
-                  style: TextStyle(fontFamily: 'Arial' ,fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(decoration: TextDecoration.underline,fontStyle: FontStyle.italic, fontFamily: 'San Francisco' ,fontWeight: FontWeight.normal, fontSize: 12),
+                  //SizedBox(Icon(Icons.edit))
                 ),
 
-              ),
-            ),
-          ),
 
+              ),
+
+            ),
+
+          ),
+          SizedBox(height: 10,),
+          Text(
+            " ENTER 6 DIGIT OTP ",
+
+            style: TextStyle(fontFamily: 'San Francisco' ,fontWeight: FontWeight.w600, fontSize: 18),
+            //SizedBox(Icon(Icons.edit))
+          ),
           Padding(
             padding: EdgeInsets.all(40.0),
             child: PinPut(
               fieldsCount : 6,
-              textStyle: TextStyle(fontSize: 25.0, color: Colors.white),
+              textStyle: TextStyle(fontSize: 25.0, color: Colors.black),
               eachFieldWidth: 40.0,
               eachFieldHeight: 55.0,
               focusNode: _pinOTPCodeFocus,
@@ -112,7 +142,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
               submittedFieldDecoration: pinOTPCodeDecoration,
               selectedFieldDecoration: pinOTPCodeDecoration,
               followingFieldDecoration: pinOTPCodeDecoration,
-              pinAnimationType: PinAnimationType.rotation,
+              pinAnimationType: PinAnimationType.fade,
               onSubmit: (pin) async{
                 try{
                   await FirebaseAuth.instance.
@@ -120,7 +150,10 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
                       .then((value){
                         if(value.user !=null)
                           {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> HomePage()));
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (builder) => BaseHome()),
+                                    (route) => false);
                           }
                   });
                 }

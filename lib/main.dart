@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:draw_near/provider/login_controller.dart';
+import 'package:draw_near/screens/OTPController.dart';
+import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/login.dart';
 import 'package:draw_near/screens/onboarding.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -116,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => Onboarding()));
     });
   }
 

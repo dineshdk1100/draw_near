@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget{
 }
 class _LoginPageState extends State<LoginPage>
 {
-  String dialCodeDigits= "+91";
+  String dialCodeDigits="+91";
   TextEditingController _controller = TextEditingController();
 
   @override
@@ -172,15 +172,19 @@ class _LoginPageState extends State<LoginPage>
                         Container(
                           //height: 50,
                           margin: EdgeInsets.only(top: 10, right: 10, left: 10),
+                          //color: Color(0xff1d1d1d),
+                         // borderRadius: BorderRadius.circular(15),
+
                           child: TextField(
                           decoration: InputDecoration(
+
                             hintText: "Phone Number",
                             prefix: Padding(
                               padding: EdgeInsets.all(4),
                               child: Text(dialCodeDigits),
                             )
                           ),
-                           maxLength: 12,
+                           maxLength: 10,
                            keyboardType: TextInputType.number,
                            controller: _controller,
                           ),
@@ -188,7 +192,7 @@ class _LoginPageState extends State<LoginPage>
 
                         Container(
                           margin: EdgeInsets.all(15),
-                          width: double.infinity,
+                          width: 240,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: Colors.pinkAccent, // background
