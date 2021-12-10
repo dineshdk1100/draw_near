@@ -8,8 +8,14 @@
   "change_lang_desc": "This will change the language for app interface and devotions",
   "unknown_lang": "Unknown language",
   "logout": "Logout",
+  "login": "Login",
   "song": "Song #",
   "author": "Author",
   "about_author": "About the @:author",
-  "bible_portion": "Bible Portion"
+  "bible_portion": "Bible Portion",
+  "devotion_denied": "Future devotions cannot be viewed now",
+  "devotion_unavailable": "Devotion Unavailable",
+  "devotion_unavailable_desc": "Devotion is not available for the given date",
+  "read_more": "Read More"
+
 }

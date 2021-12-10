@@ -1,4 +1,6 @@
 import 'package:draw_near/provider/google_sign_in.dart';
+import 'package:draw_near/screens/base-home.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,8 +17,8 @@ class LoginPage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Colors.pinkAccent,
-              Colors.white70,
+              Color(pastelThemePrimaryValue),
+              Colors.white,
               //Colors.red,
             ]
           )
@@ -30,7 +32,7 @@ class LoginPage extends StatelessWidget {
               child:Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Draw Near",style: TextStyle(color: Colors.white, fontSize: 40)),
+                  Text("Draw Near",style: Theme.of(context).textTheme.headline3),
                   SizedBox(height: 10,),
                   Text("A Family Daily Devotion", style: TextStyle(color: Colors.white, fontSize: 18),),
                 ],
@@ -40,7 +42,7 @@ class LoginPage extends StatelessWidget {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))
                 ),
                 child: SingleChildScrollView(
@@ -119,15 +121,15 @@ class LoginPage extends StatelessWidget {
                           margin: EdgeInsets.symmetric(horizontal: 50),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            color: Colors.pinkAccent
+                            color: Color(pastelThemePrimaryValue)
                           ),
                           child: Center(
                            // child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                           ),
                         ),
                         SizedBox(height: 50,),
-                        Text(" Continue with Phone Number", style: TextStyle(color: Colors.grey),),
-
+                        Text(" Continue with Phone Number", style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 16),),
+                        OutlinedButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> BaseHome()));}, child: Text("Go to Home"))
                       ]
                     )
                   )

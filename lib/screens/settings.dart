@@ -3,6 +3,7 @@ import 'package:draw_near/util/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:jiffy/jiffy.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: ListView(
         shrinkWrap: true,
@@ -28,7 +30,7 @@ class _SettingsState extends State<Settings> {
             children: <Widget>[
               Container(
                 width: mediaQueryData.size.width,
-                height: mediaQueryData.size.height * 0.2,
+                height: mediaQueryData.size.height * 0.17,
                 color: Theme.of(context).primaryColor,
               ),
               Positioned(
@@ -45,6 +47,16 @@ class _SettingsState extends State<Settings> {
           SizedBox(
             height: 80,
           ),
+          Text("Harikrishnan", style: Theme.of(context).textTheme.headline4, textAlign: TextAlign.center,),
+          SizedBox(
+            height: 10,
+          ),
+          Text("hari@gmail.com", style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
+          SizedBox(
+            height: 8,
+          ),
+          Text("+91987654321", style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
+          Divider(height: 24,),
           ListTile(
             isThreeLine: true,
             title: Text("offline_mode".tr()),
@@ -74,7 +86,7 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
           ListTile(
-            title: Text("logout".tr()),
+            title: UserService.instance.isLoggedIn ? Text('logout'.tr()) : Text("login".tr()),
             trailing: Icon(Icons.logout),
           )
         ],
@@ -86,5 +98,6 @@ class _SettingsState extends State<Settings> {
     if (value == null) return;
     var localeTemp = value.toString().split('_');
     context.setLocale(Locale(localeTemp[0], localeTemp[1]));
+    UserService.instance.locale = value;
   }
 }

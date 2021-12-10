@@ -8,8 +8,13 @@
   "change_lang_desc": "நீங்கள் செயலி மற்றும் பிரார்தனை மொழியை மாற்றலாம்",
   "unknown_lang": "தெரியாத மொழி",
   "logout": "வெளியேறு",
+  "login": "உள்நுழை",
   "song": "பாடல் #",
   "author": "எழுத்தாளர்",
   "about_author": "@:author விவரம்",
-  "bible_portion": "பைபிள் பிரிவு"
+  "bible_portion": "பைபிள் பிரிவு",
+  "devotion_denied": "எதிர்கால பிரார்தனைகளை இப்போது பார்க்க முடியாது",
+  "devotion_unavailable": "பிரார்தனை கிடைக்கவில்லை",
+  "devotion_unavailable_desc": "கொடுக்கப்பட்ட தேதிக்கு பிரார்தனை இல்லை",
+  "read_more": "மேலும் படிக்க"
 }

@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     'https://images.pexels.com/photos/589802/pexels-photo-589802.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
   ];
   DevotionService _devotionService = DevotionService.instance;
-  late Devotion devotion;
+  late Devotion? devotion;
   _HomePageState() {
     getCarouselImages().then((urls) => {});
     devotion = _devotionService.getDevotionsForDate(DateTime.now());
@@ -34,11 +34,18 @@ class _HomePageState extends State<HomePage> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('welcome'.tr(namedArgs: {'name': 'Jothish'})),
+        title: Text('welcome'.tr(namedArgs: {'name': 'Harikrishnan'})),
         elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
+
         actions: [
-          IconButton(
-              onPressed: onMorePressed, icon: Icon(Icons.more_vert_rounded))
+          PopupMenuButton(itemBuilder: (context) =>[
+    PopupMenuItem(child: Text("About us"),),
+    PopupMenuItem(child: Text("Feedback")),
+    PopupMenuItem(child: Text("Share this app")),
+    PopupMenuItem(child: Text("Privacy Policy"))
+    ],
+    )
         ],
       ),
       body: ListView(
@@ -97,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   ListTile(
                     leading: Icon(Icons.local_library_outlined),
-                    title: Text(devotion.title),
+                    title: Text(devotion?.title ?? "devotion_unavailable".tr()),
                     subtitle: Text('devotion_day'.tr()),
                   ),
                   Divider(),
@@ -105,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(10)),
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text(devotion.body,
+                    child: Text(devotion?.body ?? "devotion_unavailable_desc".tr(),
                         textAlign: TextAlign.justify,
                         maxLines: 8,
                         softWrap: true,
@@ -115,8 +122,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   TextButton(
-                      onPressed: navigateToDevotionPage(),
-                      child: Text('READ MORE'))
+                      onPressed: navigateToDevotionPage,
+                      child: Text('read_more'.tr().toUpperCase()))
                 ],
               ),
             ),
@@ -129,7 +136,7 @@ class _HomePageState extends State<HomePage> {
             child: Card(
               child: ListTile(
                 leading: Icon(Icons.accessibility_new_outlined),
-                title: Text(devotion.title),
+                title: Text("Gratitude"),
                 subtitle: Text('theme_month'.tr()),
                 onTap: navigateToThemePage,
               ),
@@ -140,12 +147,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onMorePressed() {
-
-  }
 
   navigateToDevotionPage() {
-    //Navigator.push(context, MaterialPageRoute(builder: (context)=> DevotionPage(DateTime.now())));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> DevotionPage(DateTime.now())));
   }
 
   navigateToThemePage(){

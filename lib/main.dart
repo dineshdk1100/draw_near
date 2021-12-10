@@ -27,36 +27,53 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+
   @override
-  Widget build(BuildContext context)
-    => ChangeNotifierProvider(
-
-      create: (context) => GoogleSignInProvider(),
-
-      child: MaterialApp(
-
-        title: 'Draw Near',
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-
-        theme: ThemeData(
-          primarySwatch: pastelTheme,
-          brightness: Brightness.light,
-          cardTheme: Theme.of(context).cardTheme.copyWith(
-              shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              elevation: 4),
-        ),
-        // darkTheme: darkThemeData.copyWith(
-        //   colorScheme: darkThemeData.colorScheme
-        //     .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
-        // routes: {
-        //   '/home': (context) => const BaseHome(),
-        // },
-        home: Initializer(),
-      ),
+  Widget build(BuildContext context) {
+    UserService.instance.locale = context.locale.toString();
+    ThemeData darkThemeData = ThemeData(
+      brightness: Brightness.dark,
+      primarySwatch: pastelDarkTheme,
+      toggleableActiveColor: Color(pastelDarkThemePrimaryValue),
+      toggleButtonsTheme: Theme.of(context).toggleButtonsTheme.copyWith(borderRadius: BorderRadius.circular(8)),
+      cardTheme: Theme.of(context).cardTheme.copyWith(
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 4),
     );
+      return ChangeNotifierProvider(
+
+        create: (context) => GoogleSignInProvider(),
+
+        child: MaterialApp(
+
+          title: 'Draw Near',
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+
+          theme: ThemeData(
+            primarySwatch: pastelTheme,
+            brightness: Brightness.light,
+            toggleButtonsTheme: Theme.of(context).toggleButtonsTheme.copyWith(borderRadius: BorderRadius.circular(8)),
+            cardTheme: Theme
+                .of(context)
+                .cardTheme
+                .copyWith(
+                shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                elevation: 4),
+          ),
+          darkTheme: darkThemeData.copyWith(
+              colorScheme: darkThemeData.colorScheme
+                  .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
+          // routes: {
+          //   '/home': (context) => const BaseHome(),
+          // },
+          home: Initializer(),
+        ),
+      );
+}
   }
 
 

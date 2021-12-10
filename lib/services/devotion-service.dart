@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/devotion.dart';
-import 'package:draw_near/util/constants.dart';
+import 'package:draw_near/services/user-service.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jiffy/jiffy.dart';
 
 class DevotionService {
   var box = Hive.box('draw_near');
-  late List devotionsJson;
+  late Map<String, dynamic> devotionsMap;
 
   Devotion _devotion = Devotion(
       "rec",
@@ -12,7 +17,7 @@ class DevotionService {
       'Power of Compassion',
       '03',
       ['rec'],
-      'Whenever our Lord Jesus Christ was moved with compassion, He did something miraculous! The scene of the widow weeping for the loss of her',
+      'Genesis 1.2',
       'Truth for Today: Whenever our Lord Jesus Christ was moved with compassion, He did something miraculous! The scene of the widow weeping for the loss of her son moved the Lord with compassion which compelled Him into action and therefore He raised the dead man alive and presented him to his mother. Fear came upon all who witnessed this great miracle of a dead man coming back to life. The true definition of compassion involves a tangible expression of love for those who are suffering. It gives us the ability to understand someone’s struggle and it creates a desire to take action to alleviate their suffering. It is the most powerful force in the world; it benefits both those who receive it and those who share it. Christ when He walked on this earth was filled with compassion for the people, and He wants us also to feel the same divine power. Real life Events: Ida Scudder the woman who grew up in India and couldn’t wait to leave, one night witnessed the death of three women in labor as their husbands refused the help of her father who was a doctor due to the social taboo that existed at that time. Seeing the plight of the women folks of our country, Ida was moved with compassion and so pursued medical studies abroad. She came back to India and served the Lord by founding a teaching hospital, in which women were admitted and trained in medical studies. She brought a huge change in the lives of so many women. Adopt and Apply: Developing a heart for compassion begins in families. When parents lead a compassionate life, children will naturally witness the powerful changes that this attribute brings in their lives and will assume its importance for their lives. Let the power of compassion flow from our families to the society thereby bringing glory to His kingdom.',
       ['rec'],
       'Truth for Today: Whenever our Lord Jesus Christ was moved with compassion, He did something miraculous! The scene of the widow weeping for the loss of her son moved the Lord with compassion which compelled Him into action and therefore He raised the dead man alive and presented him to his mother. Fear came upon all who witnessed this great miracle of a dead man coming back to life. The true definition of compassion involves a tangible expression of love for those who are suffering. It gives us the ability to understand someone’s struggle and it creates a desire to take action to alleviate their suffering. It is the most powerful force in the world; it benefits both those who receive it and those who share it. Christ when He walked on this earth was filled with compassion for the people, and He wants us also to feel the same divine power. Real life Events: Ida Scudder the woman who grew up in India and couldn’t wait to leave, one night witnessed the death of three women in labor as their husbands refused the help of her father who was a doctor due to the social taboo that existed at that time. Seeing the plight of the women folks of our country, Ida was moved with compassion and so pursued medical studies abroad. She came back to India and served the Lord by founding a teaching hospital, in which women were admitted and trained in medical studies. She brought a huge change in the lives of so many women. Adopt and Apply: Developing a heart for compassion begins in families. When parents lead a compassionate life, children will naturally witness the powerful changes that this attribute brings in their lives and will assume its importance for their lives. Let the power of compassion flow from our families to the society thereby bringing glory to His kingdom.',
@@ -28,21 +33,25 @@ class DevotionService {
   factory DevotionService() {
     return instance;
   }
-  DevotionService._internal();
+  DevotionService._internal(){
+    this.devotionsMap = box.get(UserService.instance.locale, defaultValue: Map<String, dynamic>());
 
-  List<Devotion> getDevotionsForMonth(String month) {
-    this.devotionsJson = box.get(month, defaultValue: List.empty());
-    return devotionsJson.map((dev) => Devotion.fromJson(dev)).toList();
   }
 
   Devotion getDevotionsForDate(DateTime date) {
+
     return _devotion;
-    this.devotionsJson =
-        box.get(MONTHS_IN_YEAR[date.month], defaultValue: List.empty());
-    return Devotion.fromJson(this.devotionsJson[date.day - 1]);
+    if(!devotionsMap.containsKey(Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear))
+      throw DevotionNotFoundException("devotion_unavailable_desc".tr());
+    return Devotion.fromJson(devotionsMap[Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear]);
   }
 
-  getDevotionsForWeek(DateTime startDate, DateTime endDate) {
+  setDevotionForDate(String dayOfYear, Map<String, dynamic> data) {
+    devotionsMap[dayOfYear] = data;
+    box.put(UserService.instance.locale, devotionsMap);
+  }
+
+  List<Devotion?> getDevotionsForWeek(DateTime startDate, DateTime endDate) {
     return [
       _devotion,
       _devotion,
@@ -52,5 +61,15 @@ class DevotionService {
       _devotion,
       _devotion
     ];
+    List<Devotion?> devotions =[];
+    for(int day=0; day<6; day++) {
+      try {
+        devotions.add(getDevotionsForDate(startDate.add(Duration(days: day))));
+      }
+      on DevotionNotFoundException catch(e){
+        devotions.add(null);
+      }
+    }
+    return devotions;
   }
 }

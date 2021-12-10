@@ -38,6 +38,9 @@ dependencies:
   cached_network_image: 3.1.0+1
   persistent_bottom_nav_bar: ^4.0.2
   jiffy: ^4.1.0
+  google_fonts: 2.1.0
+  material_design_icons_flutter: ^5.0.6295
+  intl:
 
   #Google Sign In
   google_sign_in: ^5.2.1

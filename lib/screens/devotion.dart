@@ -1,8 +1,16 @@
+import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/devotion.dart';
+import 'package:draw_near/screens/devotion-unavailable.dart';
+import 'package:draw_near/screens/song-details.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import 'author-details.dart';
 
 class DevotionPage extends StatefulWidget {
   final DateTime date;
@@ -15,33 +23,52 @@ class DevotionPage extends StatefulWidget {
 class _DevotionPageState extends State<DevotionPage> {
   late Devotion _devotion;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  late Brightness platformBrightness;
+  List<bool> isSelected = [false, true];
   @override
   void initState() {
-    _devotion = DevotionService.instance.getDevotionsForDate(widget.date);
+    try {
+      _devotion = DevotionService.instance.getDevotionsForDate(widget.date);
+    }
+    on DevotionNotFoundException catch(e) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionUnavailable(e.message)));
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    platformBrightness = MediaQuery.of(context).platformBrightness;
     final args = ModalRoute.of(context)!.settings.arguments as Map;
 
-    TextStyle? subtitle1 = Theme.of(context).textTheme.subtitle1?.copyWith(
-        fontSize: (Theme.of(context).textTheme.subtitle1!.fontSize!.toDouble() +
-            UserService.instance.fontSize));
-    TextStyle? subtitle2 = Theme.of(context).textTheme.subtitle2?.copyWith(
-        fontSize: (Theme.of(context).textTheme.subtitle2!.fontSize!.toDouble() +
-            UserService.instance.fontSize));
-    TextStyle? headline4 = Theme.of(context).textTheme.headline4?.copyWith(
-        fontSize: (Theme.of(context).textTheme.headline4!.fontSize!.toDouble() +
-            UserService.instance.fontSize));
-    TextStyle? quote = Theme.of(context).textTheme.bodyText2?.copyWith(
-        color: Colors.black54,
-        fontSize: (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
-            UserService.instance.fontSize));
-    TextStyle? author = Theme.of(context).textTheme.bodyText2?.copyWith(
-        color: Colors.pinkAccent[200],
-        fontSize: (Theme.of(context).textTheme.subtitle2!.fontSize!.toDouble() +
-            UserService.instance.fontSize));
+    TextStyle? bodyText2 = GoogleFonts.robotoSlab(
+        textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+            fontSize:
+                (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
+                    UserService.instance.fontSize)));
+    TextStyle? subtitle2 = GoogleFonts.roboto(
+        textStyle: Theme.of(context).textTheme.subtitle2?.copyWith(
+            fontSize:
+                (Theme.of(context).textTheme.subtitle2!.fontSize!.toDouble() +
+                    UserService.instance.fontSize)));
+    TextStyle? headline4 = GoogleFonts.scopeOne(
+        textStyle: Theme.of(context).textTheme.headline4?.copyWith(
+          fontWeight: FontWeight.w600,
+            fontSize:
+                (Theme.of(context).textTheme.headline5!.fontSize!.toDouble() +
+                    UserService.instance.fontSize)));
+    TextStyle? quote = GoogleFonts.lora(
+        textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+            fontSize:
+                (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
+                    UserService.instance.fontSize),
+            fontStyle: FontStyle.italic));
+    TextStyle? author = GoogleFonts.robotoSlab(
+        textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+            color: Colors.pinkAccent[200],
+            fontSize:
+                (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
+                    UserService.instance.fontSize)));
 
     return Scaffold(
       key: _scaffoldKey,
@@ -49,23 +76,42 @@ class _DevotionPageState extends State<DevotionPage> {
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         actions: [
-          IconButton(
-              onPressed: () {
-                onFontSizeDecrease();
+          ToggleButtons(
+              fillColor: Colors.transparent,
+              renderBorder: false,
+              children: [
+                Icon(Icons.menu),
+                Icon(Icons.reorder),
+              ],
+              onPressed: (index) => setState(() {
+                if (index == 0) UserService.instance.bodyTextStyleHeight = 1.7;
+                else UserService.instance.bodyTextStyleHeight = 1.5;
+                    for (int i = 0; i < isSelected.length; i++)
+                      if (i == index)
+                        isSelected[i] = true;
+                      else
+                        isSelected[i] = false;
+                  }),
+              isSelected: isSelected),
+          VerticalDivider(width: 32, indent: 10, endIndent: 10,),
+            IconButton(
+
+                onPressed: UserService.instance.fontSize <= -2 ? null :() {
+                  onFontSizeDecrease();
+                },
+                icon: Icon(MdiIcons.formatFontSizeDecrease)),
+            IconButton(
+              onPressed: UserService.instance.fontSize >=10 ? null :() {
+                onFontSizeIncrease();
               },
-              icon: Icon(Icons.zoom_out)),
-          IconButton(
-            onPressed: () {
-              onFontSizeIncrease();
-            },
-            icon: Icon(
-              Icons.zoom_in,
+              icon: Icon(
+                MdiIcons.formatFontSizeIncrease,
+              ),
             ),
-          ),
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(12),
         children: [
           Text(
             _devotion.title,
@@ -73,28 +119,37 @@ class _DevotionPageState extends State<DevotionPage> {
             textAlign: TextAlign.center,
           ),
           Divider(),
-          Text(
-            "2, November 2021",
+          Text(getFormattedDate(_devotion.date, context.locale.languageCode),
+            //"2, November 2021",
             textAlign: TextAlign.center,
             //_devotion.timestamp.toIso8601String(),
-            style: subtitle1,
+            style: bodyText2,
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Author",
+                "author".tr(),
                 //_devotion.timestamp.toIso8601String(),
                 style: subtitle2,
               ),
-              Text(
-                _devotion.authorName,
-                style: author,
+              TextButton.icon(
+                icon: Icon(Icons.launch),
+                label: Text(
+                  _devotion.authorName,
+                  style: author,
+                ),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AuthorDetails(_devotion.author[0]))),
               ),
+
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -103,39 +158,63 @@ class _DevotionPageState extends State<DevotionPage> {
                 //_devotion.timestamp.toIso8601String(),
                 style: subtitle2,
               ),
-              Text(
-                _devotion.songNumber,
-                style: subtitle1,
+              TextButton.icon(
+                icon: Icon(Icons.launch),
+                label: Text(
+                  _devotion.songNumber,
+                  style: bodyText2,
+                ),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SongDetails(_devotion.song[0]))),
               ),
             ],
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Bible Portion",
+                "bible_portion".tr(),
                 //_devotion.timestamp.toIso8601String(),
                 style: subtitle2,
               ),
               Text(
                 _devotion.biblePortion,
-                style: subtitle1,
+                style: bodyText2,
               ),
             ],
           ),
           SizedBox(height: 16),
-          DevotionCard(_devotion.verseLine, Color(0xFFF1D1D1)),
+          DevotionCard(
+              _devotion.verseLine,
+              platformBrightness == Brightness.light
+                  ? Color(0xFFe6adad)
+                  : Color(0xFFd98282)),
           SizedBox(height: 16),
-          DevotionCard(_devotion.body, Color(0xFFDCD6F7)),
+          DevotionCard(
+              _devotion.body,
+              platformBrightness == Brightness.light
+                  ? Color(0xFFDCD6F7)
+                  : Color(0xFF927fe6)),
           SizedBox(height: 16),
-          DevotionCard(_devotion.reflectRespond, Color(0xFFDDFFBC)),
+          DevotionCard(
+              _devotion.reflectRespond,
+              platformBrightness == Brightness.light
+                  ? Color(0xFFDDFFBC)
+                  : Color(0xFF4d9900)),
           SizedBox(height: 16),
-          DevotionCard(_devotion.prayer, Color(0xFFFBC6A4)),
+          DevotionCard(
+              _devotion.prayer,
+              platformBrightness == Brightness.light
+                  ? Color(0xFFFBC6A4)
+                  : Color(0xFFf7833b)),
           SizedBox(height: 16),
           _devotion.quote != null
-              ? ListTile(
-                  minLeadingWidth: 20,
+              ? ListTile(isThreeLine: true,
+                  minLeadingWidth: 16,
                   leading: Container(
                     width: 5,
                     color: Colors.grey,
@@ -154,7 +233,7 @@ class _DevotionPageState extends State<DevotionPage> {
                           height: 8,
                         ),
                         Text(
-                          _devotion.quoteAuthor ?? "",
+                          _devotion.quoteAuthor,
                           style: author,
                         )
                       ],
@@ -212,9 +291,11 @@ class DevotionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle? bodyText = Theme.of(context).textTheme.bodyText2?.copyWith(
-        fontSize: (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
-            UserService.instance.fontSize));
+    TextStyle? bodyText = GoogleFonts.robotoSlab(
+        textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(height: UserService().bodyTextStyleHeight,
+            fontSize:
+                (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
+                    UserService.instance.fontSize)));
     return Card(
       child: Container(
         decoration:
@@ -229,4 +310,8 @@ class DevotionCard extends StatelessWidget {
       ),
     );
   }
+}
+
+getFormattedDate(DateTime date, String locale ){
+  return DateFormat( "dd, MMMM yyyy",locale).format(date);
 }
