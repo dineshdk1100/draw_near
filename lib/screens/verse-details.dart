@@ -1,25 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:draw_near/models/song.dart';
-import 'package:draw_near/services/song-service.dart';
+import 'package:draw_near/models/verse.dart';
+import 'package:draw_near/services/verse-service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:octo_image/octo_image.dart';
 
-class SongDetails extends StatefulWidget {
+class VerseDetails extends StatefulWidget {
   final String recordId;
-  const SongDetails(this.recordId) : super();
+  const VerseDetails(this.recordId) : super();
 
   @override
-  State<SongDetails> createState() => _SongDetailsState();
+  State<VerseDetails> createState() => _VerseDetailsState();
 }
 
-class _SongDetailsState extends State<SongDetails> {
-  late Song song;
+class _VerseDetailsState extends State<VerseDetails> {
+  late Verse verse;
 
   @override
   void initState() {
-    song = SongService.instance.getSong(widget.recordId);
+    verse = VerseService.instance.getVerse(widget.recordId);
     super.initState();
   }
 
@@ -43,11 +43,9 @@ class _SongDetailsState extends State<SongDetails> {
               //   ),
               // ),
 
-              Text('song'.tr() +  song.number ,style: GoogleFonts.abrilFatface(
-                textStyle: Theme.of(context).textTheme.headline4,
-              ),),
+              Text("Bible Portion", style: GoogleFonts.abrilFatface(fontSize: 32),),
               SizedBox(height: 24,),
-              Text(song.body, style: GoogleFonts.lora(fontStyle: FontStyle.italic, fontSize: 20, height: 1.5),)
+              Text(verse.fullVerse, style: GoogleFonts.montserrat( fontSize: 16, fontWeight: FontWeight.w300, height: 1.5),)
             ],
           ),
 

@@ -20,8 +20,8 @@ class _BaseHomeState extends State<BaseHome> {
   @override
   Widget build(BuildContext context) {
     print(MediaQuery.of(context).platformBrightness.toString());
-    MediaQuery.of(context).platformBrightness == Brightness.dark ? navBarColor = Colors.black54 : navBarColor = Colors.white;
-    MediaQuery.of(context).platformBrightness == Brightness.dark ? inactiveColor = Colors.white70 : navBarColor = Colors.black38;
+    Theme.of(context).brightness == Brightness.dark ? navBarColor = Colors.black54 : navBarColor = Colors.white;
+    Theme.of(context).brightness == Brightness.dark ? inactiveColor = Colors.white70 : navBarColor = Colors.black38;
 
     return PersistentTabView(
       context,
@@ -32,7 +32,7 @@ class _BaseHomeState extends State<BaseHome> {
       backgroundColor: navBarColor, // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      stateManagement: true, // Default is true.
+      stateManagement: false, // Default is true.
       hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
       decoration: NavBarDecoration(
         colorBehindNavBar: Colors.white,

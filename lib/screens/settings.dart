@@ -1,9 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:draw_near/provider/login_controller.dart';
+import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
+import 'package:theme_mode_handler/theme_mode_handler.dart';
+
+import 'login.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -13,6 +18,11 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    print(UserService.instance.isLoggedIn.toString());
+  }
   @override
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
@@ -30,32 +40,29 @@ class _SettingsState extends State<Settings> {
             children: <Widget>[
               Container(
                 width: mediaQueryData.size.width,
-                height: mediaQueryData.size.height * 0.17,
+                height: mediaQueryData.size.height * 0.13,
                 color: Theme.of(context).primaryColor,
               ),
               Positioned(
                   bottom: -70.0,
                   child: CircleAvatar(
-                    radius: 100,
-                    child: Text(
-                      'H',
-                      style: Theme.of(context).textTheme.headline1,
-                    ),
+                    radius: 70,onBackgroundImageError: (obj, _)=> Icon(Icons.person, size: 100, color: Colors.white,),
+                    backgroundImage: CachedNetworkImageProvider(UserService.instance.userDetails.photoURL ?? ''),
                   )),
             ],
           ),
           SizedBox(
             height: 80,
           ),
-          Text("Harikrishnan", style: Theme.of(context).textTheme.headline4, textAlign: TextAlign.center,),
+          Text(UserService.instance.userDetails.displayName ?? 'User', style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
           SizedBox(
             height: 10,
           ),
-          Text("hari@gmail.com", style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
+          Text(UserService.instance.userDetails.email ?? '', style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
           SizedBox(
             height: 8,
           ),
-          Text("+91987654321", style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
+          Text(UserService.instance.userDetails.phoneNumber ?? '', style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
           Divider(height: 24,),
           ListTile(
             isThreeLine: true,
@@ -68,6 +75,51 @@ class _SettingsState extends State<Settings> {
                     })),
           ),
           Divider(),
+          ListTile(
+            //isThreeLine: true,
+            onTap: (){
+
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Select theme'),
+                    content: Container(
+                      height: 180,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          leading: Icon(Icons.light_mode),
+                          title: Text("Light theme"),
+                          onTap: () { Navigator.pop(context); ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.light);}
+
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.dark_mode),
+                          title: Text("Dark theme"),
+                          onTap: ()  { Navigator.pop(context); ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.dark);}
+
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.brightness_4),
+                          title: Text("System theme"),
+                          onTap: ()  { Navigator.pop(context);  ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.system);}
+
+                        )
+                      ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            title: Text("theme".tr()),
+            subtitle: Text(UserService.instance.theme.toString().capitalize().tr()),
+            trailing: Icon(Icons.arrow_forward_ios)
+          ),
+          Divider(),
+
           ListTile(
             isThreeLine: true,
             title: Text("change_lang".tr()),
@@ -86,6 +138,16 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
           ListTile(
+            onTap: (){
+              if(!UserService.instance.isLoggedIn){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+
+              }
+              else{
+                Provider.of<LoginController>(context, listen: false).logout();
+                //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BaseHome()), (route) => false);
+              }
+            },
             title: UserService.instance.isLoggedIn ? Text('logout'.tr()) : Text("login".tr()),
             trailing: Icon(Icons.logout),
           )
@@ -95,9 +157,16 @@ class _SettingsState extends State<Settings> {
   }
 
   onSelectLanguage(value){
-    if (value == null) return;
+    if (value == null || value == 'ta_IN') return;
     var localeTemp = value.toString().split('_');
     context.setLocale(Locale(localeTemp[0], localeTemp[1]));
     UserService.instance.locale = value;
+  }
+
+}
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1)}";
   }
 }

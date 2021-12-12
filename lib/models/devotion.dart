@@ -14,13 +14,13 @@ class Devotion {
   @JsonKey(name: 'Title')
   String title;
   @JsonKey(name: 'Number (from Song)')
-  String songNumber;
+  List songNumber;
   @JsonKey(name: 'Song')
   List<String> song;
   @JsonKey(name: 'Bible portion')
   String biblePortion;
   @JsonKey(name: 'Verse line (from Bible verse)')
-  String verseLine;
+  List verseLine;
   @JsonKey(name: 'Bible verse')
   List<String> verse;
   @JsonKey(name: 'Body')
@@ -34,7 +34,7 @@ class Devotion {
   @JsonKey(name: 'Quote author')
   String quoteAuthor;
   @JsonKey(name: 'Name (from Author)')
-  String authorName;
+  List authorName;
   @JsonKey(name: 'Author')
   List<String> author;
   @JsonKey(name: 'Last Modified Time')

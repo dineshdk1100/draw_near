@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:draw_near/services/user-service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -24,12 +26,21 @@ class LoginController with ChangeNotifier {
       idToken: googleAuth.idToken,
     );
 
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
     this.userDetails = new UserDetails(
-      displayName: this.googleSignInAccount!.displayName,
+      userCredential.user!.uid,
+      this.googleSignInAccount?.displayName ?? "User",
       email: this.googleSignInAccount!.email,
       photoURL: this.googleSignInAccount!.photoUrl,
+        phoneNumber: ""
+
     );
-    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    await  FirebaseFirestore.instance.collection('users').doc(userDetails?.uid).set(userDetails!.toJson());
+    UserService.instance.userDetails = this.userDetails!;
+    UserService.instance.isLoggedIn = true;
+
     // call
     notifyListeners();
   }
@@ -53,14 +64,21 @@ class LoginController with ChangeNotifier {
         fields: "email, name, picture",
       );
 
+
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
       this.userDetails = new UserDetails(
-        displayName: requestData["name"],
+        userCredential.user!.uid,
+        requestData["name"],
         email: requestData["email"],
         photoURL: requestData["picture"]["data"]["url"] ?? " ",
+        phoneNumber: ""
       );
+      await  FirebaseFirestore.instance.collection('users').doc(userDetails?.uid).set(userDetails!.toJson());
+      UserService.instance.userDetails = this.userDetails!;
+      UserService.instance.isLoggedIn = true;
       notifyListeners();
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-
+      return userCredential;
     }
   }
 
@@ -70,6 +88,8 @@ class LoginController with ChangeNotifier {
     this.googleSignInAccount = await _googleSignIn.signOut();
     await FacebookAuth.i.logOut();
     userDetails = null;
+    UserService.instance.removeUserDetails();
+    UserService.instance.isLoggedIn = false;
     notifyListeners();
   }
 }

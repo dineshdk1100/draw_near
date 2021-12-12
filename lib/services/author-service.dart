@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:draw_near/models/author.dart';
+import 'package:draw_near/services/user-service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class AuthorService {
@@ -40,15 +43,19 @@ class AuthorService {
       12345678);
 
   static final AuthorService instance = AuthorService._internal();
-  factory AuthorService() {
-    return instance;
+ 
+  AuthorService._internal(){
+    this.authorsMap = jsonDecode(box.get('authors_${UserService.instance.locale}', defaultValue: '{}'));
   }
-  AuthorService._internal();
 
   Author getAuthor(String recordId) {
-    return _author;
-    this.authorsMap = box.get('authors', defaultValue: Map());
+    //return _author;
     return Author.fromJson(authorsMap[recordId]);
+  }
+
+  void saveAuthor(String recordId, Map<String, dynamic> data) {
+    authorsMap[recordId] = data;
+    box.put('authors_${UserService.instance.locale}', jsonEncode(authorsMap));
   }
 
 }

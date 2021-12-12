@@ -1,25 +1,23 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'user.g.dart';
+
+@JsonSerializable()
 class UserDetails {
-  String? displayName;
+  String uid;
+  String displayName;
   String? email;
   String? photoURL;
+  String? phoneNumber;
 
   //constructor
-  UserDetails({this.displayName, this.email, this.photoURL});
+  UserDetails(this.uid, this.displayName, {this.email, this.photoURL, this.phoneNumber});
 
-  // we need to create map
-  UserDetails.fromJson(Map<String, dynamic> json) {
-    displayName = json["displayName"];
-    photoURL = json["photoUrl"];
-    email = json["email"];
-  }
-  Map<String, dynamic> toJson() {
-    // object - data
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['displayName'] = this.displayName;
-    data['email'] = this.email;
-    data['photoUrl]'] = this.photoURL;
+  factory UserDetails.fromJson(Map<String, dynamic> json) =>
+      _$UserDetailsFromJson(json);
 
-    return data;
-
-  }
+  Map<String, dynamic> toJson() => _$UserDetailsToJson(this);
 }
+
+

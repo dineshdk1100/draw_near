@@ -17,5 +17,5 @@ const List<String> MONTHS_IN_YEAR = [
 
 const Map<String, String> AVAILABLE_LANGUAGES =
   {'en_IN': 'English',
-  'ta_IN': 'தமிழ் (Coming soon)'
+  'ta_IN': 'தமிழ் (soon)'
 };

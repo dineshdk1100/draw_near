@@ -1,25 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'song.dart';
+part of 'verse.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Song _$SongFromJson(Map<String, dynamic> json) => Song(
+Verse _$VerseFromJson(Map<String, dynamic> json) => Verse(
       json['Record Id'] as String,
-      json['Body'] as String,
+      json['Verse line'] as String,
+      json['Full verse'] ?? "" as String,
       (json['Devotions'] as List<dynamic>).map((e) => e as String).toList(),
-      json['Number'] as String,
-      json['Song name']  ?? "" as String,
       json['Last Modified Time'] as int,
     );
 
-Map<String, dynamic> _$SongToJson(Song instance) => <String, dynamic>{
+Map<String, dynamic> _$VerseToJson(Verse instance) => <String, dynamic>{
       'Record Id': instance.recordId,
-      'Body': instance.body,
+      'Verse line': instance.verseLine,
+      'Full verse': instance.fullVerse,
       'Devotions': instance.devotions,
-      'Number': instance.number,
-      'Song name': instance.songName,
       'Last Modified Time': instance.lastModifiedTime,
     };

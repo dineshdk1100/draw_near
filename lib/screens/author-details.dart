@@ -28,22 +28,22 @@ class _AuthorDetailsState extends State<AuthorDetails> {
     return Scaffold(
         body: SizedBox.expand(
       child: Container(
-        decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+        //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
         padding: EdgeInsets.all(16),
         child: ListView(
           shrinkWrap: true,
           children: [
 
-                 CircleAvatar(
-                  minRadius: 80,
-                  maxRadius: 120,
-                  backgroundImage: NetworkImage(author.photo[0]['url'], ) ,
-                ),
+                 Container(
+                   height: 250,
+                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: CachedNetworkImageProvider(author.photo[0]['url']),fit: BoxFit.cover)),
+                   //child: CachedNetworkImage(imageUrl: author.photo[0]['url'],),
+                 ),
             SizedBox(height: 16,),
             Text(
               author.name,
               textAlign: TextAlign.center,
-              style: GoogleFonts.kavivanar(
+              style: GoogleFonts.playfairDisplay(
                 textStyle: Theme.of(context).textTheme.headline4,
               ),
             ),
@@ -52,6 +52,7 @@ class _AuthorDetailsState extends State<AuthorDetails> {
             ),
             Text(
               author.description,
+              style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w300, height: 1.5),
               textAlign: TextAlign.justify,
             )
           ],

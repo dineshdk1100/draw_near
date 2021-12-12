@@ -230,11 +230,13 @@ class _LoginPageState extends State<LoginPage>
 
       if(models.userDetails!=null){
         return Center(
-          child: loggedInUI(models),
+          child: BaseHome(),
         );
+        Navigator.push(context, new MaterialPageRoute(builder: (context)=> BaseHome()));
       }else{
         return loginControllers(context);
       }
+      return Container();
     });
   }
 
@@ -249,12 +251,12 @@ class _LoginPageState extends State<LoginPage>
       children: [
         CircleAvatar(
           backgroundImage:
-          Image.network(model.userDetails!.photoURL ?? "").image,
+          Image.network(model.userDetails?.photoURL ?? "").image,
           radius: 50,
         ),
 
-        Text(model.userDetails!.displayName ?? ""),
-        Text(model.userDetails!.email ?? ""),
+        Text(model.userDetails?.displayName ?? ""),
+        Text(model.userDetails?.email ?? ""),
 
         // logout
         ActionChip(

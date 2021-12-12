@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/screens/devotion.dart';
 import 'package:draw_near/services/carousel-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
+import 'package:draw_near/services/user-service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,10 +25,16 @@ class _HomePageState extends State<HomePage> {
     'https://images.pexels.com/photos/589802/pexels-photo-589802.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
   ];
   DevotionService _devotionService = DevotionService.instance;
-  late Devotion? devotion;
+  Devotion? devotion;
   _HomePageState() {
     getCarouselImages().then((urls) => {});
-    devotion = _devotionService.getDevotionsForDate(DateTime.now());
+
+    try {
+      devotion = _devotionService.getDevotionsForDate(DateTime.now());
+    }
+    on DevotionNotFoundException catch(e) {
+      //Fluttertoast.showToast(msg: e.message);
+    }
   }
 
   @override
@@ -34,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('welcome'.tr(namedArgs: {'name': 'Harikrishnan'})),
+        title: Text("Draw Near"),
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
 
@@ -57,7 +66,7 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               Container(
                 width: width,
-                height: height * 0.22,
+                height: height * 0.19,
                 color: Theme.of(context).primaryColor,
               ),
               Positioned(
@@ -66,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                   width: width,
                   height: 200,
                   decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                      BoxDecoration(borderRadius: BorderRadius.circular(10),gradient: LinearGradient(colors: [Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
                   margin: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
                   child: CarouselSlider.builder(
                     itemCount: carouselImageUrls.length,
@@ -95,6 +104,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 64,
           ),
+          Image.asset('assets/images/logo_transparent.png', height: 90,),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
@@ -114,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Text(devotion?.body ?? "devotion_unavailable_desc".tr(),
                         textAlign: TextAlign.justify,
-                        maxLines: 8,
+                        maxLines: 6,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis),
                     foregroundDecoration: BoxDecoration(
@@ -122,15 +132,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   TextButton(
-                      onPressed: navigateToDevotionPage,
+                      onPressed: (devotion!=null) ? navigateToDevotionPage : null,
                       child: Text('read_more'.tr().toUpperCase()))
                 ],
               ),
             ),
           ),
-          SizedBox(
-            height: 16,
-          ),
+          // SizedBox(
+          //   height: 16,
+          // ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(

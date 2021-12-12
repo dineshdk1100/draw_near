@@ -42,6 +42,8 @@ dependencies:
   google_fonts: 2.1.0
   material_design_icons_flutter: ^5.0.6295
   intl:
+  theme_mode_handler: ^3.0.0
+  fluttertoast:
 
   #Google Sign In
   google_sign_in: ^5.2.1

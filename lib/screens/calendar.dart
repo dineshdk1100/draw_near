@@ -100,11 +100,11 @@ class _CalendarPageState extends State<CalendarPage> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(selectedDate.year, 1, 1),
-        lastDate: DateTime(selectedDate.year, 12, 31),
+        lastDate: DateTime(2022, 12, 31),
 
     );
     if(date!=null)
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> DevotionPage(selectedDate)));
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> DevotionPage(date)));
 
   }
 }
@@ -155,7 +155,7 @@ class DayCard extends StatelessWidget {
                 ));
               }
             : devotionTitle == "Devotion not available"
-                ? null
+                ? (){ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Devotion not available for the selected date")));}
                 : () {
                     navigateToDevotionPage(context);
                   });

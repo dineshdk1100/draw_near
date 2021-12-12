@@ -12,6 +12,8 @@ class Song {
   List<String> devotions;
   @JsonKey(name: 'Number')
   String number;
+  @JsonKey(name: 'Song name')
+  String songName;
   @JsonKey(name: 'Last Modified Time')
   int lastModifiedTime;
 
@@ -19,7 +21,8 @@ class Song {
       this.recordId,
       this.body, 
       this.devotions, 
-      this.number, 
+      this.number,
+      this.songName,
       this.lastModifiedTime
       );
 
