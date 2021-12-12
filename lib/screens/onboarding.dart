@@ -50,7 +50,7 @@ class _OnboardingState extends State<Onboarding> {
                       Text(
                         contents[i].title,
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -99,7 +99,7 @@ class _OnboardingState extends State<Onboarding> {
                   curve: Curves.bounceIn,
                 );
               },
-              color: Theme.of(context).primaryColor,
+              color: Colors.pinkAccent,
               textColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),

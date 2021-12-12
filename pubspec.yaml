@@ -47,6 +47,7 @@ dependencies:
 
   #Google Sign In
   google_sign_in: ^5.2.1
+  flutter_signin_button: ^2.0.0
 
   #Facebook sign in
   flutter_facebook_auth: 3.5.6+3
@@ -95,7 +96,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto/Roboto-Light.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

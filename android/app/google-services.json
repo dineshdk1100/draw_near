@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "650269932862",
+    "firebase_url": "https://draw-near-4742a-default-rtdb.firebaseio.com",
     "project_id": "draw-near-4742a",
     "storage_bucket": "draw-near-4742a.appspot.com"
   },
@@ -35,8 +36,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "650269932862-f4miqito3cvalnddo2nqt4cqoavkss2t.apps.googleusercontent.com",
+              "client_id": "650269932862-ddblj5efrsn3eqi3pvih3smgeuuq3kpt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "650269932862-7el9d5q7svoqoeo8ftvg5d25furjso2d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.techcatalyst.drawnear.ios"
+              }
             }
           ]
         }

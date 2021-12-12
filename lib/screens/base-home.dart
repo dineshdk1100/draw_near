@@ -1,6 +1,7 @@
 import 'package:draw_near/screens/calendar.dart';
 import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/screens/settings.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -29,7 +30,7 @@ class _BaseHomeState extends State<BaseHome> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: navBarColor, // Default is Colors.white.
+      backgroundColor: Color(0xFFE87E7E), // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
       stateManagement: false, // Default is true.
@@ -66,19 +67,19 @@ class _BaseHomeState extends State<BaseHome> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: ("Home"),
-        activeColorPrimary: Theme.of(context).toggleableActiveColor,
+        activeColorPrimary: Colors.white,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.today),
         title: ("Calendar"),
-        activeColorPrimary: Theme.of(context).toggleableActiveColor,
+        activeColorPrimary: Colors.white,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.account_circle),
         title: ("Account"),
-        activeColorPrimary: Theme.of(context).toggleableActiveColor,
+        activeColorPrimary: Colors.white,
         inactiveColorPrimary: inactiveColor,
       ),
     ];
