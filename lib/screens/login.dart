@@ -1,14 +1,15 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:draw_near/provider/google_sign_in.dart';
+//import 'package:draw_near/provider/google_sign_in.dart';
 import 'package:draw_near/screens/base-home.dart';
-import 'package:draw_near/util/color_theme.dart';
+//import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/OTPController.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginPage extends StatefulWidget{
   const LoginPage({Key? key}) : super(key: key);
@@ -36,19 +37,24 @@ class _LoginPageState extends State<LoginPage>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Color(pastelThemePrimaryValue),
-              Colors.white,
               Colors.pinkAccent,
-             Colors.white70,
+            //Color(pastelThemePrimaryValue),
+            //  Colors.pinkAccent,
+
+            Colors.white,
               //Colors.red,
             ]
           )
         ),
         child: Column (
-          crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
           children:<Widget>[
-            SizedBox(height: 80,),
-            Padding(
+            SizedBox(height: 40,),
+            Padding(padding: const EdgeInsets.all(15.0),
+              child: Image.asset("assets/images/new_logo.png"),
+            ),
+
+            /*Padding(
               padding: EdgeInsets.all(20),
               child:Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +64,7 @@ class _LoginPageState extends State<LoginPage>
                   Text("A Family Daily Devotion", style: TextStyle(color: Colors.white, fontSize: 18),),
                 ],
               ),
-            ),
+            ),*/
             SizedBox(height:20),
             Expanded(
               child: Container(
@@ -71,8 +77,9 @@ class _LoginPageState extends State<LoginPage>
                     padding: EdgeInsets.all(30),
                     child: Column(
                       children:<Widget>[
-                        SizedBox(height: 50,),
-                        Container(decoration: BoxDecoration(
+                        Text(" Sign in using Social account", style: TextStyle(color: Colors.black54),),
+                        SizedBox(height: 20,),
+                        Container(/*decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [BoxShadow(
@@ -80,10 +87,23 @@ class _LoginPageState extends State<LoginPage>
                             blurRadius: 25,
                             offset: Offset(0,10)
                           ),],
-                        ),
+                        ),*/
                         child: Column(
                           children: [
-                            GestureDetector(
+                            SignInButton(
+                              Buttons.GoogleDark,
+                              //padding: EdgeInsets.all(4.0),
+                              text : ("Sign in with Google"),
+
+                             // shape: RoundedRectangleBorder(
+                               //   borderRadius: BorderRadius.circular(10.0)),
+
+                              onPressed: () {
+                                Provider.of<LoginController>(context, listen: false)
+                                    .googleLogin();
+                              },
+                            ),
+                           /* GestureDetector(
                                 child: Image.asset(
                                   "assets/images/google.png",
                                   width: 240,
@@ -91,12 +111,12 @@ class _LoginPageState extends State<LoginPage>
                                 onTap: () {
                                   Provider.of<LoginController>(context, listen: false)
                                       .googleLogin();
-                                }),
+                                }),*/
                           ],
                         )
                         ),
-                        SizedBox(height: 10,),
-                        Container(decoration: BoxDecoration(
+                        SizedBox(height: 5,),
+                        Container(/*decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [BoxShadow(
@@ -104,25 +124,24 @@ class _LoginPageState extends State<LoginPage>
                                 blurRadius: 25,
                                 offset: Offset(0,10)
                             )]
-                        ),
+                        ),*/
                             child: Column(
                               children: [
-                                GestureDetector(
-                                    child: Image.asset(
-                                      "assets/images/apple.png",
-                                      //height: 40,
-                                      width: 240,
-                                    ),
-                                    onTap: () {
-                                      Provider.of<LoginController>(context, listen: false)
-                                          .googleLogin();
-                                    }),
+                                SignInButton(
+                                  Buttons.AppleDark,
+                                  //padding: EdgeInsets.all(8.0),
+                                  text: "Sign in with Apple",
+                                  onPressed: () {
+                                    Provider.of<LoginController>(context, listen: false)
+                                        .googleLogin();
+                                  },
+                                ),
                                   //SizedBox(height: 20,),
                                 ],
                             ),
                         ),
-                        SizedBox(height: 10,),
-                        Container(decoration: BoxDecoration(
+                        SizedBox(height: 5,),
+                        Container(/*decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [BoxShadow(
@@ -130,31 +149,31 @@ class _LoginPageState extends State<LoginPage>
                                 blurRadius: 25,
                                 offset: Offset(0,10)
                             )]
-                        ),
+                        ),*/
                           child: Column(
                               children:[
-                                GestureDetector(
-                                    child: Image.asset(
-                                      "assets/images/fb.png",
-                                      width: 240,
-                                    ),
-                                    onTap: () {
-                                      Provider.of<LoginController>(context, listen: false)
-                                          .facebooklogin();
-                                    }),
+                                SignInButton(
+                                  Buttons.Facebook,
+                                  text: "Sign in with Facebook",
+                                  //padding: EdgeInsets.all(6.0),
+                                  onPressed: () {
+                                    Provider.of<LoginController>(context, listen: false)
+                                        .facebooklogin();
+                                  },
+                                ),
                                 //SizedBox(height: 20,),
                               ]
                           ),
                         ),
                         SizedBox(height: 20,),
                         //Text("Forgot Password?", style: TextStyle(color: Colors.grey),),
-                        Text(" OR", style: TextStyle(color: Colors.grey),),
+                        Text(" OR", style: TextStyle(color: Colors.black54),),
                         SizedBox(height: 20,),
                         //SizedBox(height: 50,),
-                        Text(" Continue with Phone Number", style: TextStyle(color: Colors.grey),),
+                        Text(" Continue with Phone Number", style: TextStyle(color: Colors.black54),),
                         SizedBox(
                           width : 400,
-                          height: 60,
+                          height: 55,
                           child: CountryCodePicker(
                             onChanged: (country){
                               setState((){
@@ -171,17 +190,18 @@ class _LoginPageState extends State<LoginPage>
 
                         Container(
                           //height: 50,
-                          margin: EdgeInsets.only(top: 10, right: 10, left: 10),
+                          margin: EdgeInsets.only(top: 0, right: 10, left: 10),
                           //color: Color(0xff1d1d1d),
                          // borderRadius: BorderRadius.circular(15),
 
                           child: TextField(
                           decoration: InputDecoration(
 
-                            hintText: "Phone Number",
+                            hintText: "   Enter your Phone Number",
                             prefix: Padding(
-                              padding: EdgeInsets.all(4),
+                              padding: EdgeInsets.all(2),
                               child: Text(dialCodeDigits),
+
                             )
                           ),
                            maxLength: 10,
@@ -192,7 +212,7 @@ class _LoginPageState extends State<LoginPage>
 
                         Container(
                           margin: EdgeInsets.all(15),
-                          width: 240,
+                          width: 150,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: Colors.pinkAccent, // background
@@ -211,7 +231,7 @@ class _LoginPageState extends State<LoginPage>
                             },
 
 
-                            child: Text('Verify',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                            child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.white,fontWeight: FontWeight.bold),),
                           )
                         )
 
@@ -234,7 +254,7 @@ class _LoginPageState extends State<LoginPage>
 
       if(models.userDetails!=null){
         return Center(
-          child: loggedInUI(models),
+          child: BaseHome(),
         );
       }else{
         return loginControllers(context);
