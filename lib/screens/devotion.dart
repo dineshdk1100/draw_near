@@ -234,26 +234,26 @@ class _DevotionPageState extends State<DevotionPage> {
               platformBrightness == Brightness.light
                   ? HSLColor.fromColor(Color(0xFFe6adad)).withLightness(0.9).withSaturation(0.75).toColor()
                   : Color(0xFFd98282)),
-          SizedBox(height: 16),
+          SizedBox(height: 3),
           DevotionCard(
               _devotion.body,
               platformBrightness == Brightness.light
                   ? Color(0xFFDDFFBC)
                   : Color(0xFF4d9900)),
-          SizedBox(height: 16),
+          SizedBox(height: 3),
           DevotionCard(
               _devotion.reflectRespond,
               platformBrightness == Brightness.light
                   ? Color(0xFFFBC6A4)
                   : Color(0xFFf7833b)),
-          SizedBox(height: 16),
+          SizedBox(height: 3),
           DevotionCard(
               _devotion.prayer,
               platformBrightness == Brightness.light
                   ? Color(0xFFDCD6F7)
                   : Color(0xFF927fe6)),
 
-          SizedBox(height: 16),
+          SizedBox(height: 3),
           _devotion.quote != null
               ? ListTile(isThreeLine: true,
                   minLeadingWidth: 16,

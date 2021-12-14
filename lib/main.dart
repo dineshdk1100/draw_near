@@ -97,7 +97,7 @@ class _SplashScreenState extends State<SplashScreen> {
     DownloadService.instance.initialize();
     Timer(Duration(seconds: 3), () {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => Onboarding()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
     });
   }
 

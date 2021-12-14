@@ -53,7 +53,6 @@ class _LoginPageState extends State<LoginPage>
             Padding(padding: const EdgeInsets.all(15.0),
               child: Image.asset("assets/images/new_logo.png"),
             ),
-
             /*Padding(
               padding: EdgeInsets.all(20),
               child:Column(
@@ -77,54 +76,24 @@ class _LoginPageState extends State<LoginPage>
                     padding: EdgeInsets.all(30),
                     child: Column(
                       children:<Widget>[
-                        Text(" Sign in using Social account", style: TextStyle(color: Colors.black54),),
+                        Text(" Sign in ", style: TextStyle(fontSize: 16,color: Colors.black54),),
                         SizedBox(height: 20,),
-                        Container(/*decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [BoxShadow(
-                            color: Color(0xFFF1A9A9),
-                            blurRadius: 25,
-                            offset: Offset(0,10)
-                          ),],
-                        ),*/
+                        Container(
                         child: Column(
                           children: [
                             SignInButton(
                               Buttons.GoogleDark,
-                              //padding: EdgeInsets.all(4.0),
                               text : ("Sign in with Google"),
-
-                             // shape: RoundedRectangleBorder(
-                               //   borderRadius: BorderRadius.circular(10.0)),
-
                               onPressed: () {
                                 Provider.of<LoginController>(context, listen: false)
                                     .googleLogin();
                               },
                             ),
-                           /* GestureDetector(
-                                child: Image.asset(
-                                  "assets/images/google.png",
-                                  width: 240,
-                                ),
-                                onTap: () {
-                                  Provider.of<LoginController>(context, listen: false)
-                                      .googleLogin();
-                                }),*/
                           ],
                         )
                         ),
                         SizedBox(height: 5,),
-                        Container(/*decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [BoxShadow(
-                                color: Color(0xFFF1A9A9),
-                                blurRadius: 25,
-                                offset: Offset(0,10)
-                            )]
-                        ),*/
+                        Container(
                             child: Column(
                               children: [
                                 SignInButton(
@@ -141,15 +110,7 @@ class _LoginPageState extends State<LoginPage>
                             ),
                         ),
                         SizedBox(height: 5,),
-                        Container(/*decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [BoxShadow(
-                                color: Color(0xFFF1A9A9),
-                                blurRadius: 25,
-                                offset: Offset(0,10)
-                            )]
-                        ),*/
+                        Container(
                           child: Column(
                               children:[
                                 SignInButton(
