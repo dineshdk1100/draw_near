@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/base-home.dart';
+import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/constants.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,7 @@ class _SettingsState extends State<Settings> {
           SizedBox(
             height: 80,
           ),
-          Text(UserService.instance.userDetails.displayName ?? 'User', style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
+          Text(UserService.instance.userDetails.displayName, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
           SizedBox(
             height: 10,
           ),
@@ -65,14 +67,14 @@ class _SettingsState extends State<Settings> {
           Text(UserService.instance.userDetails.phoneNumber ?? '', style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
           Divider(height: 24,),
           ListTile(
-            isThreeLine: true,
+            //isThreeLine: true,
             title: Text("offline_mode".tr()),
-            subtitle: Text("offline_mode_desc".tr()),
-            trailing: Switch.adaptive(
-                value: UserService.instance.isOfflineEnabled,
-                onChanged: (newValue) => setState(() {
-                      UserService.instance.isOfflineEnabled = newValue;
-                    })),
+            subtitle: Text(DevotionService.instance.devotionsMap.length.toString() + " " + "offline_mode_desc".tr()),
+            // trailing: Switch.adaptive(
+            //     value: UserService.instance.isOfflineEnabled,
+            //     onChanged: (newValue) => setState(() {
+            //           UserService.instance.isOfflineEnabled = newValue;
+            //         })),
           ),
           Divider(),
           ListTile(
@@ -83,7 +85,7 @@ class _SettingsState extends State<Settings> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Select theme'),
+                    title: Text('select_theme'.tr()),
                     content: Container(
                       height: 180,
                       child: Column(
@@ -91,19 +93,19 @@ class _SettingsState extends State<Settings> {
                       children: [
                         ListTile(
                           leading: Icon(Icons.light_mode),
-                          title: Text("Light theme"),
+                          title: Text("light".tr()),
                           onTap: () { Navigator.pop(context); ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.light);}
 
                         ),
                         ListTile(
                           leading: Icon(Icons.dark_mode),
-                          title: Text("Dark theme"),
+                          title: Text("dark".tr()),
                           onTap: ()  { Navigator.pop(context); ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.dark);}
 
                         ),
                         ListTile(
                           leading: Icon(Icons.brightness_4),
-                          title: Text("System theme"),
+                          title: Text("system".tr()),
                           onTap: ()  { Navigator.pop(context);  ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.system);}
 
                         )
@@ -115,7 +117,7 @@ class _SettingsState extends State<Settings> {
               );
             },
             title: Text("theme".tr()),
-            subtitle: Text(UserService.instance.theme.toString().capitalize().tr()),
+            subtitle: Text(UserService.instance.theme.toString().tr()),
             trailing: Icon(Icons.arrow_forward_ios)
           ),
           Divider(),
@@ -157,7 +159,7 @@ class _SettingsState extends State<Settings> {
   }
 
   onSelectLanguage(value){
-    if (value == null || value == 'ta_IN') return;
+    if (value == null) return;
     var localeTemp = value.toString().split('_');
     context.setLocale(Locale(localeTemp[0], localeTemp[1]));
     UserService.instance.locale = value;

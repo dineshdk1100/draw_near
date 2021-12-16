@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draw_near/models/author.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -45,7 +46,12 @@ class AuthorService {
   static final AuthorService instance = AuthorService._internal();
  
   AuthorService._internal(){
+    getAuthorsForCurrentLocale();
+  }
+
+  getAuthorsForCurrentLocale(){
     this.authorsMap = jsonDecode(box.get('authors_${UserService.instance.locale}', defaultValue: '{}'));
+
   }
 
   Author getAuthor(String recordId) {
@@ -55,7 +61,15 @@ class AuthorService {
 
   void saveAuthor(String recordId, Map<String, dynamic> data) {
     authorsMap[recordId] = data;
+  }
+
+  void saveAuthors(QuerySnapshot<Map<String, dynamic>> snapshots) {
+    snapshots.docs.forEach((doc) {
+      print(doc.data());
+      AuthorService.instance.saveAuthor(doc.id, doc.data());
+    });
     box.put('authors_${UserService.instance.locale}', jsonEncode(authorsMap));
+
   }
 
 }

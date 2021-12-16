@@ -2,6 +2,11 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draw_near/models/user.dart';
+import 'package:draw_near/services/author-service.dart';
+import 'package:draw_near/services/devotion-service.dart';
+import 'package:draw_near/services/download-service.dart';
+import 'package:draw_near/services/song-service.dart';
+import 'package:draw_near/services/verse-service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -29,6 +34,10 @@ class UserService {
 
   set locale(String value) {
     _locale = value;
+    DevotionService.instance.getDevotionsForCurrentLocale();
+    SongService.instance.getSongsForCurrentLocale();
+    VerseService.instance.getVersesForCurrentLocale();
+    AuthorService.instance.getAuthorsForCurrentLocale();
   }
 
   String get theme => _theme;

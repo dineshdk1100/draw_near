@@ -9,10 +9,12 @@ class DevotionUnavailable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        padding: EdgeInsets.all(16),
         alignment: Alignment.center,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(message.tr())
+            Text(message.tr(), textAlign: TextAlign.center,)
           ],
         ),
       ),

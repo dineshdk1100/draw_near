@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draw_near/models/song.dart';
 import 'package:draw_near/models/song.dart';
 import 'package:draw_near/services/user-service.dart';
@@ -21,6 +22,10 @@ class SongService {
 
   static final SongService instance = SongService._internal();
   SongService._internal(){
+    getSongsForCurrentLocale();
+  }
+
+  getSongsForCurrentLocale(){
     this.songsMap = jsonDecode(box.get('songs_${UserService.instance.locale}', defaultValue: '{}'));
   }
 
@@ -31,6 +36,13 @@ class SongService {
 
   void saveSong(String recordId, Map<String, dynamic> data){
     songsMap[recordId] = data;
+  }
+
+  void saveSongs(QuerySnapshot<Map<String, dynamic>> snapshots) {
+    snapshots.docs.forEach((doc) {
+      print(doc.data());
+      SongService.instance.saveSong(doc.id, doc.data());
+    });
     box.put('songs_${UserService.instance.locale}', jsonEncode(songsMap));
   }
 

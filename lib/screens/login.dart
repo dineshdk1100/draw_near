@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage>
           children:<Widget>[
             SizedBox(height: 40,),
             Padding(padding: const EdgeInsets.all(15.0),
-              child: Image.asset("assets/images/new_logo.png"),
+              child: Image.asset("assets/images/logo_transparent.png", height: 150,),
             ),
 
             /*Padding(
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage>
                     padding: EdgeInsets.all(30),
                     child: Column(
                       children:<Widget>[
-                        Text(" Sign in using Social account", style: TextStyle(color: Colors.black54),),
+                        Text(" Sign in using Social account",),
                         SizedBox(height: 20,),
                         Container(/*decoration: BoxDecoration(
                           color: Colors.white,
@@ -167,10 +167,10 @@ class _LoginPageState extends State<LoginPage>
                         ),
                         SizedBox(height: 20,),
                         //Text("Forgot Password?", style: TextStyle(color: Colors.grey),),
-                        Text(" OR", style: TextStyle(color: Colors.black54),),
+                        Text(" OR",),
                         SizedBox(height: 20,),
                         //SizedBox(height: 50,),
-                        Text(" Continue with Phone Number", style: TextStyle(color: Colors.black54),),
+                        Text(" Continue with Phone Number",),
                         SizedBox(
                           width : 400,
                           height: 55,

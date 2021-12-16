@@ -33,15 +33,18 @@ class DevotionService {
       12345678);
 
   static final DevotionService instance = DevotionService._internal();
-  factory DevotionService() {
-    return instance;
-  }
+
   DevotionService._internal(){
-    this.devotionsMap = jsonDecode(box.get(UserService.instance.locale, defaultValue: "{}"));
+    getDevotionsForCurrentLocale();
+    print(devotionsMap.keys);
 
   }
 
-  Devotion getDevotionsForDate(DateTime date) {
+  getDevotionsForCurrentLocale(){
+    this.devotionsMap = jsonDecode(box.get(UserService.instance.locale, defaultValue: "{}"));
+  }
+
+  Devotion getDevotionForDate(DateTime date) {
 
     print(date.toString());
     print(Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear);
@@ -60,7 +63,6 @@ class DevotionService {
 
   saveDevotionForDate(String dayOfYear, Map<String, dynamic> data) {
     devotionsMap[dayOfYear] = data;
-    box.put(UserService.instance.locale, jsonEncode(devotionsMap));
   }
 
   List<Devotion?> getDevotionsForWeek(DateTime startDate, DateTime endDate) {
@@ -76,12 +78,22 @@ class DevotionService {
     List<Devotion?> devotions =[];
     for(int day=0; day<7; day++) {
       try {
-        devotions.add(getDevotionsForDate(startDate.add(Duration(days: day))));
+        devotions.add(getDevotionForDate(startDate.add(Duration(days: day))));
       }
       on DevotionNotFoundException catch(e){
         devotions.add(null);
       }
     }
     return devotions;
+  }
+
+  void saveDevotions(QuerySnapshot<Map<String, dynamic>> snapshots) {
+    snapshots.docs.forEach((doc) {
+      print(doc.data());
+      DevotionService.instance.saveDevotionForDate(
+          Jiffy(doc.data()['Date'], 'yyyy-MM-dd').dayOfYear.toString(),
+          doc.data());
+    });
+    box.put(UserService.instance.locale, jsonEncode(devotionsMap));
   }
 }

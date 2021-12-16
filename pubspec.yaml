@@ -44,6 +44,7 @@ dependencies:
   intl:
   theme_mode_handler: ^3.0.0
   fluttertoast:
+  badges:
 
   #Google Sign In
   google_sign_in: ^5.2.1
