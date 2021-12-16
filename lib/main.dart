@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:draw_near/provider/login_controller.dart';
+import 'package:draw_near/screens/language.dart';
 //import 'package:draw_near/screens/OTPController.dart';
 //import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/login.dart';
@@ -97,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
     DownloadService.instance.initialize();
     Timer(Duration(seconds: 3), () {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => Language()));
     });
   }
 

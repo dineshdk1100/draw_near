@@ -17,6 +17,8 @@
   "devotion_unavailable": "Devotion Unavailable",
   "devotion_unavailable_desc": "Devotion is not available for the given date",
   "read_more": "Read More",
-  "theme": "App Theme"
+  "theme": "App Theme",
+  "phone_number": "Continue with Phone Number",
+  "or":"OR"
 
 }
