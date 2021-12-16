@@ -41,7 +41,7 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(onPressed: onOpenDatePicker, label: Text('Select date'), icon: Icon(Icons.today),),
+      floatingActionButton: FloatingActionButton.extended(onPressed: onOpenDatePicker, label: Text('select_date'.tr()), icon: Icon(Icons.today),),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.navigate_before),
@@ -71,7 +71,7 @@ class _CalendarPageState extends State<CalendarPage> {
           itemCount: 7,
           itemBuilder: (context, index) {
             return DayCard(weekStartDate.add(Duration(days: index)),
-                devotions[index]?.title ?? "Devotion not available");
+                devotions[index]?.title ?? "devotion_unavailable".tr());
           }),
     );
   }
@@ -100,11 +100,14 @@ class _CalendarPageState extends State<CalendarPage> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(selectedDate.year, 1, 1),
-        lastDate: DateTime(2022, 12, 31),
+        lastDate: DateTime(selectedDate.year, 12, 31),
 
     );
-    if(date!=null)
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> DevotionPage(date)));
+    if(date!=null) {
+      selectedDate = date;
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => DevotionPage(date)));
+    }
 
   }
 }
@@ -136,7 +139,7 @@ class DayCard extends StatelessWidget {
             height: date.isSameDayAs(DateTime.now()) ? 72 : 56,
             alignment: Alignment.centerLeft,
             child: Text(
-              devotionTitle,
+              devotionTitle, overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.subtitle1?.copyWith(color: date.isAfter(DateTime.now())? Theme.of(context).textTheme.caption?.color : Theme.of(context).textTheme.subtitle1?.color),
             ),
             decoration: BoxDecoration(
@@ -154,7 +157,7 @@ class DayCard extends StatelessWidget {
                   content: Text('devotion_denied'.tr()),
                 ));
               }
-            : devotionTitle == "Devotion not available"
+            : devotionTitle == "devotion_unavailable".tr()
                 ? (){ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Devotion not available for the selected date")));}
                 : () {
                     navigateToDevotionPage(context);

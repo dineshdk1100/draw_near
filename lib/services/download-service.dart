@@ -6,6 +6,7 @@ import 'package:draw_near/services/song-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/services/verse-service.dart';
 import 'package:draw_near/util/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -21,6 +22,10 @@ class DownloadService {
   initialize() async {
     downloadingLocale = UserService.instance.locale;
     localLastModified = getLocalLastModified();
+    print(DateTime.fromMillisecondsSinceEpoch(localLastModified).difference(DateTime.now()));
+    if(DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(localLastModified)).inHours < 12)
+      return;
+    Fluttertoast.showToast(msg: "Checking for devotion updates");
     await _downloadDevotions();
     await _downloadSongs();
     await _downloadVerses();
@@ -29,7 +34,6 @@ class DownloadService {
   }
 
   _downloadDevotions() async {
-    //Timestamp cloudLastModified = await getCloudLastModified();
 
     ///iterate over months, fetch data from cloud and local and update the local data
     for (int monthIndex = 0; monthIndex < MONTHS_IN_YEAR.length; monthIndex++) {
@@ -38,16 +42,11 @@ class DownloadService {
           .doc(downloadingLocale)
           .collection(MONTHS_IN_YEAR[monthIndex])
           .where('Last Modified Time',
-              isGreaterThanOrEqualTo: localLastModified - 86400000)
+              isGreaterThanOrEqualTo: localLastModified - 3600000)
           .get();
 
       print('\n\n Devotions \n\n');
-      snapshots.docs.forEach((doc) {
-        print(doc.data());
-        DevotionService.instance.saveDevotionForDate(
-            Jiffy(doc.data()['Date'], 'yyyy-MM-dd').dayOfYear.toString(),
-            doc.data());
-      });
+      DevotionService.instance.saveDevotions(snapshots);
     }
   }
 
@@ -60,41 +59,32 @@ class DownloadService {
     var snapshots = await FirebaseFirestore.instance
         .collection('songs_$downloadingLocale')
         .where('Last Modified Time',
-            isGreaterThanOrEqualTo: localLastModified - 86400000)
+            isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
 
     print('\n\n Songs \n\n');
-    snapshots.docs.forEach((doc) {
-      print(doc.data());
-      SongService.instance.saveSong(doc.id, doc.data());
-    });
+   SongService.instance.saveSongs(snapshots);
   }
 
    _downloadVerses() async {
     var snapshots = await FirebaseFirestore.instance
         .collection('verses_$downloadingLocale')
         .where('Last Modified Time',
-        isGreaterThanOrEqualTo: localLastModified - 86400000)
+        isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
 
     print('\n\n Verses \n\n');
-    snapshots.docs.forEach((doc) {
-      print(doc.data());
-      VerseService.instance.saveVerse(doc.id, doc.data());
-    });
+    VerseService.instance.saveVerses(snapshots);
   }
 
    _downloadAuthors() async {
     var snapshots = await FirebaseFirestore.instance
         .collection('authors_$downloadingLocale')
         .where('Last Modified Time',
-        isGreaterThanOrEqualTo: localLastModified - 86400000)
+        isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
 
     print('\n\n Authors \n\n');
-    snapshots.docs.forEach((doc) {
-      print(doc.data());
-      AuthorService.instance.saveAuthor(doc.id, doc.data());
-    });
+    AuthorService.instance.saveAuthors(snapshots);
   }
 }

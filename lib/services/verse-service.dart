@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draw_near/models/verse.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,8 +21,11 @@ class VerseService {
     return instance;
   }
   VerseService._internal(){
-    this.versesMap = jsonDecode(box.get('verses_${UserService.instance.locale}', defaultValue: '{}'));
+getVersesForCurrentLocale();
+  }
 
+  getVersesForCurrentLocale() {
+    this.versesMap = jsonDecode(box.get('verses_${UserService.instance.locale}', defaultValue: '{}'));
   }
 
   Verse getVerse(String recordId) {
@@ -31,7 +35,15 @@ class VerseService {
 
   void saveVerse(String recordId, Map<String, dynamic> data) {
     versesMap[recordId] = data;
+  }
+
+  void saveVerses(QuerySnapshot<Map<String, dynamic>> snapshots) {
+    snapshots.docs.forEach((doc) {
+      print(doc.data());
+      VerseService.instance.saveVerse(doc.id, doc.data());
+    });
     box.put('verses_${UserService.instance.locale}', jsonEncode(versesMap));
+
   }
 
 }

@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:draw_near/exceptions/devotion-not-found.dart';
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     getCarouselImages().then((urls) => {});
 
     try {
-      devotion = _devotionService.getDevotionsForDate(DateTime.now());
+      devotion = _devotionService.getDevotionForDate(DateTime.now());
     }
     on DevotionNotFoundException catch(e) {
       //Fluttertoast.showToast(msg: e.message);
@@ -108,6 +109,28 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
+              child: Badge(
+                animationType: BadgeAnimationType.scale,
+                shape: BadgeShape.circle,
+                badgeColor: Colors.red.shade200,
+                elevation: 0,
+                badgeContent: Icon(Icons.notifications, size: 16, color: Colors.white,),
+                position: BadgePosition.topEnd(),
+                borderRadius: BorderRadius.circular(5),
+                showBadge: true,
+                child: ListTile(
+                  trailing: Icon(Icons.navigate_next),
+                  leading: Icon(Icons.accessibility_new_outlined),
+                  title: Text("Gratitude"),
+                  subtitle: Text('theme_month'.tr(namedArgs: {'month': DateFormat( "MMMM",context.locale.languageCode).format(DateTime.now())})),
+                  onTap: navigateToThemePage,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -120,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                   Divider(),
                   Container(
                     decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Text(devotion?.body ?? "devotion_unavailable_desc".tr(),
                         textAlign: TextAlign.justify,
@@ -138,20 +161,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // SizedBox(
-          //   height: 16,
-          // ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              child: ListTile(
-                leading: Icon(Icons.accessibility_new_outlined),
-                title: Text("Gratitude"),
-                subtitle: Text('theme_month'.tr()),
-                onTap: navigateToThemePage,
-              ),
-            ),
-          )
         ],
       ),
     );

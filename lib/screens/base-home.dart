@@ -2,6 +2,7 @@ import 'package:draw_near/screens/calendar.dart';
 import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/screens/settings.dart';
 import 'package:draw_near/util/color_theme.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -66,19 +67,19 @@ class _BaseHomeState extends State<BaseHome> {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
-        title: ("Home"),
+        title: ("home".tr()),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.today),
-        title: ("Calendar"),
+        title: ("calendar".tr()),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.account_circle),
-        title: ("Account"),
+        title: ("account".tr()),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: inactiveColor,
       ),
