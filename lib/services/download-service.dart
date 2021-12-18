@@ -19,6 +19,9 @@ class DownloadService {
   late int localLastModified;
   late String downloadingLocale;
 
+  removeLocalLastModified(){
+    _box.delete('lastModified');
+  }
   initialize() async {
     downloadingLocale = UserService.instance.locale;
     localLastModified = getLocalLastModified();
