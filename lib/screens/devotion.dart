@@ -401,8 +401,7 @@ class DevotionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle? bodyText = GoogleFonts.robotoSlab(
-        textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-            height: UserService.instance.bodyTextStyleHeight,
+        textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(height: UserService.instance.bodyTextStyleHeight,
             fontSize:
                 (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
                     UserService.instance.fontSize)));
@@ -413,7 +412,7 @@ class DevotionCard extends StatelessWidget {
         //color: color,
         padding: EdgeInsets.all(12),
         child: Text(
-          content ?? "",
+          content,
           style: bodyText,
           textAlign: TextAlign.justify,
         ),
@@ -422,6 +421,6 @@ class DevotionCard extends StatelessWidget {
   }
 }
 
-getFormattedDate(DateTime date, String locale) {
-  return DateFormat("dd, MMMM yyyy", locale).format(date);
+getFormattedDate(DateTime date, String locale ){
+  return DateFormat( "dd, MMMM yyyy",locale).format(date);
 }

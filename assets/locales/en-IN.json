@@ -33,5 +33,10 @@
   "otp_text":"Verification code sent to this phone number",
   "otp_verify": "OTP Verification",
   "otp_digits": "ENTER 6 DIGIT OTP"
+  "select_date": "Select date",
+  "select_time": "Select time",
+  "daily_reminder": "Daily Reminder",
+  "notification_title": "It's Devotion Time",
+  "notification_body": "Reminder to read your devotion everyday"
 
 }

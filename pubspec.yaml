@@ -45,6 +45,8 @@ dependencies:
   theme_mode_handler: ^3.0.0
   fluttertoast:
   badges:
+  flutter_local_notifications: ^9.1.5
+  flutter_native_timezone: ^2.0.0
 
   #Google Sign In
   google_sign_in: ^5.2.1
@@ -69,6 +71,16 @@ dev_dependencies:
     sdk: flutter
   build_runner:
   json_serializable: 6.0.1
+  flutter_launcher_icons: "^0.9.2"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/icons/logo_android.png"
+  image_path_ios: "assets/icons/logo_ios.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icons/logo_android.png"
+  remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
