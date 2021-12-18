@@ -97,9 +97,9 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     DownloadService.instance.initialize();
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 2), () {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => Onboarding()));
     });
   }
 
@@ -128,19 +128,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
-/**
-/// checks for first time usage | logged in user | logged out user and returns the appropriate widget
-class Initializer extends StatefulWidget {
-  const Initializer({Key? key}) : super(key: key);
-
-  @override
-  _InitializerState createState() => _InitializerState();
-}
-
-class _InitializerState extends State<Initializer> {
-  @override
-  Widget build(BuildContext context) {
-    return LoginPage();
-  }
-}**/

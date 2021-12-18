@@ -27,7 +27,6 @@ dependencies:
   hive:
   hive_flutter:
   easy_localization:
-  cross_connectivity:
   firebase_core: ^1.10.0
   firebase_auth: ^3.2.0
 
@@ -47,6 +46,7 @@ dependencies:
   badges:
   flutter_local_notifications: ^9.1.5
   flutter_native_timezone: ^2.0.0
+  cross_connectivity: ^3.0.3
 
   #Google Sign In
   google_sign_in: ^5.2.1

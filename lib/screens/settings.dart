@@ -3,6 +3,7 @@ import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/services/devotion-service.dart';
+import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/notification-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/constants.dart';
@@ -41,6 +42,8 @@ class _SettingsState extends State<Settings> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               } else {
+                UserService.instance.isLoggedIn = false;
+                DownloadService.instance.removeLocalLastModified();
                 Provider.of<LoginController>(context, listen: false).logout();
                 //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BaseHome()), (route) => false);
               }
