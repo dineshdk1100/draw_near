@@ -44,7 +44,9 @@ class _HomePageState extends State<HomePage> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Draw Near"),
+        title:
+        Image.asset('assets/images/logo_transparent.png', height: 50,),
+
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
 
@@ -105,7 +107,6 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 64,
           ),
-          Image.asset('assets/images/logo_transparent.png', height: 90,),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(

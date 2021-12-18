@@ -32,7 +32,7 @@
   "phone_hint": "Enter your phone number",
   "otp_text":"Verification code sent to this phone number",
   "otp_verify": "OTP Verification",
-  "otp_digits": "ENTER 6 DIGIT OTP"
+  "otp_digits": "ENTER 6 DIGIT OTP",
   "select_date": "Select date",
   "select_time": "Select time",
   "daily_reminder": "Daily Reminder",
