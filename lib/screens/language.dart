@@ -26,7 +26,7 @@ class _language extends State<Language> {
 
         children : [
       Padding(padding: const EdgeInsets.all(15.0),
-        child: Image.asset("assets/images/new_logo.png"),
+        child: Image.asset("assets/images/logo_transparent.png",height: 150,),
       ),
           Text(" CHOOSE YOUR APP LANGUAGE ", style: TextStyle(fontSize: 20,color: Colors.pinkAccent),),
 

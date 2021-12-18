@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title:
-        Image.asset('assets/images/logo_transparent.png', height: 50,),
+        Image.asset('assets/images/logo_transparent.png', height: 55,),
 
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
@@ -60,8 +60,11 @@ class _HomePageState extends State<HomePage> {
     )
         ],
       ),
+
       body: ListView(
+
         shrinkWrap: true,
+
         children: [
           Stack(
             clipBehavior: Clip.none,

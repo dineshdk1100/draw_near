@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage>
                     padding: EdgeInsets.all(30),
                     child: Column(
                       children:<Widget>[
-                        Text('login'.tr(), style: TextStyle(fontSize: 16,color: Colors.black54),),
+                        Text('login'.tr(), style: TextStyle(fontSize: 20,color: Colors.black54),),
                         SizedBox(height: 20,),
                         Container(
                         child: Column(
