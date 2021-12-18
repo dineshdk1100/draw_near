@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage>
                           child: TextField(
                           decoration: InputDecoration(
 
-                            hintText: "   Enter your Phone Number",
+                            hintText: "phone_hint".tr(),
                             prefix: Padding(
                               padding: EdgeInsets.all(2),
                               child: Text(dialCodeDigits),

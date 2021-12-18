@@ -1,5 +1,6 @@
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/home.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -80,7 +81,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
       backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: AppBar(
-        title: Text('OTP Verification'),
+        title: Text("otp_verify".tr()),
         //backgroundColor: Colors.black,
       ),
       body : Column(
@@ -94,7 +95,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
            // width: 350,
             child: Padding(padding: const EdgeInsets.only(left: 15,right: 15,bottom: 10),
           child: Text(
-            "Verification code sent to this phone number",
+            "otp_text".tr(),
             textAlign: TextAlign.center,
             style: TextStyle(fontFamily: 'San Francisco' ,color: Colors.pinkAccent,fontWeight: FontWeight.w600, fontSize: 16),
             //SizedBox(Icon(Icons.edit)
@@ -127,7 +128,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
           ),
           SizedBox(height: 10,),
           Text(
-            " ENTER 6 DIGIT OTP ",
+            "otp_digits".tr(),
 
             style: TextStyle(fontFamily: 'San Francisco' ,color: Colors.pinkAccent,fontWeight: FontWeight.w600, fontSize: 18),
             //SizedBox(Icon(Icons.edit))
