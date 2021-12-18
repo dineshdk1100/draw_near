@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draw_near/exceptions/devotion-not-found.dart';
+import 'package:draw_near/models/author.dart';
 import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/screens/devotion-unavailable.dart';
 import 'package:draw_near/screens/song-details.dart';
 import 'package:draw_near/screens/verse-details.dart';
+import 'package:draw_near/services/author-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -24,6 +27,7 @@ class DevotionPage extends StatefulWidget {
 
 class _DevotionPageState extends State<DevotionPage> {
   late Devotion _devotion;
+  late Author authors;
   bool isDevotionAvailable = true;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late Brightness platformBrightness;
@@ -39,6 +43,8 @@ class _DevotionPageState extends State<DevotionPage> {
       isDevotionAvailable = false;
       //Fluttertoast.showToast(msg: e.message);
     }
+    authors = AuthorService.instance.getAuthor(_devotion.author[0]);
+
     super.initState();
   }
 
@@ -46,7 +52,6 @@ class _DevotionPageState extends State<DevotionPage> {
   Widget build(BuildContext context) {
     platformBrightness = Theme.of(context).brightness;
     //final args = ModalRoute.of(context)!.settings.arguments as Map;
-
     TextStyle? bodyText2 = GoogleFonts.robotoSlab(
         textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
             fontSize:
@@ -272,18 +277,54 @@ class _DevotionPageState extends State<DevotionPage> {
                   _devotion.authorName[0] ?? "",
                   style: author,
                 ),
-                onPressed: () => Navigator.push(
+                onPressed: () => showModalBottomSheet(isScrollControlled: true,context: context, builder: (context){
+                    return Container(
+                        //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+                        height: 600,
+                        padding: EdgeInsets.all(16),
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+
+                            Container(
+                              height: 300,
+                              child: CircleAvatar(radius:20, backgroundImage: CachedNetworkImageProvider(authors.photo[0]['url'])),
+                              //child: CachedNetworkImage(imageUrl: author.photo[0]['url'],),
+                            ),
+                            SizedBox(height: 16,),
+                            Text(
+                              authors.name,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.playfairDisplay(
+                                textStyle: Theme.of(context).textTheme.headline4,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            Text(
+                              authors.description,
+                              style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w300, height: 1.5),
+                              textAlign: TextAlign.justify,
+                            )
+                          ],
+                        ),
+                      );
+
+    })
+                 /*   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            AuthorDetails(_devotion.author[0]))),
+                            AuthorDetails(_devotion.author[0]))),*/
               ),
             ],
           ),
         ],
       ),
     )
-    :
+      :
+
     Scaffold(
       appBar: AppBar(title: Text('devotion_unavailable'.tr()),),
       body: Container(

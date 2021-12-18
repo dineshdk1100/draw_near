@@ -4,6 +4,7 @@ import 'package:draw_near/screens/base-home.dart';
 //import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/OTPController.dart';
+import 'package:easy_localization/src/public_ext.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
@@ -76,7 +77,7 @@ class _LoginPageState extends State<LoginPage>
                     padding: EdgeInsets.all(30),
                     child: Column(
                       children:<Widget>[
-                        Text(" Sign in ", style: TextStyle(fontSize: 16,color: Colors.black54),),
+                        Text('login'.tr(), style: TextStyle(fontSize: 20,color: Colors.black54),),
                         SizedBox(height: 20,),
                         Container(
                         child: Column(
@@ -128,10 +129,10 @@ class _LoginPageState extends State<LoginPage>
                         ),
                         SizedBox(height: 20,),
                         //Text("Forgot Password?", style: TextStyle(color: Colors.grey),),
-                        Text(" OR", style: TextStyle(color: Colors.black54),),
+                        Text("or".tr(), style: TextStyle(color: Colors.black54),),
                         SizedBox(height: 20,),
                         //SizedBox(height: 50,),
-                        Text(" Continue with Phone Number", style: TextStyle(color: Colors.black54),),
+                        Text("phone_number".tr(), style: TextStyle(color: Colors.black54),),
                         SizedBox(
                           width : 400,
                           height: 55,
@@ -158,7 +159,7 @@ class _LoginPageState extends State<LoginPage>
                           child: TextField(
                           decoration: InputDecoration(
 
-                            hintText: "   Enter your Phone Number",
+                            hintText: "phone_hint".tr(),
                             prefix: Padding(
                               padding: EdgeInsets.all(2),
                               child: Text(dialCodeDigits),

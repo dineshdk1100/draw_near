@@ -25,17 +25,19 @@ class _AuthorDetailsState extends State<AuthorDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SizedBox.expand(
-      child: Container(
+    return AlertDialog(
+        //body: SizedBox.expand(
+      title:Text("Author"),
+      content: Container(
         //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+        height: 300,
         padding: EdgeInsets.all(16),
         child: ListView(
           shrinkWrap: true,
           children: [
 
                  Container(
-                   height: 250,
+                   height: 100,
                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: CachedNetworkImageProvider(author.photo[0]['url']),fit: BoxFit.cover)),
                    //child: CachedNetworkImage(imageUrl: author.photo[0]['url'],),
                  ),
@@ -58,6 +60,7 @@ class _AuthorDetailsState extends State<AuthorDetails> {
           ],
         ),
       ),
-    ));
+
+    );
   }
 }

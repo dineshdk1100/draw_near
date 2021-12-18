@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:draw_near/provider/login_controller.dart';
+import 'package:draw_near/screens/language.dart';
 //import 'package:draw_near/screens/OTPController.dart';
 //import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/login.dart';
@@ -100,6 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 2), () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => Onboarding()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => Language()));
     });
   }
 
@@ -128,3 +130,19 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
+/**
+/// checks for first time usage | logged in user | logged out user and returns the appropriate widget
+class Initializer extends StatefulWidget {
+  const Initializer({Key? key}) : super(key: key);
+
+  @override
+  _InitializerState createState() => _InitializerState();
+}
+
+class _InitializerState extends State<Initializer> {
+  @override
+  Widget build(BuildContext context) {
+    return LoginPage();
+  }
+}**/
