@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     UserService.instance.locale = context.locale.toString();
     ThemeData darkThemeData = ThemeData(
+      textTheme: GoogleFonts.robotoTextTheme().merge(Typography.whiteHelsinki),
       brightness: Brightness.dark,
       primarySwatch: pastelDarkTheme,
       toggleableActiveColor: Color(pastelDarkThemePrimaryValue),
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
               supportedLocales: context.supportedLocales,
               locale: context.locale,
               theme: ThemeData(
+                textTheme: GoogleFonts.robotoTextTheme(),
                 primarySwatch: pastelTheme,
                 brightness: Brightness.light,
                 toggleButtonsTheme: Theme.of(context)

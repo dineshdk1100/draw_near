@@ -22,6 +22,24 @@ class UserService {
   late double _bodyTextStyleHeight;
   late bool _isLoggedIn;
   late String _theme;
+  late TimeOfDay _reminderTime;
+  late bool _isReminderOn;
+
+  bool get isReminderOn => _isReminderOn;
+
+  set isReminderOn(bool value) {
+    _isReminderOn = value;
+    _baseBox.put('reminder', value);
+  }
+
+  TimeOfDay get reminderTime => _reminderTime;
+
+  set reminderTime(TimeOfDay value) {
+    _reminderTime = value;
+    int hour = value.hour;
+    int minute = value.minute;
+    _baseBox.put('reminder_time',hour.toString() + ':' + minute.toString());
+  }
 
   UserDetails get userDetails => _userDetails;
 
@@ -63,6 +81,9 @@ class UserService {
     _theme = _baseBox.get('theme', defaultValue: "system");
     _userDetails = UserDetails.fromJson(jsonDecode(_baseBox.get('userDetails',
         defaultValue: jsonEncode(data))));
+    String reminderTimeString =  _baseBox.get('reminder_time', defaultValue: '10:0');
+    _reminderTime = TimeOfDay(hour: int.parse(reminderTimeString.split(':')[0]), minute: int.parse(reminderTimeString.split(':')[1]));
+    _isReminderOn = _baseBox.get('reminder', defaultValue: false);
   }
 
   bool get isLoggedIn => _isLoggedIn;

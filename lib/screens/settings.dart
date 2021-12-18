@@ -3,6 +3,7 @@ import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/services/devotion-service.dart';
+import 'package:draw_near/services/notification-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/constants.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _SettingsState extends State<Settings> {
     // TODO: implement initState
     print(UserService.instance.isLoggedIn.toString());
   }
+
   @override
   Widget build(BuildContext context) {
     var mediaQueryData = MediaQuery.of(context);
@@ -32,6 +34,23 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              if (!UserService.instance.isLoggedIn) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              } else {
+                Provider.of<LoginController>(context, listen: false).logout();
+                //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BaseHome()), (route) => false);
+              }
+            },
+            icon: UserService.instance.isLoggedIn
+                ? Text('logout'.tr().toUpperCase())
+                : Text("login".tr().toUpperCase()),
+            label: Icon(Icons.logout),
+          )
+        ],
       ),
       body: ListView(
         shrinkWrap: true,
@@ -42,88 +61,76 @@ class _SettingsState extends State<Settings> {
             children: <Widget>[
               Container(
                 width: mediaQueryData.size.width,
-                height: mediaQueryData.size.height * 0.13,
+                height: mediaQueryData.size.height * 0.12,
                 color: Theme.of(context).primaryColor,
               ),
               Positioned(
-                  bottom: -70.0,
+                  bottom: -50.0,
                   child: CircleAvatar(
-                    radius: 70,onBackgroundImageError: (obj, _)=> Icon(Icons.person, size: 100, color: Colors.white,),
-                    backgroundImage: CachedNetworkImageProvider(UserService.instance.userDetails.photoURL ?? ''),
+                    radius: 60,
+                    onBackgroundImageError: (obj, _) => Icon(
+                      Icons.person,
+                      size: 100,
+                      color: Colors.white,
+                    ),
+                    backgroundImage: CachedNetworkImageProvider(
+                        UserService.instance.userDetails.photoURL ?? ''),
                   )),
             ],
           ),
           SizedBox(
-            height: 80,
+            height: 60,
           ),
-          Text(UserService.instance.userDetails.displayName, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
+          Text(
+            UserService.instance.userDetails.displayName,
+            style: Theme.of(context).textTheme.headline5,
+            textAlign: TextAlign.center,
+          ),
           SizedBox(
             height: 10,
           ),
-          Text(UserService.instance.userDetails.email ?? '', style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
+          Text(UserService.instance.userDetails.email ?? '',
+              style: Theme.of(context).textTheme.subtitle1,
+              textAlign: TextAlign.center),
           SizedBox(
             height: 8,
           ),
-          Text(UserService.instance.userDetails.phoneNumber ?? '', style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center),
-          Divider(height: 24,),
+          Text(UserService.instance.userDetails.phoneNumber ?? '',
+              style: Theme.of(context).textTheme.subtitle1,
+              textAlign: TextAlign.center),
+          Divider(
+            height: 24,
+          ),
           ListTile(
             //isThreeLine: true,
             title: Text("offline_mode".tr()),
-            subtitle: Text(DevotionService.instance.devotionsMap.length.toString() + " " + "offline_mode_desc".tr()),
-            // trailing: Switch.adaptive(
-            //     value: UserService.instance.isOfflineEnabled,
-            //     onChanged: (newValue) => setState(() {
-            //           UserService.instance.isOfflineEnabled = newValue;
-            //         })),
+            subtitle: Text(
+                DevotionService.instance.devotionsMap.length.toString() +
+                    " " +
+                    "offline_mode_desc".tr()),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text('Refresh'),
+                        content: Text(
+                          'Devotions in Tamil will be added later. If you are unable to view any devotions in English please connect to the internet, logout and login again to perform a refresh.',
+                          textAlign: TextAlign.justify,
+                        ),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('OKAY'))
+                        ],
+                      ));
+            },
+            trailing: Icon(Icons.help_outline),
           ),
           Divider(),
           ListTile(
             //isThreeLine: true,
-            onTap: (){
-
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('select_theme'.tr()),
-                    content: Container(
-                      height: 180,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          leading: Icon(Icons.light_mode),
-                          title: Text("light".tr()),
-                          onTap: () { Navigator.pop(context); ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.light);}
-
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.dark_mode),
-                          title: Text("dark".tr()),
-                          onTap: ()  { Navigator.pop(context); ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.dark);}
-
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.brightness_4),
-                          title: Text("system".tr()),
-                          onTap: ()  { Navigator.pop(context);  ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.system);}
-
-                        )
-                      ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-            title: Text("theme".tr()),
-            subtitle: Text(UserService.instance.theme.toString().tr()),
-            trailing: Icon(Icons.arrow_forward_ios)
-          ),
-          Divider(),
-
-          ListTile(
-            isThreeLine: true,
             title: Text("change_lang".tr()),
             subtitle: Text("change_lang_desc".tr()),
             trailing: DropdownButton(
@@ -131,8 +138,8 @@ class _SettingsState extends State<Settings> {
               value: context.locale.toString(),
               items: AVAILABLE_LANGUAGES.keys
                   .map((lang) => DropdownMenuItem(
-                        child: Text(
-                            AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
+                        child:
+                            Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
                         value: lang,
                       ))
                   .toList(),
@@ -140,31 +147,121 @@ class _SettingsState extends State<Settings> {
           ),
           Divider(),
           ListTile(
-            onTap: (){
-              if(!UserService.instance.isLoggedIn){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
-
-              }
-              else{
-                Provider.of<LoginController>(context, listen: false).logout();
-                //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BaseHome()), (route) => false);
-              }
+            title: Text("daily_reminder".tr()),
+            trailing: Switch.adaptive(
+                value: UserService.instance.isReminderOn,
+                onChanged: (newValue) => setState(() {
+                      UserService.instance.isReminderOn = newValue;
+                      if(newValue)
+                        NotificationService.instance.scheduleNotification();
+                      else
+                        NotificationService.instance.cancelNotification();
+                    })),
+          ),
+          ListTile(
+            enabled: UserService.instance.isReminderOn,
+            onTap: onOpenTimePicker,
+            // leading: Icon(
+            //   Icons.edit_notifications,
+            // ),
+            title: Text('select_time'.tr()),
+            trailing: Text(UserService.instance.reminderTime.hour.toString().padLeft(2, '0') +
+                ' : ' +
+                UserService.instance.reminderTime.minute.toString().padLeft(2, '0')),
+          ),
+          ListTile(
+            title: Text('Reminder not working ?'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () {
+              NotificationService.instance.showNotification();
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text('Disable battery optimization'),
+                        content: Text(
+                            'Some smartphones use battery optimization to close apps running in the background. This can cause reminders to get delayed or not work at all. We recommend you to disable battery optimization to ensure timely reminders.', textAlign: TextAlign.justify,),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('OKAY'))
+                        ],
+                      ));
             },
-            title: UserService.instance.isLoggedIn ? Text('logout'.tr()) : Text("login".tr()),
-            trailing: Icon(Icons.logout),
-          )
+          ),
+          Divider(),
+          ListTile(
+              //isThreeLine: true,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('select_theme'.tr()),
+                      content: Container(
+                        height: 180,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                                leading: Icon(Icons.light_mode),
+                                title: Text("light".tr()),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  ThemeModeHandler.of(context)
+                                      ?.saveThemeMode(ThemeMode.light);
+                                }),
+                            ListTile(
+                                leading: Icon(Icons.dark_mode),
+                                title: Text("dark".tr()),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  ThemeModeHandler.of(context)
+                                      ?.saveThemeMode(ThemeMode.dark);
+                                }),
+                            ListTile(
+                                leading: Icon(Icons.brightness_4),
+                                title: Text("system".tr()),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  ThemeModeHandler.of(context)
+                                      ?.saveThemeMode(ThemeMode.system);
+                                })
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              title: Text("theme".tr()),
+              subtitle: Text(UserService.instance.theme.toString().tr()),
+              trailing: Icon(Icons.navigate_next)),
         ],
       ),
     );
   }
 
-  onSelectLanguage(value){
+  onSelectLanguage(value) {
     if (value == null) return;
     var localeTemp = value.toString().split('_');
     context.setLocale(Locale(localeTemp[0], localeTemp[1]));
     UserService.instance.locale = value;
   }
 
+  void onOpenTimePicker() async {
+    var selectedTime =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (selectedTime != null) {
+      setState(() {
+        UserService.instance.reminderTime = selectedTime;
+      }
+      );
+      await NotificationService.instance.cancelNotification();
+      NotificationService.instance.scheduleNotification();
+    }
+  }
 }
 
 extension StringExtension on String {

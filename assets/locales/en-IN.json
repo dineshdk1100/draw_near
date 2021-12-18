@@ -25,6 +25,10 @@
   "home": "Home",
   "calendar": "Calendar",
   "account": "Account",
-  "select_date": "Select date"
+  "select_date": "Select date",
+  "select_time": "Select time",
+  "daily_reminder": "Daily Reminder",
+  "notification_title": "It's Devotion Time",
+  "notification_body": "Reminder to read your devotion everyday"
 
 }
