@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:draw_near/screens/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,19 @@ class _OnboardingState extends State<Onboarding> {
   void initState() {
     _controller = PageController(initialPage: 0);
     super.initState();
+    /*Timer.periodic(Duration(seconds: 15), (Timer timer) {
+      if (currentIndex < 2) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
+      }
+
+      _controller.animateToPage(
+        currentIndex,
+        duration: Duration(milliseconds: 350),
+        curve: Curves.easeIn,
+      );
+    });*/
   }
 
   @override
@@ -40,35 +55,40 @@ class _OnboardingState extends State<Onboarding> {
               },
               itemBuilder: (_, i) {
                 return Padding(
-                  padding: const EdgeInsets.all(40),
+                  padding: const EdgeInsets.all(28),
                   child: Column(
                     children: [
                       Image.asset(
                         contents[i].image,
-                        height: 300,
+                        height: 250,
                       ),
-                      Text(
+                  Text(
                         contents[i].title,
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: 26,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Text(
+                      SizedBox(height: 5),
+                new Expanded(child: new SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: new Text(
                         contents[i].description,
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.justify,
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.grey,
+                          color: Colors.black54,
                         ),
                       )
+                ),),
                     ],
                   ),
                 );
               },
             ),
           ),
+
+
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,6 +98,8 @@ class _OnboardingState extends State<Onboarding> {
               ),
             ),
           ),
+
+
           Container(
             height: 60,
             margin: EdgeInsets.all(40),
@@ -99,8 +121,8 @@ class _OnboardingState extends State<Onboarding> {
                   curve: Curves.bounceIn,
                 );
               },
-              color: Colors.pinkAccent,
-              textColor: Colors.white,
+              color: Colors.blue.shade100,
+              textColor: Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

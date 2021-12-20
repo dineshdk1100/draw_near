@@ -89,7 +89,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
 
         children: [
           Padding(padding: const EdgeInsets.all(20.0),
-          child: Image.asset("assets/images/new_logo.png"),
+          child: Image.asset("assets/images/logo_transparent.png",height: 180,),
           ),
           SizedBox(
            // width: 350,

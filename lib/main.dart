@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'package:draw_near/provider/applesigninavailable.dart';
 import 'package:draw_near/provider/login_controller.dart';
+import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/screens/language.dart';
 //import 'package:draw_near/screens/OTPController.dart';
 //import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/login.dart';
 import 'package:draw_near/screens/onboarding.dart';
+import 'package:draw_near/screens/settings.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/theme-manager.dart';
@@ -24,7 +27,9 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('draw_near');
 
-  runApp(EasyLocalization(
+  runApp(
+
+      EasyLocalization(
     supportedLocales: [Locale('en', 'IN'), Locale('ta', 'IN')],
     fallbackLocale: Locale('en', 'IN'),
     path: 'assets/locales',
@@ -57,7 +62,7 @@ class MyApp extends StatelessWidget {
               ChangeNotifierProvider(
                 create: (context) => LoginController(),
                 child: LoginPage(),
-              )
+              ),
             ],
             child: MaterialApp(
               themeMode: themeMode,
@@ -67,7 +72,7 @@ class MyApp extends StatelessWidget {
               locale: context.locale,
               theme: ThemeData(
                 textTheme: GoogleFonts.robotoTextTheme(),
-                primarySwatch: pastelTheme,
+                primaryColor: Colors.blue.shade100,
                 brightness: Brightness.light,
                 toggleButtonsTheme: Theme.of(context)
                     .toggleButtonsTheme
@@ -121,7 +126,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 20,
             ),
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade100),
             )
           ],
         ),

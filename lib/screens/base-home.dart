@@ -31,7 +31,7 @@ class _BaseHomeState extends State<BaseHome> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: Color(0xFFE87E7E), // Default is Colors.white.
+      backgroundColor: Colors.blue.shade100, // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
       stateManagement: false, // Default is true.
@@ -68,19 +68,19 @@ class _BaseHomeState extends State<BaseHome> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: ("home".tr()),
-        activeColorPrimary: Colors.white,
+        activeColorPrimary: Colors.black,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.today),
         title: ("calendar".tr()),
-        activeColorPrimary: Colors.white,
+        activeColorPrimary: Colors.black,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.account_circle),
         title: ("account".tr()),
-        activeColorPrimary: Colors.white,
+        activeColorPrimary: Colors.black,
         inactiveColorPrimary: inactiveColor,
       ),
     ];

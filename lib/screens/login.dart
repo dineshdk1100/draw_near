@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Colors.pinkAccent,
+              Colors.blue.shade100,
             //Color(pastelThemePrimaryValue),
             //  Colors.pinkAccent,
 
@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage>
                                   text: "Sign in with Apple",
                                   onPressed: () {
                                     Provider.of<LoginController>(context, listen: false)
-                                        .googleLogin();
+                                        .signInWithApple();
                                   },
                                 ),
                                   //SizedBox(height: 20,),
@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage>
                           width: 150,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.pinkAccent, // background
+                              primary: Colors.blue.shade100, // background
                               onPrimary: Colors.white, // foreground
                             ),
                             onPressed: (){
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage>
                             },
 
 
-                            child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.white,fontWeight: FontWeight.bold),),
+                            child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.black,fontWeight: FontWeight.bold),),
                           )
                         )
 
