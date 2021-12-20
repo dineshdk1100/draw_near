@@ -82,12 +82,34 @@ class LoginController with ChangeNotifier {
     }
   }
 
+  Future phoneLogin(UserCredential value) async {
+    if(value.user !=null)
+    {
+      this.userDetails = new UserDetails(
+          value.user!.uid,
+          "User",
+          email:"",
+          photoURL:"https://www.google.co.in",
+          phoneNumber: value.user?.phoneNumber
+
+      );
+
+      await FirebaseFirestore.instance.collection('users').doc(userDetails?.uid).set(userDetails!.toJson());
+      UserService.instance.userDetails = this.userDetails!;
+      UserService.instance.isLoggedIn = true;
+      notifyListeners();
+      return value;
+    }
+  }
+
   // logout
 
   logout() async {
     this.googleSignInAccount = await _googleSignIn.signOut();
-    await FacebookAuth.i.logOut();
+    FacebookAuth.i.logOut();
+    FirebaseAuth.instance.signOut();
     userDetails = null;
+    print(userDetails);
     UserService.instance.removeUserDetails();
     UserService.instance.isLoggedIn = false;
     notifyListeners();

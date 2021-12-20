@@ -4,6 +4,7 @@ import 'package:draw_near/screens/base-home.dart';
 //import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/OTPController.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/src/public_ext.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +39,9 @@ class _LoginPageState extends State<LoginPage>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Colors.pinkAccent,
+              Color(pastelThemePrimaryValue),
             //Color(pastelThemePrimaryValue),
-            //  Colors.pinkAccent,
+            //  Color(pastelThemePrimaryValue),
 
             Colors.white,
               //Colors.red,
@@ -177,7 +178,7 @@ class _LoginPageState extends State<LoginPage>
                           width: 150,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.pinkAccent, // background
+                              primary: Color(pastelThemePrimaryValue), // background
                               onPrimary: Colors.white, // foreground
                             ),
                             onPressed: (){
@@ -193,7 +194,7 @@ class _LoginPageState extends State<LoginPage>
                             },
 
 
-                            child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.white,fontWeight: FontWeight.bold),),
+                            child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',fontWeight: FontWeight.bold),),
                           )
                         )
 

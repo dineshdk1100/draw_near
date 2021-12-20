@@ -22,7 +22,7 @@ class DownloadService {
   removeLocalLastModified(){
     _box.delete('lastModified');
   }
-  initialize() async {
+  Future<void> initialize() async {
     downloadingLocale = UserService.instance.locale;
     localLastModified = getLocalLastModified();
     print(DateTime.fromMillisecondsSinceEpoch(localLastModified).difference(DateTime.now()));
@@ -34,6 +34,8 @@ class DownloadService {
     await _downloadVerses();
     await _downloadAuthors();
     _box.put('lastModified', DateTime.now().toUtc().millisecondsSinceEpoch);
+    Fluttertoast.showToast(msg: "Update complete");
+
   }
 
   _downloadDevotions() async {

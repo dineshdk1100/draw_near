@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:draw_near/provider/login_controller.dart';
+import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/language.dart';
 //import 'package:draw_near/screens/OTPController.dart';
 //import 'package:draw_near/screens/base-home.dart';
@@ -39,8 +40,8 @@ class MyApp extends StatelessWidget {
     ThemeData darkThemeData = ThemeData(
       textTheme: GoogleFonts.robotoTextTheme().merge(Typography.whiteHelsinki),
       brightness: Brightness.dark,
-      primarySwatch: pastelDarkTheme,
-      toggleableActiveColor: Color(pastelDarkThemePrimaryValue),
+      primarySwatch: pastelTheme,
+      toggleableActiveColor: Color(pastelThemePrimaryValue),
       toggleButtonsTheme: Theme.of(context)
           .toggleButtonsTheme
           .copyWith(borderRadius: BorderRadius.circular(8)),
@@ -79,7 +80,7 @@ class MyApp extends StatelessWidget {
               ),
               darkTheme: darkThemeData.copyWith(
                   colorScheme: darkThemeData.colorScheme
-                      .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
+                      .copyWith(secondary: Color(pastelThemePrimaryValue))),
               home: SplashScreen(),
             ),
           );
@@ -97,11 +98,20 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    DownloadService.instance.initialize();
-    Timer(Duration(seconds: 2), () {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => Onboarding()));
-          .pushReplacement(MaterialPageRoute(builder: (_) => Language()));
+    //DownloadService.instance.initialize();
+    Timer(Duration(milliseconds: 1500), () {
+      if(UserService.instance.isAppInitialized) {
+        if (UserService.instance.isLoggedIn)
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => BaseHome()));
+        else
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+      }
+      else {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => Language()));
+      }
     });
   }
 
@@ -122,7 +132,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 20,
             ),
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.pinkAccent),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(pastelThemePrimaryValue)),
             )
           ],
         ),

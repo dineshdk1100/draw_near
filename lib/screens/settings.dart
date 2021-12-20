@@ -42,16 +42,19 @@ class _SettingsState extends State<Settings> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               } else {
-                UserService.instance.isLoggedIn = false;
+
                 DownloadService.instance.removeLocalLastModified();
                 Provider.of<LoginController>(context, listen: false).logout();
-                //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BaseHome()), (route) => false);
+                UserService.instance.isLoggedIn = false;
+                print('is logged in');
+                print(UserService.instance.isLoggedIn);
+                //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> LoginPage()), (route) => false);
               }
             },
             icon: UserService.instance.isLoggedIn
-                ? Text('logout'.tr().toUpperCase())
-                : Text("login".tr().toUpperCase()),
-            label: Icon(Icons.logout),
+                ? Text('logout'.tr().toUpperCase(),style: TextStyle(color: Theme.of(context).textTheme.bodyText1?.color),)
+                : Text("login".tr().toUpperCase(), style: TextStyle(color: Theme.of(context).textTheme.bodyText1?.color)),
+            label: Icon(Icons.logout, color: Theme.of(context).textTheme.bodyText1?.color,),
           )
         ],
       ),
@@ -69,16 +72,27 @@ class _SettingsState extends State<Settings> {
               ),
               Positioned(
                   bottom: -50.0,
-                  child: CircleAvatar(
-                    radius: 60,
-                    onBackgroundImageError: (obj, _) => Icon(
-                      Icons.person,
-                      size: 100,
-                      color: Colors.white,
+                  child:
+                  CachedNetworkImage(
+                    height: 100,
+                    fit: BoxFit.cover,
+                    imageUrl: UserService.instance.userDetails.photoURL ?? '',
+                    errorWidget: (context, s, _) => CircleAvatar(
+                      radius: 80,
+                      child: Icon(
+                        Icons.person,
+                        size: 80,
+                        color: Colors.white,
+                      ),
                     ),
-                    backgroundImage: CachedNetworkImageProvider(
-                        UserService.instance.userDetails.photoURL ?? ''),
-                  )),
+                    imageBuilder: (context, provider) => CircleAvatar(
+                      radius: 60,
+                      backgroundImage: provider,
+                  ),
+                  ),
+
+
+                  ),
             ],
           ),
           SizedBox(

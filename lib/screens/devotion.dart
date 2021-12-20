@@ -8,6 +8,7 @@ import 'package:draw_near/screens/verse-details.dart';
 import 'package:draw_near/services/author-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/user-service.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -41,6 +42,7 @@ class _DevotionPageState extends State<DevotionPage> {
     } on DevotionNotFoundException catch (e) {
       print("devotion not found");
       isDevotionAvailable = false;
+      print(isDevotionAvailable);
       //Fluttertoast.showToast(msg: e.message);
     }
     authors = AuthorService.instance.getAuthor(_devotion.author[0]);
@@ -76,11 +78,11 @@ class _DevotionPageState extends State<DevotionPage> {
             fontStyle: FontStyle.italic));
     TextStyle? author = GoogleFonts.robotoSlab(
         textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-            color: Colors.pinkAccent[200],
             fontSize:
                 (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
                     UserService.instance.fontSize)));
 
+    print(isDevotionAvailable);
     return isDevotionAvailable ? Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -253,7 +255,7 @@ class _DevotionPageState extends State<DevotionPage> {
                       text: _devotion.quote ?? "",
                       style: quote,
                       children: [
-                        TextSpan(text: '  - '),
+                       // TextSpan(text: '  - '),
                         TextSpan(
                           text: _devotion.quoteAuthor ?? "",
                           style: GoogleFonts.roboto(fontStyle: FontStyle.italic),

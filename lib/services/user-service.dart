@@ -17,7 +17,7 @@ class UserService {
   late Box _baseBox;
   late String _locale;
   late UserDetails _userDetails;
-  late bool _isOfflineEnabled;
+  late bool _isAppInitialized;
   late double _fontSize;
   late double _bodyTextStyleHeight;
   late bool _isLoggedIn;
@@ -75,8 +75,8 @@ class UserService {
 
     _bodyTextStyleHeight =
         _baseBox.get('bodyTextStyleHeight', defaultValue: 1.55);
-    _isLoggedIn = _baseBox.get('user_details', defaultValue: false);
-    _isOfflineEnabled = _baseBox.get('offline', defaultValue: true);
+    _isLoggedIn = _baseBox.get('loggedIn', defaultValue: false);
+    _isAppInitialized = _baseBox.get('app_initialized', defaultValue: false);
     _fontSize = _baseBox.get('fontSize', defaultValue: 0.toDouble());
     _theme = _baseBox.get('theme', defaultValue: "system");
     _userDetails = UserDetails.fromJson(jsonDecode(_baseBox.get('userDetails',
@@ -90,14 +90,14 @@ class UserService {
 
   set isLoggedIn(bool value) {
     _isLoggedIn = value;
-    _baseBox.put('user_details', false);
+    _baseBox.put('loggedIn', false);
   }
 
-  bool get isOfflineEnabled => _isOfflineEnabled;
+  bool get isAppInitialized => _isAppInitialized;
 
-  set isOfflineEnabled(bool value) {
-    _isOfflineEnabled = value;
-    _baseBox.put('offline', value);
+  set isAppInitialized(bool value) {
+    _isAppInitialized = value;
+    _baseBox.put('app_initialized', value);
   }
 
   double get fontSize => _fontSize;
@@ -116,6 +116,10 @@ class UserService {
 
   removeUserDetails(){
     _baseBox.delete('userDetails');
+  }
+
+  Map<dynamic, dynamic> getAllUserData(){
+    return _baseBox.toMap();
   }
 
   Map<String, dynamic> data = Map();
