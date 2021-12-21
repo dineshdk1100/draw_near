@@ -29,6 +29,7 @@ class _language extends State<Language> {
       Padding(padding: const EdgeInsets.all(15.0),
         child: Image.asset("assets/images/logo_transparent.png",height: 150,),
       ),
+         // Text(" CHOOSE YOUR APP LANGUAGE ", style: TextStyle(fontSize: 20,color: Colors.blue.shade300),),
           Text(" CHOOSE YOUR APP LANGUAGE ", style: TextStyle(fontSize: 20,color: Color(pastelThemePrimaryValue)),),
 
           SizedBox(height: 20,),
@@ -99,6 +100,7 @@ class _language extends State<Language> {
               width: 180,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
+                 // primary: Colors.blue.shade100, // background
                   primary: Color(pastelThemePrimaryValue), // background
                   onPrimary: Colors.white, // foreground
                 ),
@@ -113,7 +115,7 @@ class _language extends State<Language> {
                 },
 
 
-                child: Text('OK',style: TextStyle(fontFamily: 'San Francisco',color: Colors.white,fontWeight: FontWeight.bold),),
+                child: Text('OK',style: TextStyle(fontFamily: 'San Francisco',color: Colors.black,fontWeight: FontWeight.bold),),
               )
           )
 

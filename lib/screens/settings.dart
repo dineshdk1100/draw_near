@@ -2,9 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/base-home.dart';
+import 'package:draw_near/screens/edit_profile_page.dart';
+import 'package:draw_near/screens/language.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/notification-service.dart';
+import 'package:draw_near/services/profile_widget.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/constants.dart';
 import 'package:flutter/material.dart';
@@ -70,29 +73,31 @@ class _SettingsState extends State<Settings> {
                 height: mediaQueryData.size.height * 0.12,
                 color: Theme.of(context).primaryColor,
               ),
+
+
               Positioned(
-                  bottom: -50.0,
-                  child:
-                  CachedNetworkImage(
-                    height: 100,
-                    fit: BoxFit.cover,
-                    imageUrl: UserService.instance.userDetails.photoURL ?? '',
-                    errorWidget: (context, s, _) => CircleAvatar(
-                      radius: 80,
-                      child: Icon(
-                        Icons.person,
-                        size: 80,
-                        color: Colors.white,
-                      ),
+                bottom: -50.0,
+                child:
+                CachedNetworkImage(
+                  height: 100,
+                  fit: BoxFit.cover,
+                  imageUrl: UserService.instance.userDetails.photoURL ?? '',
+                  errorWidget: (context, s, _) => CircleAvatar(
+                    radius: 80,
+                    child: Icon(
+                      Icons.person,
+                      size: 80,
+                      color: Colors.white,
                     ),
-                    imageBuilder: (context, provider) => CircleAvatar(
-                      radius: 60,
-                      backgroundImage: provider,
                   ),
+                  imageBuilder: (context, provider) => CircleAvatar(
+                    radius: 60,
+                    backgroundImage: provider,
                   ),
+                ),
 
 
-                  ),
+              ),
             ],
           ),
           SizedBox(
@@ -117,6 +122,15 @@ class _SettingsState extends State<Settings> {
               textAlign: TextAlign.center),
           Divider(
             height: 24,
+          ),
+          ListTile(
+            title: Text("Edit profile"),
+            onTap: (){
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => Language()),
+                );
+
+            },
           ),
           ListTile(
             //isThreeLine: true,

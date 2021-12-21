@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:cross_connectivity/cross_connectivity.dart';
+import 'package:draw_near/provider/applesigninavailable.dart';
 import 'package:draw_near/provider/login_controller.dart';
+import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/language.dart';
 //import 'package:draw_near/screens/OTPController.dart';
 //import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/login.dart';
 import 'package:draw_near/screens/onboarding.dart';
+import 'package:draw_near/screens/settings.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/theme-manager.dart';
@@ -29,7 +32,7 @@ void main() async {
     await Hive.initFlutter();
     await Hive.openBox('draw_near');
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-    
+
     runApp(BetterFeedback(
       theme: FeedbackThemeData(drawColors: [Colors.red, Colors.green, Colors.blue]),
       child: EasyLocalization(
@@ -39,7 +42,7 @@ void main() async {
         child: MyApp(),
       ),
     ));
-    
+
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 
 }
@@ -80,6 +83,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 textTheme: GoogleFonts.robotoTextTheme(),
                 primarySwatch: pastelTheme,
+                //primaryColor: Colors.blue.shade100,
                 brightness: Brightness.light,
                 toggleButtonsTheme: Theme.of(context)
                     .toggleButtonsTheme
@@ -143,6 +147,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 20,
             ),
             CircularProgressIndicator(
+              //valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade100),
               valueColor: AlwaysStoppedAnimation<Color>(Color(pastelThemePrimaryValue)),
             )
           ],

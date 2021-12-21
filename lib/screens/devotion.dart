@@ -79,6 +79,7 @@ class _DevotionPageState extends State<DevotionPage> {
             fontStyle: FontStyle.italic));
     TextStyle? author = GoogleFonts.robotoSlab(
         textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+
             fontSize:
                 (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
                     UserService.instance.fontSize)));
@@ -257,6 +258,7 @@ class _DevotionPageState extends State<DevotionPage> {
                       style: quote,
                       children: [
                        // TextSpan(text: '  - '),
+                        TextSpan(text: '  '),
                         TextSpan(
                           text: _devotion.quoteAuthor ?? "",
                           style: GoogleFonts.roboto(fontStyle: FontStyle.italic),

@@ -31,6 +31,7 @@ class _BaseHomeState extends State<BaseHome> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
+      //backgroundColor: Colors.blue.shade100, // Default is Colors.white.
       backgroundColor: Color(pastelThemePrimaryValue), // Default is Colors.black.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
