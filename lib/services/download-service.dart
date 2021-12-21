@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/services/author-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
@@ -18,23 +21,37 @@ class DownloadService {
   var _box = Hive.box('draw_near');
   late int localLastModified;
   late String downloadingLocale;
+  late StreamSubscription _subscription;
 
   removeLocalLastModified(){
     _box.delete('lastModified');
   }
   Future<void> initialize() async {
-    downloadingLocale = UserService.instance.locale;
-    localLastModified = getLocalLastModified();
-    print(DateTime.fromMillisecondsSinceEpoch(localLastModified).difference(DateTime.now()));
-    if(DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(localLastModified)).inHours < 12)
-      return;
-    Fluttertoast.showToast(msg: "Checking for devotion updates");
-    await _downloadDevotions();
-    await _downloadSongs();
-    await _downloadVerses();
-    await _downloadAuthors();
-    _box.put('lastModified', DateTime.now().toUtc().millisecondsSinceEpoch);
-    Fluttertoast.showToast(msg: "Update complete");
+    _subscription = Connectivity().onConnectivityChanged.listen((event) async{
+      if(event != ConnectivityStatus.none) {
+        downloadingLocale = UserService.instance.locale;
+        localLastModified = getLocalLastModified();
+        print(DateTime.fromMillisecondsSinceEpoch(localLastModified).difference(
+            DateTime.now()));
+        if (DateTime
+            .now()
+            .difference(DateTime.fromMillisecondsSinceEpoch(localLastModified))
+            .inHours < 12)
+          return;
+        Fluttertoast.showToast(msg: "Checking for devotion updates");
+        await _downloadDevotions();
+        await _downloadSongs();
+        await _downloadVerses();
+        await _downloadAuthors();
+        _box.put('lastModified', DateTime
+            .now()
+            .toUtc()
+            .millisecondsSinceEpoch);
+        Fluttertoast.showToast(msg: "Update complete");
+        _subscription.cancel();
+      }
+
+    });
 
   }
 

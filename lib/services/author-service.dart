@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draw_near/models/author.dart';
 import 'package:draw_near/services/user-service.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class AuthorService {
@@ -69,7 +70,8 @@ class AuthorService {
       AuthorService.instance.saveAuthor(doc.id, doc.data());
     });
     box.put('authors_${UserService.instance.locale}', jsonEncode(authorsMap));
-
+    FirebaseCrashlytics.instance.setCustomKey('Author size', authorsMap.length);
+    FirebaseCrashlytics.instance.setCustomKey('Author records', authorsMap.keys.toString());
   }
 
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/language.dart';
@@ -9,9 +10,11 @@ import 'package:draw_near/screens/onboarding.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/theme-manager.dart';
+import 'package:feedback/feedback.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,18 +22,26 @@ import 'package:provider/provider.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await EasyLocalization.ensureInitialized();
-  await Hive.initFlutter();
-  await Hive.openBox('draw_near');
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    await EasyLocalization.ensureInitialized();
+    await Hive.initFlutter();
+    await Hive.openBox('draw_near');
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    
+    runApp(BetterFeedback(
+      theme: FeedbackThemeData(drawColors: [Colors.red, Colors.green, Colors.blue]),
+      child: EasyLocalization(
+        supportedLocales: [Locale('en', 'IN'), Locale('ta', 'IN')],
+        fallbackLocale: Locale('en', 'IN'),
+        path: 'assets/locales',
+        child: MyApp(),
+      ),
+    ));
+    
+  }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 
-  runApp(EasyLocalization(
-    supportedLocales: [Locale('en', 'IN'), Locale('ta', 'IN')],
-    fallbackLocale: Locale('en', 'IN'),
-    path: 'assets/locales',
-    child: MyApp(),
-  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -96,11 +107,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //DownloadService.instance.initialize();
+    FirebaseCrashlytics.instance.setUserIdentifier(UserService.instance.userDetails.uid);
     Timer(Duration(milliseconds: 1500), () {
       if(UserService.instance.isAppInitialized) {
+        DownloadService.instance.initialize();
         if (UserService.instance.isLoggedIn)
           Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (_) => BaseHome()));

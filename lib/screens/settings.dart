@@ -158,6 +158,7 @@ class _SettingsState extends State<Settings> {
                         child:
                             Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
                         value: lang,
+                enabled: lang=='en_IN' ? true : false,
                       ))
                   .toList(),
             ),

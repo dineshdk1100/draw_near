@@ -5,6 +5,7 @@ import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -95,5 +96,6 @@ class DevotionService {
           doc.data());
     });
     box.put(UserService.instance.locale, jsonEncode(devotionsMap));
+    FirebaseCrashlytics.instance.setCustomKey('Devotion Size', devotionsMap.length);
   }
 }

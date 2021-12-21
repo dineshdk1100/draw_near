@@ -97,6 +97,7 @@ class LoginController with ChangeNotifier {
       await FirebaseFirestore.instance.collection('users').doc(userDetails?.uid).set(userDetails!.toJson());
       UserService.instance.userDetails = this.userDetails!;
       UserService.instance.isLoggedIn = true;
+      print(UserService.instance.isLoggedIn);
       notifyListeners();
       return value;
     }

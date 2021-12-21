@@ -5,6 +5,7 @@ import 'package:draw_near/models/song.dart';
 import 'package:draw_near/models/song.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/constants.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class SongService {
@@ -44,6 +45,8 @@ class SongService {
       SongService.instance.saveSong(doc.id, doc.data());
     });
     box.put('songs_${UserService.instance.locale}', jsonEncode(songsMap));
+    FirebaseCrashlytics.instance.setCustomKey('Song size', songsMap.length);
+    FirebaseCrashlytics.instance.setCustomKey('Song records', songsMap.keys.toString());
   }
 
 }

@@ -48,6 +48,9 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   cross_connectivity:
   share_plus: ^3.0.4
+  feedback: ^2.2.1
+  flutter_email_sender: ^5.0.2
+  path_provider: ^2.0.8
 
 
   #Google Sign In
