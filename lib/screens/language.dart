@@ -1,5 +1,6 @@
 import 'package:draw_near/screens/onboarding.dart';
 import 'package:draw_near/services/user-service.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/constants.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,8 @@ class _language extends State<Language> {
       Padding(padding: const EdgeInsets.all(15.0),
         child: Image.asset("assets/images/logo_transparent.png",height: 150,),
       ),
-          Text(" CHOOSE YOUR APP LANGUAGE ", style: TextStyle(fontSize: 20,color: Colors.blue.shade300),),
+         // Text(" CHOOSE YOUR APP LANGUAGE ", style: TextStyle(fontSize: 20,color: Colors.blue.shade300),),
+          Text(" CHOOSE YOUR APP LANGUAGE ", style: TextStyle(fontSize: 20,color: Color(pastelThemePrimaryValue)),),
 
           SizedBox(height: 20,),
         ListTile(
@@ -98,7 +100,8 @@ class _language extends State<Language> {
               width: 180,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue.shade100, // background
+                 // primary: Colors.blue.shade100, // background
+                  primary: Color(pastelThemePrimaryValue), // background
                   onPrimary: Colors.white, // foreground
                 ),
                 onPressed: (){

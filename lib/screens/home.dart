@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,11 +9,14 @@ import 'package:draw_near/screens/devotion.dart';
 import 'package:draw_near/services/carousel-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/user-service.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
+import 'package:share_plus/share_plus.dart';
+import 'dart:io' show File, Platform;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -44,6 +49,7 @@ class _HomePageState extends State<HomePage> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title:
         Image.asset('assets/images/logo_transparent.png', height: 55,),
 
@@ -52,11 +58,12 @@ class _HomePageState extends State<HomePage> {
 
         actions: [
           PopupMenuButton(itemBuilder: (context) =>[
-    PopupMenuItem(child: Text("About us"),),
-    PopupMenuItem(child: Text("Feedback")),
-    PopupMenuItem(child: Text("Share this app")),
-    PopupMenuItem(child: Text("Privacy Policy"))
+    PopupMenuItem(child: Text("About us"), value: 0,),
+    PopupMenuItem(child: Text("Feedback"), value: 1),
+    PopupMenuItem(child: Text("Share this app"), value: 2),
+    PopupMenuItem(child: Text("Privacy Policy"), value: 3)
     ],
+            onSelected: onPopUpMenuItemSelected,
     )
         ],
       ),
@@ -116,12 +123,12 @@ class _HomePageState extends State<HomePage> {
               child: Badge(
                 animationType: BadgeAnimationType.scale,
                 shape: BadgeShape.circle,
-                badgeColor: Colors.red.shade200,
-                elevation: 0,
+                badgeColor: Color(pastelThemePrimaryValue),
+                //elevation: 0,
                 badgeContent: Icon(Icons.notifications, size: 16, color: Colors.white,),
                 position: BadgePosition.topEnd(),
                 borderRadius: BorderRadius.circular(5),
-                showBadge: true,
+                showBadge: DateTime.now().day == 1,
                 child: ListTile(
                   trailing: Icon(Icons.navigate_next),
                   leading: Icon(Icons.accessibility_new_outlined),
@@ -178,4 +185,26 @@ class _HomePageState extends State<HomePage> {
   navigateToThemePage(){
 
   }
-}
+
+  void onPopUpMenuItemSelected(int value) {
+    switch(value){
+      case 0: break;
+      case 1: sendFeedback();
+        break;
+      case 2:
+        if(Platform.isAndroid)
+        Share.share('https://play.google.com/store/apps/details?id=com.techcatalyst.draw_near');
+        else
+          Share.share('Hi');
+        break;
+      case 3: break;
+    }
+  }
+
+  void sendFeedback() async{
+    File feedbackJson = new File('feedback.json');
+    await feedbackJson.writeAsString(jsonEncode(UserService.instance.getAllUserData()));
+    Share.shareFiles([feedbackJson.path], subject: "Draw Near Feedback");
+    
+  }
+  }

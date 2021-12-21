@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:draw_near/screens/initializer.dart';
 import 'package:draw_near/screens/login.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:draw_near/screens/onboard_content.dart';
@@ -112,7 +114,7 @@ class _OnboardingState extends State<Onboarding> {
                   Navigator.pushReplacement(
                     context,
                     CupertinoPageRoute(
-                      builder: (_) => LoginPage(),
+                      builder: (_) => Initializer(),
                     ),
                   );
                 }
@@ -121,8 +123,10 @@ class _OnboardingState extends State<Onboarding> {
                   curve: Curves.bounceIn,
                 );
               },
-              color: Colors.blue.shade100,
+              //color: Colors.blue.shade100,
               textColor: Colors.black,
+              color: Color(pastelThemePrimaryValue),
+              //textColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

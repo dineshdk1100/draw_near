@@ -11,6 +11,8 @@
   "login": "LOGIN",
   "song": "Song",
   "author": "By - ",
+  "song": "Song ",
+  "author": "Author",
   "about_author": "About the @:author",
   "bible_portion": "Bible Ref.",
   "devotion_denied": "Future devotions cannot be viewed now",

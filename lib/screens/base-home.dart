@@ -31,13 +31,14 @@ class _BaseHomeState extends State<BaseHome> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: Colors.blue.shade100, // Default is Colors.white.
+      //backgroundColor: Colors.blue.shade100, // Default is Colors.white.
+      backgroundColor: Color(pastelThemePrimaryValue), // Default is Colors.black.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
       stateManagement: false, // Default is true.
       hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
       decoration: NavBarDecoration(
-        colorBehindNavBar: Colors.white,
+        colorBehindNavBar: Colors.black,
         //colorBehindNavBar: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       ),
       popAllScreensOnTapOfSelectedTab: true,

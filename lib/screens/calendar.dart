@@ -41,7 +41,7 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(onPressed: onOpenDatePicker, label: Text('select_date'.tr()), icon: Icon(Icons.today),),
+      floatingActionButton: FloatingActionButton.extended(onPressed: onOpenDatePicker, label: Text('select_date'.tr()), icon: Icon(Icons.today), ),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.navigate_before),

@@ -4,6 +4,7 @@ import 'package:draw_near/screens/base-home.dart';
 //import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/OTPController.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/src/public_ext.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +39,10 @@ class _LoginPageState extends State<LoginPage>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
-              Colors.blue.shade100,
+             // Colors.blue.shade100,
+              Color(pastelThemePrimaryValue),
             //Color(pastelThemePrimaryValue),
-            //  Colors.pinkAccent,
+            //  Color(pastelThemePrimaryValue),
 
             Colors.white,
               //Colors.red,
@@ -156,7 +158,7 @@ class _LoginPageState extends State<LoginPage>
                           //color: Color(0xff1d1d1d),
                          // borderRadius: BorderRadius.circular(15),
 
-                          child: TextField(
+                          child: TextFormField(
                           decoration: InputDecoration(
 
                             hintText: "phone_hint".tr(),
@@ -167,7 +169,9 @@ class _LoginPageState extends State<LoginPage>
                             )
                           ),
                            maxLength: 10,
-                           keyboardType: TextInputType.number,
+                           keyboardType: TextInputType.phone,
+                           //validator: validateMobile,
+
                            controller: _controller,
                           ),
                         ),
@@ -177,11 +181,12 @@ class _LoginPageState extends State<LoginPage>
                           width: 150,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.blue.shade100, // background
+                              //primary: Colors.blue.shade100, // background
+                              primary: Color(pastelThemePrimaryValue), // background
                               onPrimary: Colors.white, // foreground
                             ),
+
                             onPressed: (){
-                             // if(hasValue()) {
                                 Navigator.of(context).push(
                                     MaterialPageRoute(builder: (c) =>
                                         OTPControllerScreen(
@@ -193,7 +198,8 @@ class _LoginPageState extends State<LoginPage>
                             },
 
 
-                            child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.black,fontWeight: FontWeight.bold),),
+                            //child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.black,fontWeight: FontWeight.bold),),
+                            child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',fontWeight: FontWeight.bold,color: Colors.black),),
                           )
                         )
 
@@ -206,6 +212,18 @@ class _LoginPageState extends State<LoginPage>
           ]
         )
       );
+  }
+
+  String? validateMobile(String value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      return 'Please enter mobile number';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid mobile number';
+    }
+    return null;
   }
 
   loginUI(){

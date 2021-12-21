@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:draw_near/provider/applesigninavailable.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/home.dart';
+import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/language.dart';
 //import 'package:draw_near/screens/OTPController.dart';
 //import 'package:draw_near/screens/base-home.dart';
@@ -44,8 +45,8 @@ class MyApp extends StatelessWidget {
     ThemeData darkThemeData = ThemeData(
       textTheme: GoogleFonts.robotoTextTheme().merge(Typography.whiteHelsinki),
       brightness: Brightness.dark,
-      primarySwatch: pastelDarkTheme,
-      toggleableActiveColor: Color(pastelDarkThemePrimaryValue),
+      primarySwatch: pastelTheme,
+      toggleableActiveColor: Color(pastelThemePrimaryValue),
       toggleButtonsTheme: Theme.of(context)
           .toggleButtonsTheme
           .copyWith(borderRadius: BorderRadius.circular(8)),
@@ -72,7 +73,8 @@ class MyApp extends StatelessWidget {
               locale: context.locale,
               theme: ThemeData(
                 textTheme: GoogleFonts.robotoTextTheme(),
-                primaryColor: Colors.blue.shade100,
+                primarySwatch: pastelTheme,
+                //primaryColor: Colors.blue.shade100,
                 brightness: Brightness.light,
                 toggleButtonsTheme: Theme.of(context)
                     .toggleButtonsTheme
@@ -84,7 +86,7 @@ class MyApp extends StatelessWidget {
               ),
               darkTheme: darkThemeData.copyWith(
                   colorScheme: darkThemeData.colorScheme
-                      .copyWith(secondary: Color(pastelDarkThemePrimaryValue))),
+                      .copyWith(secondary: Color(pastelThemePrimaryValue))),
               home: SplashScreen(),
             ),
           );
@@ -102,10 +104,20 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    DownloadService.instance.initialize();
-    Timer(Duration(seconds: 3), () {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => Language()));
+    //DownloadService.instance.initialize();
+    Timer(Duration(milliseconds: 1500), () {
+      if(UserService.instance.isAppInitialized) {
+        if (UserService.instance.isLoggedIn)
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => BaseHome()));
+        else
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+      }
+      else {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => Language()));
+      }
     });
   }
 
@@ -126,7 +138,8 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 20,
             ),
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade100),
+              //valueColor: AlwaysStoppedAnimation<Color>(Colors.blue.shade100),
+              valueColor: AlwaysStoppedAnimation<Color>(Color(pastelThemePrimaryValue)),
             )
           ],
         ),

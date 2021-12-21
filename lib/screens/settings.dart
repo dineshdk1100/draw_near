@@ -5,6 +5,7 @@ import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/edit_profile_page.dart';
 import 'package:draw_near/screens/language.dart';
 import 'package:draw_near/services/devotion-service.dart';
+import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/notification-service.dart';
 import 'package:draw_near/services/profile_widget.dart';
 import 'package:draw_near/services/user-service.dart';
@@ -44,14 +45,19 @@ class _SettingsState extends State<Settings> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               } else {
+
+                DownloadService.instance.removeLocalLastModified();
                 Provider.of<LoginController>(context, listen: false).logout();
-                //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BaseHome()), (route) => false);
+                UserService.instance.isLoggedIn = false;
+                print('is logged in');
+                print(UserService.instance.isLoggedIn);
+                //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> LoginPage()), (route) => false);
               }
             },
             icon: UserService.instance.isLoggedIn
-                ? Text('logout'.tr().toUpperCase())
-                : Text("login".tr().toUpperCase()),
-            label: Icon(Icons.logout),
+                ? Text('logout'.tr().toUpperCase(),style: TextStyle(color: Theme.of(context).textTheme.bodyText1?.color),)
+                : Text("login".tr().toUpperCase(), style: TextStyle(color: Theme.of(context).textTheme.bodyText1?.color)),
+            label: Icon(Icons.logout, color: Theme.of(context).textTheme.bodyText1?.color,),
           )
         ],
       ),
@@ -70,18 +76,28 @@ class _SettingsState extends State<Settings> {
 
 
               Positioned(
-                  bottom: -50.0,
-                  child:
-                  CircleAvatar(
-                    radius: 60,
-                    onBackgroundImageError: (obj, _) => Icon(
+                bottom: -50.0,
+                child:
+                CachedNetworkImage(
+                  height: 100,
+                  fit: BoxFit.cover,
+                  imageUrl: UserService.instance.userDetails.photoURL ?? '',
+                  errorWidget: (context, s, _) => CircleAvatar(
+                    radius: 80,
+                    child: Icon(
                       Icons.person,
-                      size: 100,
+                      size: 80,
                       color: Colors.white,
                     ),
-                    backgroundImage: CachedNetworkImageProvider(
-                        UserService.instance.userDetails.photoURL ?? ''),
-                  )),
+                  ),
+                  imageBuilder: (context, provider) => CircleAvatar(
+                    radius: 60,
+                    backgroundImage: provider,
+                  ),
+                ),
+
+
+              ),
             ],
           ),
           SizedBox(

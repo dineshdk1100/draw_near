@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:draw_near/models/user.dart';
+import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/home.dart';
+import 'package:draw_near/services/user-service.dart';
+import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+import 'package:provider/provider.dart';
 
 import 'base-home.dart';
 class OTPControllerScreen extends StatefulWidget {
@@ -24,6 +30,8 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   final TextEditingController _pinOTPCodeController= TextEditingController();
   final FocusNode _pinOTPCodeFocus= FocusNode();
+  UserDetails? userDetails;
+
 
   String? verificationCode;
 
@@ -31,7 +39,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
     color: Colors.white,
     borderRadius: BorderRadius.circular(8.0),
     border: Border.all(
-      color: Colors.black,
+      color: Colors.black45,
 
     )
   );
@@ -48,12 +56,8 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
     phoneNumber: "${widget.codeDigits + widget.phone}",
         verificationCompleted: (PhoneAuthCredential credential) async
     {
-        await FirebaseAuth.instance.signInWithCredential(credential).then((value){
-          if(value.user !=null)
-          {
-            Navigator.of(context).push(MaterialPageRoute(builder: (c)=> HomePage()));
-          }
-        });
+        await FirebaseAuth.instance.signInWithCredential(credential).then(Provider.of<LoginController>(context, listen: false).phoneLogin);
+        Navigator.pop(context);
     }, verificationFailed: (FirebaseAuthException e){
       print(e.message.toString());
       ScaffoldMessenger.of(context).showSnackBar(
@@ -78,7 +82,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: AppBar(
         title: Text("otp_verify".tr()),
@@ -97,7 +101,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
           child: Text(
             "otp_text".tr(),
             textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: 'San Francisco' ,color: Colors.pinkAccent,fontWeight: FontWeight.w600, fontSize: 16),
+            style: TextStyle(fontFamily: 'San Francisco' ,color: Color(pastelThemePrimaryValue),fontWeight: FontWeight.w600, fontSize: 16),
             //SizedBox(Icon(Icons.edit)
           ),)
           ),
@@ -114,7 +118,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
                 },
 
                 child: Text(
-                  " ${widget.codeDigits}-${widget.phone}   Resend OTP ",
+                  " ${widget.codeDigits} ${widget.phone}   Resend OTP ",
 
                   style: TextStyle(decoration: TextDecoration.underline,fontStyle: FontStyle.italic, fontFamily: 'San Francisco' ,fontWeight: FontWeight.normal, fontSize: 14),
                   //SizedBox(Icon(Icons.edit))
@@ -130,7 +134,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
           Text(
             "otp_digits".tr(),
 
-            style: TextStyle(fontFamily: 'San Francisco' ,color: Colors.pinkAccent,fontWeight: FontWeight.w600, fontSize: 18),
+            style: TextStyle(fontFamily: 'San Francisco' ,color: Color(pastelThemePrimaryValue),fontWeight: FontWeight.w600, fontSize: 18),
             //SizedBox(Icon(Icons.edit))
           ),
           Padding(
@@ -150,15 +154,8 @@ class _OTPControllerScreenState extends State<OTPControllerScreen> {
                 try{
                   await FirebaseAuth.instance.
                   signInWithCredential(PhoneAuthProvider.credential(verificationId: verificationCode!, smsCode: pin))
-                      .then((value){
-                        if(value.user !=null)
-                          {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (builder) => BaseHome()),
-                                    (route) => false);
-                          }
-                  });
+                      .then(Provider.of<LoginController>(context, listen: false).phoneLogin);
+                  Navigator.pop(context);
                 }
                 catch(e){
                   FocusScope.of(context).unfocus();
