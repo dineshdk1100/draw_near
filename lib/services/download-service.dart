@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
-import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/services/author-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/song-service.dart';
@@ -11,7 +10,6 @@ import 'package:draw_near/services/verse-service.dart';
 import 'package:draw_near/util/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jiffy/jiffy.dart';
 
 class DownloadService {
   static final DownloadService instance = DownloadService._internal();
@@ -23,43 +21,44 @@ class DownloadService {
   late String downloadingLocale;
   late StreamSubscription _subscription;
 
-  removeLocalLastModified(){
+  removeLocalLastModified() {
     _box.delete('lastModified');
   }
+
   Future<void> initialize() async {
-    _subscription = Connectivity().onConnectivityChanged.listen((event) async{
-      if(event != ConnectivityStatus.none) {
+    int retrievedDocCount = 0;
+    _subscription = Connectivity().onConnectivityChanged.listen((event) async {
+      if (event != ConnectivityStatus.none) {
         downloadingLocale = UserService.instance.locale;
         localLastModified = getLocalLastModified();
-        print(DateTime.fromMillisecondsSinceEpoch(localLastModified).difference(
-            DateTime.now()));
-        if (DateTime
-            .now()
-            .difference(DateTime.fromMillisecondsSinceEpoch(localLastModified))
-            .inHours < 12)
-          return;
+        print(DateTime.fromMillisecondsSinceEpoch(localLastModified)
+            .difference(DateTime.now()));
+        if (DateTime.now()
+                .difference(
+                    DateTime.fromMillisecondsSinceEpoch(localLastModified))
+                .inHours <
+            12) return;
         Fluttertoast.showToast(msg: "Checking for devotion updates");
-        await _downloadDevotions();
-        await _downloadSongs();
-        await _downloadVerses();
-        await _downloadAuthors();
-        _box.put('lastModified', DateTime
-            .now()
-            .toUtc()
-            .millisecondsSinceEpoch);
-        Fluttertoast.showToast(msg: "Update complete");
+        retrievedDocCount+= await _downloadDevotions() ?? 0;
+        retrievedDocCount+= await _downloadSongs() ?? 0;
+        retrievedDocCount+= await _downloadVerses() ?? 0;
+        retrievedDocCount+= await _downloadAuthors() ?? 0;
+        if(retrievedDocCount > 0) {
+          _box.put('lastModified', DateTime.now().toUtc().millisecondsSinceEpoch);
+          Fluttertoast.showToast(msg: "Update complete");
+        }
+        else
+          Fluttertoast.showToast(msg: "No new updates");
         _subscription.cancel();
       }
-
     });
-
   }
 
-  _downloadDevotions() async {
-
+  Future<int?>_downloadDevotions() async {
+    QuerySnapshot<Map<String, dynamic>>? snapshots;
     ///iterate over months, fetch data from cloud and local and update the local data
     for (int monthIndex = 0; monthIndex < MONTHS_IN_YEAR.length; monthIndex++) {
-      var snapshots = await FirebaseFirestore.instance
+      snapshots = await FirebaseFirestore.instance
           .collection('devotions')
           .doc(downloadingLocale)
           .collection(MONTHS_IN_YEAR[monthIndex])
@@ -70,6 +69,7 @@ class DownloadService {
       print('\n\n Devotions \n\n');
       DevotionService.instance.saveDevotions(snapshots);
     }
+    return snapshots?.docs.length;
   }
 
   int getLocalLastModified() {
@@ -77,7 +77,7 @@ class DownloadService {
         defaultValue: DateTime.utc(2020).millisecondsSinceEpoch);
   }
 
-  _downloadSongs() async {
+  Future<int?>_downloadSongs() async {
     var snapshots = await FirebaseFirestore.instance
         .collection('songs_$downloadingLocale')
         .where('Last Modified Time',
@@ -85,28 +85,31 @@ class DownloadService {
         .get();
 
     print('\n\n Songs \n\n');
-   SongService.instance.saveSongs(snapshots);
+    SongService.instance.saveSongs(snapshots);
+    return snapshots.docs.length;
   }
 
-   _downloadVerses() async {
+  Future<int?>_downloadVerses() async {
     var snapshots = await FirebaseFirestore.instance
         .collection('verses_$downloadingLocale')
         .where('Last Modified Time',
-        isGreaterThanOrEqualTo: localLastModified - 3600000)
+            isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
 
     print('\n\n Verses \n\n');
     VerseService.instance.saveVerses(snapshots);
+    return snapshots.docs.length;
   }
 
-   _downloadAuthors() async {
+  Future<int?>_downloadAuthors() async {
     var snapshots = await FirebaseFirestore.instance
         .collection('authors_$downloadingLocale')
         .where('Last Modified Time',
-        isGreaterThanOrEqualTo: localLastModified - 3600000)
+            isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
 
     print('\n\n Authors \n\n');
     AuthorService.instance.saveAuthors(snapshots);
+    return snapshots.docs.length;
   }
 }
