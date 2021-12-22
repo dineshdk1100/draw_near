@@ -5,19 +5,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/devotion.dart';
+import 'package:draw_near/models/theme_month.dart';
 import 'package:draw_near/screens/devotion.dart';
 import 'package:draw_near/screens/theme_month_details.dart';
 import 'package:draw_near/services/carousel-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
+import 'package:draw_near/services/theme-month-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
+import 'package:draw_near/util/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:feedback/feedback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:io' show File, Platform;
+import 'dart:io' show Directory, File, Platform;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -33,13 +39,14 @@ class _HomePageState extends State<HomePage> {
   ];
   DevotionService _devotionService = DevotionService.instance;
   Devotion? devotion;
+  ThemeMonth? themeMonth;
   _HomePageState() {
     getCarouselImages().then((urls) => {});
 
     try {
+      themeMonth = ThemeMonthService.instance.getThemeMonth(MONTHS_IN_YEAR[DateTime.now().month-1]);
       devotion = _devotionService.getDevotionForDate(DateTime.now());
-    }
-    on DevotionNotFoundException catch(e) {
+    } on DevotionNotFoundException catch (e) {
       //Fluttertoast.showToast(msg: e.message);
     }
   }
@@ -51,28 +58,30 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title:
-        Image.asset('assets/images/logo_transparent.png', height: 55,),
-
+        title: Image.asset(
+          'assets/images/logo_transparent.png',
+          height: 55,
+        ),
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
-
         actions: [
-          PopupMenuButton(itemBuilder: (context) =>[
-    PopupMenuItem(child: Text("About us"), value: 0,),
-    PopupMenuItem(child: Text("Feedback"), value: 1),
-    PopupMenuItem(child: Text("Share this app"), value: 2),
-    PopupMenuItem(child: Text("Privacy Policy"), value: 3)
-    ],
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text("About us"),
+                value: 0,
+              ),
+              PopupMenuItem(child: Text("Report an issue"), value: 1),
+              PopupMenuItem(child: Text("Feedback"), value: 2),
+              PopupMenuItem(child: Text("Share this app"), value: 3),
+              PopupMenuItem(child: Text("Privacy Policy"), value: 4)
+            ],
             onSelected: onPopUpMenuItemSelected,
-    )
+          )
         ],
       ),
-
       body: ListView(
-
         shrinkWrap: true,
-
         children: [
           Stack(
             clipBehavior: Clip.none,
@@ -88,15 +97,20 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   width: width,
                   height: 200,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10),gradient: LinearGradient(colors: [Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                          colors: [
+                            Theme.of(context).primaryColor,
+                            Theme.of(context).scaffoldBackgroundColor
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter)),
                   margin: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
                   child: CarouselSlider.builder(
                     itemCount: carouselImageUrls.length,
                     options: CarouselOptions(
-
-                        autoPlay: true,
-                        enlargeCenterPage: true),
+                        autoPlay: true, enlargeCenterPage: true),
                     itemBuilder: (BuildContext context, int itemIndex,
                             int pageViewIndex) =>
                         Card(
@@ -126,14 +140,24 @@ class _HomePageState extends State<HomePage> {
                 shape: BadgeShape.circle,
                 badgeColor: Color(pastelThemePrimaryValue),
                 //elevation: 0,
-                badgeContent: Icon(Icons.notifications, size: 16, color: Colors.white,),
+                badgeContent: Icon(
+                  Icons.notifications,
+                  size: 16,
+                  color: Colors.white,
+                ),
                 position: BadgePosition.topEnd(),
                 borderRadius: BorderRadius.circular(5),
                 showBadge: DateTime.now().day == 1,
                 child: ListTile(
                   trailing: Icon(Icons.navigate_next),
                   leading: Icon(Icons.accessibility_new_outlined),
-                  title: Text("Stay Tuned!"),
+                 /* title: Text("Gratitude"),
+                  subtitle: Text('theme_month'.tr(namedArgs: {
+                    'month': DateFormat("MMMM", context.locale.languageCode)
+                        .format(DateTime.now())
+                  })),*/
+
+                  title: DateTime.now().year == 2021  ? Text("Gratitude") : Text(themeMonth?.fullMonth ?? "Unavailable"),
                   subtitle: Text('theme_month'.tr(namedArgs: {'month': DateFormat( "MMMM",context.locale.languageCode).format(DateTime.now())})),
                   onTap: navigateToThemePage,
                 ),
@@ -155,9 +179,10 @@ class _HomePageState extends State<HomePage> {
                   Divider(),
                   Container(
                     decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text(devotion?.body ?? "devotion_unavailable_desc".tr(),
+                    child: Text(
+                        devotion?.body ?? "devotion_unavailable_desc".tr(),
                         textAlign: TextAlign.justify,
                         maxLines: 6,
                         softWrap: true,
@@ -167,7 +192,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   TextButton(
-                      onPressed: (devotion!=null) ? navigateToDevotionPage : null,
+                      onPressed:
+                          (devotion != null) ? navigateToDevotionPage : null,
                       child: Text('read_more'.tr().toUpperCase()))
                 ],
               ),
@@ -178,34 +204,74 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
   navigateToDevotionPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> DevotionPage(DateTime.now())));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => DevotionPage(DateTime.now())));
   }
 
   navigateToThemePage(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> ThemeMonthDetails('January')));
+    if(DateTime.now().year == 2021)
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> ThemeMonthDetails(MONTHS_IN_YEAR[DateTime.now().month-1])));
+    else
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> ThemeMonthDetails(MONTHS_IN_YEAR[DateTime.now().month-1])));
+
+
   }
 
   void onPopUpMenuItemSelected(int value) {
-    switch(value){
-      case 0: break;
-      case 1: sendFeedback();
+    switch (value) {
+      case 0:
+        break;
+      case 1:
+        sendReport();
         break;
       case 2:
-        if(Platform.isAndroid)
-        Share.share('https://play.google.com/store/apps/details?id=com.techcatalyst.draw_near');
-        else
-          Share.share('Hi');
+        sendFeedback();
         break;
-      case 3: break;
+      case 3:
+        if (Platform.isAndroid)
+          Share.share(
+              'https://play.google.com/store/apps/details?id=com.techcatalyst.draw_near');
+        else
+          Share.share('Download Draw near from App store');
+        break;
+      case 4:
+        break;
     }
   }
 
+  void sendReport() async{
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    List<File> files = [];
+    files.add(await File(tempPath + '/log_data.json').create()..writeAsString( jsonEncode(UserService.instance.getAllUserData())));
+
+    BetterFeedback.of(context).show((UserFeedback feedback) async {
+      print('feed');
+      files.add(await File(tempPath + '/screenshot.png').create()..writeAsBytes(feedback.screenshot));
+
+      final Email email = Email(
+        body: feedback.text,
+        subject: 'Draw Near - Report an issue',
+        recipients: ['drawnear.dev@gmail.com'],
+        cc: ['techcatalyst.solutions@gmail.com'],
+        attachmentPaths: files.map((file) => file.path).toList(),
+        isHTML: false,
+      );
+
+      await FlutterEmailSender.send(email);
+    });
+  }
+
   void sendFeedback() async{
-    File feedbackJson = new File('feedback.json');
-    await feedbackJson.writeAsString(jsonEncode(UserService.instance.getAllUserData()));
-    Share.shareFiles([feedbackJson.path], subject: "Draw Near Feedback");
-    
+    final Email email = Email(
+      body: 'Enter you feedback here...',
+      subject: 'Draw Near - User Feedback',
+      recipients: ['drawnear.dev@gmail.com'],
+      cc: ['techcatalyst.solutions@gmail.com'],
+      isHTML: false,
+    );
+
+    await FlutterEmailSender.send(email);
   }
-  }
+}

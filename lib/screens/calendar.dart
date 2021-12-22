@@ -101,9 +101,20 @@ class _CalendarPageState extends State<CalendarPage> {
         initialDate: selectedDate,
         firstDate: DateTime(selectedDate.year, 1, 1),
         lastDate: DateTime(selectedDate.year, 12, 31),
+        selectableDayPredicate: (DateTime date) {
+          if(date.isSameDayAs(DateTime.now())) return true;
+          return DevotionService.instance.devotionsMap.containsKey(Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString());
+        }
 
     );
     if(date!=null) {
+     if(date.isAfter(DateTime.now()))
+     {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('devotion_denied'.tr()),
+        ));
+        return;
+      }
       selectedDate = date;
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => DevotionPage(date)));

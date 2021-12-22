@@ -39,13 +39,14 @@ class _DevotionPageState extends State<DevotionPage> {
     print("in init state");
     try {
       _devotion = DevotionService.instance.getDevotionForDate(widget.date);
+      authors = AuthorService.instance.getAuthor(_devotion.author[0]);
     } on DevotionNotFoundException catch (e) {
       print("devotion not found");
       isDevotionAvailable = false;
       print(isDevotionAvailable);
       //Fluttertoast.showToast(msg: e.message);
     }
-    authors = AuthorService.instance.getAuthor(_devotion.author[0]);
+
 
     super.initState();
   }
@@ -84,7 +85,7 @@ class _DevotionPageState extends State<DevotionPage> {
                     UserService.instance.fontSize)));
 
     print(isDevotionAvailable);
-    return isDevotionAvailable ? Scaffold(
+    return isDevotionAvailable == true ? Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         elevation: 0,

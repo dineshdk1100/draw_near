@@ -1,63 +1,63 @@
 import 'package:country_code_picker/country_code_picker.dart';
-//import 'package:draw_near/provider/google_sign_in.dart';
-import 'package:draw_near/screens/base-home.dart';
 //import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/OTPController.dart';
+//import 'package:draw_near/provider/google_sign_in.dart';
+import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/util/color_theme.dart';
+import 'package:draw_near/util/offline-alert.dart';
 import 'package:easy_localization/src/public_ext.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-class LoginPage extends StatefulWidget{
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
   @override
   _LoginPageState createState() => _LoginPageState();
 }
-class _LoginPageState extends State<LoginPage>
-{
-  String dialCodeDigits="+91";
+
+class _LoginPageState extends State<LoginPage> {
+  String dialCodeDigits = "+91";
   TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: loginUI(),
-
     );
   }
 
-      loginControllers(BuildContext context){
-      return Container(
+  loginControllers(BuildContext context) {
+    return Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            colors: [
-             // Colors.blue.shade100,
-              Color(pastelThemePrimaryValue),
-            //Color(pastelThemePrimaryValue),
-            //  Color(pastelThemePrimaryValue),
+            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+          // Colors.blue.shade100,
+          Color(pastelThemePrimaryValue),
+          //Color(pastelThemePrimaryValue),
+          //  Color(pastelThemePrimaryValue),
 
-            Colors.white,
-              //Colors.red,
-            ]
-          )
-        ),
-        child: Column (
-            mainAxisAlignment: MainAxisAlignment.start,
-          children:<Widget>[
-            SizedBox(height: 40,),
-            Padding(padding: const EdgeInsets.all(15.0),
-              child: Image.asset("assets/images/logo_transparent.png", height: 160,),
+          Colors.white,
+          //Colors.red,
+        ])),
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
+            Widget>[
+          SizedBox(
+            height: 40,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Image.asset(
+              "assets/images/logo_transparent.png",
+              height: 160,
             ),
-            /*Padding(
+          ),
+          /*Padding(
               padding: EdgeInsets.all(20),
               child:Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,62 +68,75 @@ class _LoginPageState extends State<LoginPage>
                 ],
               ),
             ),*/
-            SizedBox(height:20),
-            Expanded(
+          SizedBox(height: 20),
+          Expanded(
               child: Container(
-                decoration: BoxDecoration(
-                 // color: Colors.white,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))
-                ),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.all(30),
-                    child: Column(
-                      children:<Widget>[
-                        Text('login'.tr(), style: TextStyle(fontSize: 20),),
-                        SizedBox(height: 20,),
-                        Container(
-                        child: Column(
-                          children: [
-                            SignInButton(
-                              Buttons.GoogleDark,
-                              text : ("Sign in with Google"),
-                              onPressed: () {
-                                Provider.of<LoginController>(context, listen: false)
-                                    .googleLogin();
-                              },
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(60),
+                          topRight: Radius.circular(60))),
+                  child: SingleChildScrollView(
+                      child: Padding(
+                          padding: EdgeInsets.all(30),
+                          child: Column(children: <Widget>[
+                            Text(
+                              'login'.tr(),
+                              style: TextStyle(
+                                  fontSize: 20, color: Colors.black54),
                             ),
-                          ],
-                        )
-                        ),
-                        SizedBox(height: 5,),
-                        Container(
-                            child: Column(
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                                child: Column(
                               children: [
                                 SignInButton(
-                                  Buttons.AppleDark,
-                                  //padding: EdgeInsets.all(8.0),
-                                  text: "Sign in with Apple",
-                                  onPressed: () {
-                                    Provider.of<LoginController>(context, listen: false)
-                                        .signInWithApple();
+                                  Buttons.GoogleDark,
+                                  text: ("Sign in with Google"),
+                                  onPressed: () async {
+                                    if (await isUserOffline(context)) return;
+                                    Provider.of<LoginController>(context,
+                                            listen: false)
+                                        .googleLogin();
                                   },
                                 ),
+                              ],
+                            )),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              child: Column(
+                                children: [
+                                  SignInButton(
+                                    Buttons.AppleDark,
+                                    //padding: EdgeInsets.all(8.0),
+                                    text: "Sign in with Apple",
+                                    onPressed: () async {
+                                      if (await isUserOffline(context)) return;
+                                      Provider.of<LoginController>(context,
+                                              listen: false)
+                                          .signInWithApple();
+                                    },
+                                  ),
                                   //SizedBox(height: 20,),
                                 ],
+                              ),
                             ),
-                        ),
-                        SizedBox(height: 5,),
-                        Container(
-                          child: Column(
-                              children:[
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              child: Column(children: [
                                 SignInButton(
                                   Buttons.Facebook,
                                   text: "Sign in with Facebook",
                                   //padding: EdgeInsets.all(6.0),
-                                  onPressed: () {
-                                    Provider.of<LoginController>(context, listen: false)
+                                  onPressed: () async {
+                                    if (await isUserOffline(context)) return;
+                                    Provider.of<LoginController>(context,
+                                            listen: false)
                                         .facebooklogin();
                                   },
                                 ),
@@ -155,12 +168,12 @@ class _LoginPageState extends State<LoginPage>
                           ),
                         ),
 
-
-                        Container(
-                          //height: 50,
-                          margin: EdgeInsets.only(top: 0, right: 10, left: 10),
-                          //color: Color(0xff1d1d1d),
-                         // borderRadius: BorderRadius.circular(15),
+                            Container(
+                              //height: 50,
+                              margin:
+                                  EdgeInsets.only(top: 0, right: 10, left: 10),
+                              //color: Color(0xff1d1d1d),
+                              // borderRadius: BorderRadius.circular(15),
 
                           child: TextFormField(
                           decoration: InputDecoration(
@@ -176,19 +189,20 @@ class _LoginPageState extends State<LoginPage>
                            keyboardType: TextInputType.phone,
                            //validator: validateMobile,
 
-                           controller: _controller,
-                          ),
-                        ),
-
-                        Container(
-                          margin: EdgeInsets.all(15),
-                          width: 150,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              //primary: Colors.blue.shade100, // background
-                              primary: Color(pastelThemePrimaryValue), // background
-                              onPrimary: Colors.white, // foreground
+                                controller: _controller,
+                              ),
                             ),
+
+                            Container(
+                                margin: EdgeInsets.all(15),
+                                width: 150,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    //primary: Colors.blue.shade100, // background
+                                    primary: Color(
+                                        pastelThemePrimaryValue), // background
+                                    onPrimary: Colors.white, // foreground
+                                  ),
 
                             onPressed: (){
                               if(!validateMobile(_controller.text)) {
@@ -208,20 +222,17 @@ class _LoginPageState extends State<LoginPage>
                             },
 
 
-                            //child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.black,fontWeight: FontWeight.bold),),
-                            child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',fontWeight: FontWeight.bold,color: Colors.black),),
-                          )
-                        )
-
-                      ]
-                    )
-                  )
-                )
-              )
-            )
-          ]
-        )
-      );
+                                  //child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.black,fontWeight: FontWeight.bold),),
+                                  child: Text(
+                                    'Verify',
+                                    style: TextStyle(
+                                        fontFamily: 'San Francisco',
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                ))
+                          ])))))
+        ]));
   }
 
   bool validateMobile(String value) {
@@ -236,24 +247,23 @@ class _LoginPageState extends State<LoginPage>
     return true;
   }
 
-  loginUI(){
+  loginUI() {
     return Consumer<LoginController>(
 
-    //var authStateChanges = FirebaseAuth.instance.authStateChanges();
-        builder: (context, models, child){
-
-      if(models.userDetails!=null){
+        //var authStateChanges = FirebaseAuth.instance.authStateChanges();
+        builder: (context, models, child) {
+      if (models.userDetails != null) {
         return Center(
           child: BaseHome(),
         );
-        Navigator.push(context, new MaterialPageRoute(builder: (context)=> BaseHome()));
-      }else{
+        Navigator.push(
+            context, new MaterialPageRoute(builder: (context) => BaseHome()));
+      } else {
         return loginControllers(context);
       }
       return Container();
     });
   }
-
 
   loggedInUI(LoginController model) {
     return Column(
@@ -265,7 +275,7 @@ class _LoginPageState extends State<LoginPage>
       children: [
         CircleAvatar(
           backgroundImage:
-          Image.network(model.userDetails?.photoURL ?? "").image,
+              Image.network(model.userDetails?.photoURL ?? "").image,
           radius: 50,
         ),
 
@@ -279,11 +289,7 @@ class _LoginPageState extends State<LoginPage>
             onPressed: () {
               Provider.of<LoginController>(context, listen: false).logout();
             })
-
-
       ],
     );
   }
-
-
 }

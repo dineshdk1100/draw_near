@@ -6,7 +6,7 @@ part 'theme_month.g.dart';
 class ThemeMonth {
   @JsonKey(name: 'Record Id')
   String recordId;
-  @JsonKey(name: 'Full Month')
+  @JsonKey(name: 'Full month')
   String fullMonth;
   @JsonKey(name: 'Title')
   String title;

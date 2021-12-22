@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draw_near/models/verse.dart';
 import 'package:draw_near/services/user-service.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class VerseService {
@@ -43,7 +44,8 @@ getVersesForCurrentLocale();
       VerseService.instance.saveVerse(doc.id, doc.data());
     });
     box.put('verses_${UserService.instance.locale}', jsonEncode(versesMap));
-
+    FirebaseCrashlytics.instance.setCustomKey('Verse size', versesMap.length);
+    FirebaseCrashlytics.instance.setCustomKey('Verse records', versesMap.keys.toString());
   }
 
 }

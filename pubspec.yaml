@@ -48,6 +48,9 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   cross_connectivity:
   share_plus: ^3.0.4
+  feedback: ^2.2.1
+  flutter_email_sender: ^5.0.2
+  path_provider: ^2.0.8
 
 
   #Google Sign In
@@ -114,10 +117,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto/Roboto-Light.ttf
+#  fonts:
+#    - family: Roboto
+#      fonts:
+#        - asset: assets/fonts/Roboto/Roboto-Light.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

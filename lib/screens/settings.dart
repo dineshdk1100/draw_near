@@ -1,17 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/provider/login_controller.dart';
-import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/edit_profile_page.dart';
 import 'package:draw_near/screens/language.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/notification-service.dart';
-import 'package:draw_near/services/profile_widget.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/constants.dart';
-import 'package:flutter/material.dart';
+import 'package:draw_near/util/offline-alert.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
 
@@ -40,24 +38,31 @@ class _SettingsState extends State<Settings> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           TextButton.icon(
-            onPressed: () {
+            onPressed: () async {
+              if (await isUserOffline(context)) return;
               if (!UserService.instance.isLoggedIn) {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               } else {
-
                 DownloadService.instance.removeLocalLastModified();
                 Provider.of<LoginController>(context, listen: false).logout();
-                UserService.instance.isLoggedIn = false;
-                print('is logged in');
-                print(UserService.instance.isLoggedIn);
+
                 //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> LoginPage()), (route) => false);
               }
             },
             icon: UserService.instance.isLoggedIn
-                ? Text('logout'.tr().toUpperCase(),style: TextStyle(color: Theme.of(context).textTheme.bodyText1?.color),)
-                : Text("login".tr().toUpperCase(), style: TextStyle(color: Theme.of(context).textTheme.bodyText1?.color)),
-            label: Icon(Icons.logout, color: Theme.of(context).textTheme.bodyText1?.color,),
+                ? Text(
+                    'logout'.tr().toUpperCase(),
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1?.color),
+                  )
+                : Text("login".tr().toUpperCase(),
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyText1?.color)),
+            label: Icon(
+              Icons.logout,
+              color: Theme.of(context).textTheme.bodyText1?.color,
+            ),
           )
         ],
       ),
@@ -70,15 +75,12 @@ class _SettingsState extends State<Settings> {
             children: <Widget>[
               Container(
                 width: mediaQueryData.size.width,
-                height: mediaQueryData.size.height * 0.12,
+                height: mediaQueryData.size.height * 0.10,
                 color: Theme.of(context).primaryColor,
               ),
-
-
               Positioned(
                 bottom: -50.0,
-                child:
-                CachedNetworkImage(
+                child: CachedNetworkImage(
                   height: 100,
                   fit: BoxFit.cover,
                   imageUrl: UserService.instance.userDetails.photoURL ?? '',
@@ -95,8 +97,6 @@ class _SettingsState extends State<Settings> {
                     backgroundImage: provider,
                   ),
                 ),
-
-
               ),
             ],
           ),
@@ -111,19 +111,25 @@ class _SettingsState extends State<Settings> {
           SizedBox(
             height: 10,
           ),
-          Text(UserService.instance.userDetails.email ?? '',
-              style: Theme.of(context).textTheme.subtitle1,
-              textAlign: TextAlign.center),
+          UserService.instance.userDetails.email != null &&
+                  UserService.instance.userDetails.email!.trim().isNotEmpty
+              ? Text(UserService.instance.userDetails.email ?? '',
+                  style: Theme.of(context).textTheme.subtitle1,
+                  textAlign: TextAlign.center)
+              : Container(),
           SizedBox(
             height: 8,
           ),
-          Text(UserService.instance.userDetails.phoneNumber ?? '',
-              style: Theme.of(context).textTheme.subtitle1,
-              textAlign: TextAlign.center),
-          Divider(
-            height: 24,
-          ),
+          UserService.instance.userDetails.phoneNumber != null &&
+                  UserService.instance.userDetails.phoneNumber!
+                      .trim()
+                      .isNotEmpty
+              ? Text(UserService.instance.userDetails.phoneNumber ?? '',
+                  style: Theme.of(context).textTheme.subtitle1,
+                  textAlign: TextAlign.center)
+              : Container(),
           ListTile(
+            //trailing: Icon(Icons.navigate_next),
             title: Text("Edit profile"),
             trailing: Icon(Icons.navigate_next),
             onTap: (){
@@ -174,45 +180,55 @@ class _SettingsState extends State<Settings> {
                         child:
                             Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
                         value: lang,
+                        enabled: lang == 'en_IN' ? true : false,
                       ))
                   .toList(),
             ),
           ),
           Divider(),
           ListTile(
+            minVerticalPadding: 0,
             title: Text("daily_reminder".tr()),
             trailing: Switch.adaptive(
                 value: UserService.instance.isReminderOn,
                 onChanged: (newValue) => setState(() {
                       UserService.instance.isReminderOn = newValue;
-                      if(newValue)
+                      if (newValue)
                         NotificationService.instance.scheduleNotification();
                       else
                         NotificationService.instance.cancelNotification();
                     })),
           ),
           ListTile(
+            minVerticalPadding: 0,
             enabled: UserService.instance.isReminderOn,
             onTap: onOpenTimePicker,
             // leading: Icon(
             //   Icons.edit_notifications,
             // ),
             title: Text('select_time'.tr()),
-            trailing: Text(UserService.instance.reminderTime.hour.toString().padLeft(2, '0') +
+            trailing: Text(UserService.instance.reminderTime.hour
+                    .toString()
+                    .padLeft(2, '0') +
                 ' : ' +
-                UserService.instance.reminderTime.minute.toString().padLeft(2, '0')),
+                UserService.instance.reminderTime.minute
+                    .toString()
+                    .padLeft(2, '0')),
           ),
           ListTile(
+            minVerticalPadding: 0,
             title: Text('Reminder not working ?'),
             trailing: Icon(Icons.navigate_next),
             onTap: () {
-              NotificationService.instance.showNotification();
+              //NotificationService.instance.showNotification();
               showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                         title: Text('Disable battery optimization'),
                         content: Text(
-                            'Some smartphones use battery optimization to close apps running in the background. This can cause reminders to get delayed or not work at all. We recommend you to disable battery optimization to ensure timely reminders.', textAlign: TextAlign.justify,),
+                          'Some smartphones use battery optimization to close apps running in the background. This can cause reminders to get delayed or not work at all. We recommend you to disable battery optimization to ensure timely reminders.',
+                          textAlign: TextAlign.justify,
+                        ),
                         actions: [
                           TextButton(
                               onPressed: () {
@@ -289,8 +305,7 @@ class _SettingsState extends State<Settings> {
     if (selectedTime != null) {
       setState(() {
         UserService.instance.reminderTime = selectedTime;
-      }
-      );
+      });
       await NotificationService.instance.cancelNotification();
       NotificationService.instance.scheduleNotification();
     }
