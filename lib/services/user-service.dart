@@ -44,6 +44,7 @@ class UserService {
   UserDetails get userDetails => _userDetails;
 
   set userDetails(UserDetails value) {
+    print(value.displayName);
     _userDetails = value;
     _baseBox.put('userDetails', jsonEncode(value.toJson()));
   }

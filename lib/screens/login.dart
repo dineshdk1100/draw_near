@@ -8,6 +8,7 @@ import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/src/public_ext.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +72,7 @@ class _LoginPageState extends State<LoginPage>
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
+                 // color: Colors.white,
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))
                 ),
@@ -79,7 +81,7 @@ class _LoginPageState extends State<LoginPage>
                     padding: EdgeInsets.all(30),
                     child: Column(
                       children:<Widget>[
-                        Text('login'.tr(), style: TextStyle(fontSize: 20,color: Colors.black54),),
+                        Text('login'.tr(), style: TextStyle(fontSize: 20),),
                         SizedBox(height: 20,),
                         Container(
                         child: Column(
@@ -131,14 +133,16 @@ class _LoginPageState extends State<LoginPage>
                         ),
                         SizedBox(height: 20,),
                         //Text("Forgot Password?", style: TextStyle(color: Colors.grey),),
-                        Text("or".tr(), style: TextStyle(color: Colors.black54),),
+                        Text("or".tr(), style: TextStyle(),),
                         SizedBox(height: 20,),
                         //SizedBox(height: 50,),
-                        Text("phone_number".tr(), style: TextStyle(color: Colors.black54),),
+                        Text("phone_number".tr(), style: TextStyle(),),
                         SizedBox(
                           width : 400,
                           height: 55,
                           child: CountryCodePicker(
+                            dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
                             onChanged: (country){
                               setState((){
                                 dialCodeDigits = country.dialCode!;
@@ -168,7 +172,7 @@ class _LoginPageState extends State<LoginPage>
 
                             )
                           ),
-                           maxLength: 10,
+
                            keyboardType: TextInputType.phone,
                            //validator: validateMobile,
 
@@ -187,6 +191,12 @@ class _LoginPageState extends State<LoginPage>
                             ),
 
                             onPressed: (){
+                              if(!validateMobile(_controller.text)) {
+                                Fluttertoast.showToast(
+                                    msg: 'Please enter valid mobile number');
+                                return;
+                              }
+
                                 Navigator.of(context).push(
                                     MaterialPageRoute(builder: (c) =>
                                         OTPControllerScreen(
@@ -214,16 +224,16 @@ class _LoginPageState extends State<LoginPage>
       );
   }
 
-  String? validateMobile(String value) {
-    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+  bool validateMobile(String value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{5,16}$)';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
-      return 'Please enter mobile number';
+      return false;
     }
     else if (!regExp.hasMatch(value)) {
-      return 'Please enter valid mobile number';
+      return false;
     }
-    return null;
+    return true;
   }
 
   loginUI(){

@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/screens/devotion.dart';
+import 'package:draw_near/screens/theme_month_details.dart';
 import 'package:draw_near/services/carousel-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/user-service.dart';
@@ -132,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                 child: ListTile(
                   trailing: Icon(Icons.navigate_next),
                   leading: Icon(Icons.accessibility_new_outlined),
-                  title: Text("Gratitude"),
+                  title: Text("Stay Tuned!"),
                   subtitle: Text('theme_month'.tr(namedArgs: {'month': DateFormat( "MMMM",context.locale.languageCode).format(DateTime.now())})),
                   onTap: navigateToThemePage,
                 ),
@@ -183,7 +184,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   navigateToThemePage(){
-
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> ThemeMonthDetails('January')));
   }
 
   void onPopUpMenuItemSelected(int value) {

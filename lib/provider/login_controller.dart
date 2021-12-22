@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import 'package:draw_near/services/user-service.dart';
@@ -110,13 +111,15 @@ class LoginController with ChangeNotifier {
     }
   }
 
-  Future<User> signInWithApple({List<Scope> scopes = const []}) async {
+  Future<User> signInWithApple({List<Scope> scopes = const [ Scope.email,
+    Scope.fullName]}) async {
     // 1. perform the sign-in request
     final result = await TheAppleSignIn.performRequests(
         [AppleIdRequest(requestedScopes: scopes)]);
     // 2. check the result
     switch (result.status) {
       case AuthorizationStatus.authorized:
+        print(result.credential?.toMap().toString());
         final appleIdCredential = result.credential!;
         final oAuthProvider = OAuthProvider('apple.com');
         final credential = oAuthProvider.credential(
@@ -127,15 +130,32 @@ class LoginController with ChangeNotifier {
         final userCredential =
         await _firebaseAuth.signInWithCredential(credential);
         final firebaseUser = userCredential.user!;
-        if (scopes.contains(Scope.fullName)) {
+        var displayName = "User";
+
           final fullName = appleIdCredential.fullName;
           if (fullName != null &&
               fullName.givenName != null &&
               fullName.familyName != null) {
-            final displayName = '${fullName.givenName} ${fullName.familyName}';
+            displayName = '${fullName.givenName} ${fullName.familyName}';
             await firebaseUser.updateDisplayName(displayName);
           }
-        }
+
+          final email = appleIdCredential.email;
+          await firebaseUser.updateDisplayName(displayName);
+
+        this.userDetails = new UserDetails(
+            userCredential.user!.uid,
+            displayName,
+            email: email ?? "",
+            photoURL: "https://www.google.co.in",
+            phoneNumber: ""
+        );
+        await  FirebaseFirestore.instance.collection('users').doc(userDetails?.uid).set(userDetails!.toJson());
+        UserService.instance.userDetails = this.userDetails!;
+        UserService.instance.isLoggedIn = true;
+        notifyListeners();
+
+
         return firebaseUser;
       case AuthorizationStatus.error:
         throw PlatformException(

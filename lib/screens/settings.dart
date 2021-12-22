@@ -125,13 +125,15 @@ class _SettingsState extends State<Settings> {
           ),
           ListTile(
             title: Text("Edit profile"),
+            trailing: Icon(Icons.navigate_next),
             onTap: (){
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => Language()),
-                );
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                ).then((value) => setState((){}));
 
             },
           ),
+          Divider(),
           ListTile(
             //isThreeLine: true,
             title: Text("offline_mode".tr()),

@@ -3,6 +3,7 @@ import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/services/author-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/song-service.dart';
+import 'package:draw_near/services/theme-month-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/services/verse-service.dart';
 import 'package:draw_near/util/constants.dart';
@@ -33,6 +34,7 @@ class DownloadService {
     await _downloadSongs();
     await _downloadVerses();
     await _downloadAuthors();
+    await _downloadThemeMonths();
     _box.put('lastModified', DateTime.now().toUtc().millisecondsSinceEpoch);
     Fluttertoast.showToast(msg: "Update complete");
 
@@ -91,5 +93,20 @@ class DownloadService {
 
     print('\n\n Authors \n\n');
     AuthorService.instance.saveAuthors(snapshots);
+  }
+
+  _downloadThemeMonths() async {
+
+    ///iterate over months, fetch data from cloud and local and update the local data
+    for (int monthIndex = 0; monthIndex < MONTHS_IN_YEAR.length; monthIndex++) {
+      var snapshots = await FirebaseFirestore.instance
+          .collection('themeMonth_$downloadingLocale')
+          .where('Last Modified Time',
+          isGreaterThanOrEqualTo: localLastModified - 3600000)
+          .get();
+
+      print('\n\n Theme months \n\n');
+      ThemeMonthService.instance.saveThemeMonths(snapshots);
+    }
   }
 }
