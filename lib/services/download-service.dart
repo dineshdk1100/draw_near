@@ -39,23 +39,24 @@ class DownloadService {
                 .inHours <
             12) return;
         Fluttertoast.showToast(msg: "Checking for devotion updates");
-        retrievedDocCount+= await _downloadDevotions() ?? 0;
-        retrievedDocCount+= await _downloadSongs() ?? 0;
-        retrievedDocCount+= await _downloadVerses() ?? 0;
-        retrievedDocCount+= await _downloadAuthors() ?? 0;
-        if(retrievedDocCount > 0) {
-          _box.put('lastModified', DateTime.now().toUtc().millisecondsSinceEpoch);
+        retrievedDocCount += await _downloadDevotions() ?? 0;
+        retrievedDocCount += await _downloadSongs() ?? 0;
+        retrievedDocCount += await _downloadVerses() ?? 0;
+        retrievedDocCount += await _downloadAuthors() ?? 0;
+        if (retrievedDocCount > 0) {
+          _box.put(
+              'lastModified', DateTime.now().toUtc().millisecondsSinceEpoch);
           Fluttertoast.showToast(msg: "Update complete");
-        }
-        else
+        } else
           Fluttertoast.showToast(msg: "No new updates");
         _subscription.cancel();
       }
     });
   }
 
-  Future<int?>_downloadDevotions() async {
+  Future<int?> _downloadDevotions() async {
     QuerySnapshot<Map<String, dynamic>>? snapshots;
+
     ///iterate over months, fetch data from cloud and local and update the local data
     for (int monthIndex = 0; monthIndex < MONTHS_IN_YEAR.length; monthIndex++) {
       snapshots = await FirebaseFirestore.instance
@@ -77,7 +78,7 @@ class DownloadService {
         defaultValue: DateTime.utc(2020).millisecondsSinceEpoch);
   }
 
-  Future<int?>_downloadSongs() async {
+  Future<int?> _downloadSongs() async {
     var snapshots = await FirebaseFirestore.instance
         .collection('songs_$downloadingLocale')
         .where('Last Modified Time',
@@ -89,7 +90,7 @@ class DownloadService {
     return snapshots.docs.length;
   }
 
-  Future<int?>_downloadVerses() async {
+  Future<int?> _downloadVerses() async {
     var snapshots = await FirebaseFirestore.instance
         .collection('verses_$downloadingLocale')
         .where('Last Modified Time',
@@ -101,7 +102,7 @@ class DownloadService {
     return snapshots.docs.length;
   }
 
-  Future<int?>_downloadAuthors() async {
+  Future<int?> _downloadAuthors() async {
     var snapshots = await FirebaseFirestore.instance
         .collection('authors_$downloadingLocale')
         .where('Last Modified Time',
