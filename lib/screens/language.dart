@@ -35,13 +35,14 @@ class _language extends State<Language> {
           SizedBox(height: 20,),
         ListTile(
           isThreeLine: true,
-          title: Text("change_lang".tr()),
+          title: Text("change_lang".tr() + '  (மொழியை மாற்றவும்)'),
           subtitle: Text("change_lang_desc".tr()),
           trailing: DropdownButton(
             onChanged: onSelectLanguage,
             value: context.locale.toString(),
             items: AVAILABLE_LANGUAGES.keys
                 .map((lang) => DropdownMenuItem(
+              enabled: lang == 'en_IN' ? true : false,
               child: Text(
                   AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
               value: lang,
