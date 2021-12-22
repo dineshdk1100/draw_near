@@ -57,33 +57,39 @@ class _OnboardingState extends State<Onboarding> {
               },
               itemBuilder: (_, i) {
                 return Padding(
-                  padding: const EdgeInsets.all(28),
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        contents[i].image,
-                        height: 250,
-                      ),
-                  Text(
-                        contents[i].title,
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
+                  padding: const EdgeInsets.all(30),
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(padding: EdgeInsets.all(10),
+                        child: Image.asset(
+                          contents[i].image,
+                          height: 230,
+                        ),),
+                    Text(
+                          contents[i].title,
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 5),
+                        SizedBox(height: 15),
                 new Expanded(child: new SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: new Text(
-                        contents[i].description,
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black54,
-                        ),
-                      )
+                          contents[i].description,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            fontSize: 18,
+                            //color: Colors.black54,
+                          ),
+                        )
                 ),),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
@@ -104,7 +110,7 @@ class _OnboardingState extends State<Onboarding> {
 
           Container(
             height: 60,
-            margin: EdgeInsets.all(40),
+            margin: EdgeInsets.all(30),
             width: double.infinity,
             child: FlatButton(
               child: Text(
@@ -124,7 +130,7 @@ class _OnboardingState extends State<Onboarding> {
                 );
               },
               //color: Colors.blue.shade100,
-              textColor: Colors.black,
+              //textColor: Colors.black,
               color: Color(pastelThemePrimaryValue),
               //textColor: Colors.white,
               shape: RoundedRectangleBorder(

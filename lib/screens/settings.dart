@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draw_near/provider/login_controller.dart';
+import 'package:draw_near/screens/edit_profile_page.dart';
 import 'package:draw_near/screens/language.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/download-service.dart';
@@ -128,12 +129,14 @@ class _SettingsState extends State<Settings> {
                   textAlign: TextAlign.center)
               : Container(),
           ListTile(
-            trailing: Icon(Icons.navigate_next),
+            //trailing: Icon(Icons.navigate_next),
             title: Text("Edit profile"),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => Language()),
-              );
+            trailing: Icon(Icons.navigate_next),
+            onTap: (){
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                ).then((value) => setState((){}));
+
             },
           ),
           Divider(),

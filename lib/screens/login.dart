@@ -9,6 +9,7 @@ import 'package:draw_near/util/offline-alert.dart';
 import 'package:easy_localization/src/public_ext.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -140,39 +141,32 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                 ),
                                 //SizedBox(height: 20,),
-                              ]),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            //Text("Forgot Password?", style: TextStyle(color: Colors.grey),),
-                            Text(
-                              "or".tr(),
-                              style: TextStyle(color: Colors.black54),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            //SizedBox(height: 50,),
-                            Text(
-                              "phone_number".tr(),
-                              style: TextStyle(color: Colors.black54),
-                            ),
-                            SizedBox(
-                              width: 400,
-                              height: 55,
-                              child: CountryCodePicker(
-                                onChanged: (country) {
-                                  setState(() {
-                                    dialCodeDigits = country.dialCode!;
-                                  });
-                                },
-                                initialSelection: "IN",
-                                showCountryOnly: false,
-                                showOnlyCountryWhenClosed: false,
-                                favorite: ["+91", "IN", "+1", "US"],
-                              ),
-                            ),
+                              ]
+                          ),
+                        ),
+                        SizedBox(height: 20,),
+                        //Text("Forgot Password?", style: TextStyle(color: Colors.grey),),
+                        Text("or".tr(), style: TextStyle(),),
+                        SizedBox(height: 20,),
+                        //SizedBox(height: 50,),
+                        Text("phone_number".tr(), style: TextStyle(),),
+                        SizedBox(
+                          width : 400,
+                          height: 55,
+                          child: CountryCodePicker(
+                            dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
+                            onChanged: (country){
+                              setState((){
+                                dialCodeDigits = country.dialCode!;
+                              });
+                          },
+                            initialSelection: "IN",
+                            showCountryOnly: false,
+                            showOnlyCountryWhenClosed: false,
+                            favorite: ["+91","IN", "+1","US"],
+                          ),
+                        ),
 
                             Container(
                               //height: 50,
@@ -181,16 +175,19 @@ class _LoginPageState extends State<LoginPage> {
                               //color: Color(0xff1d1d1d),
                               // borderRadius: BorderRadius.circular(15),
 
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                    hintText: "phone_hint".tr(),
-                                    prefix: Padding(
-                                      padding: EdgeInsets.all(2),
-                                      child: Text(dialCodeDigits),
-                                    )),
-                                maxLength: 10,
-                                keyboardType: TextInputType.phone,
-                                //validator: validateMobile,
+                          child: TextFormField(
+                          decoration: InputDecoration(
+
+                            hintText: "phone_hint".tr(),
+                            prefix: Padding(
+                              padding: EdgeInsets.all(2),
+                              child: Text(dialCodeDigits),
+
+                            )
+                          ),
+
+                           keyboardType: TextInputType.phone,
+                           //validator: validateMobile,
 
                                 controller: _controller,
                               ),
@@ -207,16 +204,23 @@ class _LoginPageState extends State<LoginPage> {
                                     onPrimary: Colors.white, // foreground
                                   ),
 
-                                  onPressed: () async {
-                                    if (await isUserOffline(context)) return;
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (c) => OTPControllerScreen(
-                                                  phone: _controller.text,
-                                                  codeDigits: dialCodeDigits,
-                                                )));
-                                    // }
-                                  },
+                            onPressed: (){
+                              if(!validateMobile(_controller.text)) {
+                                Fluttertoast.showToast(
+                                    msg: 'Please enter valid mobile number');
+                                return;
+                              }
+
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (c) =>
+                                        OTPControllerScreen(
+                                          phone: _controller.text,
+                                          codeDigits: dialCodeDigits,
+                                        )));
+                             // }
+
+                            },
+
 
                                   //child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.black,fontWeight: FontWeight.bold),),
                                   child: Text(
@@ -231,15 +235,16 @@ class _LoginPageState extends State<LoginPage> {
         ]));
   }
 
-  String? validateMobile(String value) {
-    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+  bool validateMobile(String value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{5,16}$)';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
-      return 'Please enter mobile number';
-    } else if (!regExp.hasMatch(value)) {
-      return 'Please enter valid mobile number';
+      return false;
     }
-    return null;
+    else if (!regExp.hasMatch(value)) {
+      return false;
+    }
+    return true;
   }
 
   loginUI() {

@@ -3,7 +3,8 @@ import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/constants.dart';
 import 'package:easy_localization/src/public_ext.dart';
-import 'package:flutter/materialandler.dart';
+import 'package:flutter/material.dart';
+//import 'package:flutter/materialandler.dart';
 
 class Language extends StatefulWidget {
   @override
@@ -115,8 +116,7 @@ class _language extends State<Language> {
                 ));
                 // }
               },
-              child: Text(
-                'OK',
+              child: Text('OK',
                 style: TextStyle(
                     fontFamily: 'San Francisco',
                     color: Colors.black,

@@ -272,7 +272,7 @@ class _DevotionPageState extends State<DevotionPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "author".tr(),
+                "by".tr(),
                 //_devotion.timestamp.toIso8601String(),
                 style: subtitle2,
               ),

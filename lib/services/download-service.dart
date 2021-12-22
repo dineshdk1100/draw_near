@@ -5,6 +5,7 @@ import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:draw_near/services/author-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/song-service.dart';
+import 'package:draw_near/services/theme-month-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/services/verse-service.dart';
 import 'package:draw_near/util/constants.dart';
@@ -43,12 +44,18 @@ class DownloadService {
         retrievedDocCount += await _downloadSongs() ?? 0;
         retrievedDocCount += await _downloadVerses() ?? 0;
         retrievedDocCount += await _downloadAuthors() ?? 0;
+        await _downloadThemeMonths();
         if (retrievedDocCount > 0) {
           _box.put(
               'lastModified', DateTime.now().toUtc().millisecondsSinceEpoch);
           Fluttertoast.showToast(msg: "Update complete");
         } else
           Fluttertoast.showToast(msg: "No new updates");
+        _box.put('lastModified', DateTime
+            .now()
+            .toUtc()
+            .millisecondsSinceEpoch);
+        Fluttertoast.showToast(msg: "Update complete");
         _subscription.cancel();
       }
     });
@@ -112,5 +119,20 @@ class DownloadService {
     print('\n\n Authors \n\n');
     AuthorService.instance.saveAuthors(snapshots);
     return snapshots.docs.length;
+  }
+
+  _downloadThemeMonths() async {
+
+    ///iterate over months, fetch data from cloud and local and update the local data
+      var snapshots = await FirebaseFirestore.instance
+          .collection('themeMonth_$downloadingLocale')
+          .where('Last Modified Time',
+          isGreaterThanOrEqualTo: localLastModified - 3600000)
+          .get();
+
+      print('\n\n Theme months \n\n');
+      print(localLastModified);
+      print(snapshots.docs.length);
+      ThemeMonthService.instance.saveThemeMonths(snapshots);
   }
 }

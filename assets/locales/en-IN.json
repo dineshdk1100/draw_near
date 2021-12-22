@@ -10,7 +10,7 @@
   "logout": "Logout",
   "login": "LOGIN",
   "song": "Song",
-  "author": "By - ",
+  "by": "By - ",
   "song": "Song ",
   "author": "Author",
   "about_author": "About the @:author",
@@ -39,6 +39,6 @@
   "select_time": "Select time",
   "daily_reminder": "Daily Reminder",
   "notification_title": "It's Devotion Time",
-  "notification_body": "Reminder to read your devotion everyday"
-
+  "notification_body": "Reminder to read your devotion everyday",
+  "profile_info": "Edit Profile"
 }

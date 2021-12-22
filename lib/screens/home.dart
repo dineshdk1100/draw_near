@@ -1,16 +1,19 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/devotion.dart';
+import 'package:draw_near/models/theme_month.dart';
 import 'package:draw_near/screens/devotion.dart';
+import 'package:draw_near/screens/theme_month_details.dart';
 import 'package:draw_near/services/carousel-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
+import 'package:draw_near/services/theme-month-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
+import 'package:draw_near/util/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,10 +39,12 @@ class _HomePageState extends State<HomePage> {
   ];
   DevotionService _devotionService = DevotionService.instance;
   Devotion? devotion;
+  ThemeMonth? themeMonth;
   _HomePageState() {
     getCarouselImages().then((urls) => {});
 
     try {
+      themeMonth = ThemeMonthService.instance.getThemeMonth(MONTHS_IN_YEAR[DateTime.now().month-1]);
       devotion = _devotionService.getDevotionForDate(DateTime.now());
     } on DevotionNotFoundException catch (e) {
       //Fluttertoast.showToast(msg: e.message);
@@ -146,11 +151,14 @@ class _HomePageState extends State<HomePage> {
                 child: ListTile(
                   trailing: Icon(Icons.navigate_next),
                   leading: Icon(Icons.accessibility_new_outlined),
-                  title: Text("Gratitude"),
+                 /* title: Text("Gratitude"),
                   subtitle: Text('theme_month'.tr(namedArgs: {
                     'month': DateFormat("MMMM", context.locale.languageCode)
                         .format(DateTime.now())
-                  })),
+                  })),*/
+
+                  title: DateTime.now().year == 2021  ? Text("Gratitude") : Text(themeMonth?.fullMonth ?? "Unavailable"),
+                  subtitle: Text('theme_month'.tr(namedArgs: {'month': DateFormat( "MMMM",context.locale.languageCode).format(DateTime.now())})),
                   onTap: navigateToThemePage,
                 ),
               ),
@@ -201,7 +209,14 @@ class _HomePageState extends State<HomePage> {
         MaterialPageRoute(builder: (context) => DevotionPage(DateTime.now())));
   }
 
-  navigateToThemePage() {}
+  navigateToThemePage(){
+    if(DateTime.now().year == 2021)
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> ThemeMonthDetails(MONTHS_IN_YEAR[DateTime.now().month-1])));
+    else
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> ThemeMonthDetails(MONTHS_IN_YEAR[DateTime.now().month-1])));
+
+
+  }
 
   void onPopUpMenuItemSelected(int value) {
     switch (value) {
