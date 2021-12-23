@@ -1,17 +1,13 @@
 import 'dart:convert';
-import 'dart:ui';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:draw_near/models/user.dart';
 import 'package:draw_near/services/author-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
-import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/song-service.dart';
 import 'package:draw_near/services/verse-service.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jiffy/jiffy.dart';
 
 class UserService {
   static final UserService instance = UserService._internal();
@@ -44,7 +40,7 @@ class UserService {
     _userDetails = UserDetails.fromJson(jsonDecode(
         _baseBox.get('userDetails', defaultValue: jsonEncode(data))));
     String reminderTimeString =
-    _baseBox.get('reminder_time', defaultValue: '10:0');
+        _baseBox.get('reminder_time', defaultValue: '10:0');
     _reminderTime = TimeOfDay(
         hour: int.parse(reminderTimeString.split(':')[0]),
         minute: int.parse(reminderTimeString.split(':')[1]));
@@ -65,7 +61,8 @@ class UserService {
     int hour = value.hour;
     int minute = value.minute;
     _baseBox.put('reminder_time', hour.toString() + ':' + minute.toString());
-    FirebaseCrashlytics.instance.setCustomKey('reminder_time', hour.toString() + ':' + minute.toString());
+    FirebaseCrashlytics.instance.setCustomKey(
+        'reminder_time', hour.toString() + ':' + minute.toString());
   }
 
   UserDetails get userDetails => _userDetails;
@@ -74,8 +71,8 @@ class UserService {
     print(value.displayName);
     _userDetails = value;
     _baseBox.put('userDetails', jsonEncode(value.toJson()));
-    FirebaseCrashlytics.instance.setCustomKey('userDetails',  jsonEncode(value.toJson()));
-
+    FirebaseCrashlytics.instance
+        .setCustomKey('userDetails', jsonEncode(value.toJson()));
   }
 
   String get locale => _locale;
@@ -86,8 +83,7 @@ class UserService {
     SongService.instance.getSongsForCurrentLocale();
     VerseService.instance.getVersesForCurrentLocale();
     AuthorService.instance.getAuthorsForCurrentLocale();
-    FirebaseCrashlytics.instance.setCustomKey('locale',  value);
-
+    FirebaseCrashlytics.instance.setCustomKey('locale', value);
   }
 
   String get theme => _theme;
@@ -95,8 +91,7 @@ class UserService {
   set theme(String value) {
     _theme = value;
     _baseBox.put('theme', _theme);
-    FirebaseCrashlytics.instance.setCustomKey('theme',  value);
-
+    FirebaseCrashlytics.instance.setCustomKey('theme', value);
   }
 
   bool get isLoggedIn => _isLoggedIn;
@@ -104,8 +99,7 @@ class UserService {
   set isLoggedIn(bool value) {
     _isLoggedIn = value;
     _baseBox.put('loggedIn', value);
-    FirebaseCrashlytics.instance.setCustomKey('loggedIn',  value);
-
+    FirebaseCrashlytics.instance.setCustomKey('loggedIn', value);
   }
 
   bool get isAppInitialized => _isAppInitialized;
@@ -113,8 +107,7 @@ class UserService {
   set isAppInitialized(bool value) {
     _isAppInitialized = value;
     _baseBox.put('app_initialized', value);
-    FirebaseCrashlytics.instance.setCustomKey('app_initialized',  value);
-
+    FirebaseCrashlytics.instance.setCustomKey('app_initialized', value);
   }
 
   double get fontSize => _fontSize;
@@ -122,8 +115,7 @@ class UserService {
   set fontSize(double value) {
     _fontSize = value;
     _baseBox.put('fontSize', value);
-    FirebaseCrashlytics.instance.setCustomKey('fontSize',  value);
-
+    FirebaseCrashlytics.instance.setCustomKey('fontSize', value);
   }
 
   double get bodyTextStyleHeight => _bodyTextStyleHeight;
@@ -131,8 +123,7 @@ class UserService {
   set bodyTextStyleHeight(double value) {
     _bodyTextStyleHeight = value;
     _baseBox.put('bodyTextStyleHeight', value);
-    FirebaseCrashlytics.instance.setCustomKey('bodyTextStyleHeight',  value);
-
+    FirebaseCrashlytics.instance.setCustomKey('bodyTextStyleHeight', value);
   }
 
   removeUserDetails() {
@@ -141,13 +132,15 @@ class UserService {
 
   Map<dynamic, dynamic> getAllUserData() {
     Map<dynamic, dynamic> map = _baseBox.toMap();
-    map.update(UserService.instance.locale, (value) => DevotionService.instance.devotionsMap.length);
-    map.update('authors_${UserService.instance.locale}', (value) => jsonDecode(value).length);
-    map.update('songs_${UserService.instance.locale}', (value) => jsonDecode(value).length);
-    map.update('verses_${UserService.instance.locale}', (value) => jsonDecode(value).length);
+    map.update(UserService.instance.locale,
+        (value) => DevotionService.instance.devotionsMap.length);
+    map.update('authors_${UserService.instance.locale}',
+        (value) => jsonDecode(value).length);
+    map.update('songs_${UserService.instance.locale}',
+        (value) => jsonDecode(value).length);
+    map.update('verses_${UserService.instance.locale}',
+        (value) => jsonDecode(value).length);
 
     return map;
   }
-
-
 }

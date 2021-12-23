@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' show Directory, File, Platform;
 
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -19,11 +20,9 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:io' show Directory, File, Platform;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,15 +39,19 @@ class _HomePageState extends State<HomePage> {
   DevotionService _devotionService = DevotionService.instance;
   Devotion? devotion;
   ThemeMonth? themeMonth;
-  _HomePageState() {
-    getCarouselImages().then((urls) => {});
-
+  List? images;
+  @override
+  void initState() {
     try {
-      themeMonth = ThemeMonthService.instance.getThemeMonth(MONTHS_IN_YEAR[DateTime.now().month-1]);
+      images = CarouselImageService.instance.getCarouselImages();
+      print(images);
+      themeMonth = ThemeMonthService.instance
+          .getThemeMonth(MONTHS_IN_YEAR[DateTime.now().month - 1]);
       devotion = _devotionService.getDevotionForDate(DateTime.now());
     } on DevotionNotFoundException catch (e) {
       //Fluttertoast.showToast(msg: e.message);
     }
+    super.initState();
   }
 
   @override
@@ -108,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                           end: Alignment.bottomCenter)),
                   margin: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
                   child: CarouselSlider.builder(
-                    itemCount: carouselImageUrls.length,
+                    itemCount: images?.length ?? 0,
                     options: CarouselOptions(
                         autoPlay: true, enlargeCenterPage: true),
                     itemBuilder: (BuildContext context, int itemIndex,
@@ -118,7 +121,8 @@ class _HomePageState extends State<HomePage> {
                       child: OctoImage.fromSet(
                         width: width,
                         fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
+                        image: CachedNetworkImageProvider(images?[itemIndex]
+                                ['url'] ??
                             carouselImageUrls[itemIndex]),
                         octoSet: OctoSet.circularIndicatorAndIcon(
                             showProgress: true),
@@ -151,14 +155,19 @@ class _HomePageState extends State<HomePage> {
                 child: ListTile(
                   trailing: Icon(Icons.navigate_next),
                   leading: Icon(Icons.accessibility_new_outlined),
-                 /* title: Text("Gratitude"),
+                  /* title: Text("Gratitude"),
                   subtitle: Text('theme_month'.tr(namedArgs: {
                     'month': DateFormat("MMMM", context.locale.languageCode)
                         .format(DateTime.now())
                   })),*/
 
-                  title: DateTime.now().year == 2021  ? Text("Gratitude") : Text(themeMonth?.fullMonth ?? "Unavailable"),
-                  subtitle: Text('theme_month'.tr(namedArgs: {'month': DateFormat( "MMMM",context.locale.languageCode).format(DateTime.now())})),
+                  title: DateTime.now().year == 2021
+                      ? Text("Gratitude")
+                      : Text(themeMonth?.fullMonth ?? "Unavailable"),
+                  subtitle: Text('theme_month'.tr(namedArgs: {
+                    'month': DateFormat("MMMM", context.locale.languageCode)
+                        .format(DateTime.now())
+                  })),
                   onTap: navigateToThemePage,
                 ),
               ),
@@ -209,13 +218,18 @@ class _HomePageState extends State<HomePage> {
         MaterialPageRoute(builder: (context) => DevotionPage(DateTime.now())));
   }
 
-  navigateToThemePage(){
-    if(DateTime.now().year == 2021)
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> ThemeMonthDetails(MONTHS_IN_YEAR[DateTime.now().month-1])));
+  navigateToThemePage() {
+    if (DateTime.now().year == 2021)
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ThemeMonthDetails('january')));
     else
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> ThemeMonthDetails(MONTHS_IN_YEAR[DateTime.now().month-1])));
-
-
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  ThemeMonthDetails(MONTHS_IN_YEAR[DateTime.now().month - 1])));
   }
 
   void onPopUpMenuItemSelected(int value) {
@@ -240,15 +254,17 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void sendReport() async{
+  void sendReport() async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     List<File> files = [];
-    files.add(await File(tempPath + '/log_data.json').create()..writeAsString( jsonEncode(UserService.instance.getAllUserData())));
+    files.add(await File(tempPath + '/log_data.json').create()
+      ..writeAsString(jsonEncode(UserService.instance.getAllUserData())));
 
     BetterFeedback.of(context).show((UserFeedback feedback) async {
       print('feed');
-      files.add(await File(tempPath + '/screenshot.png').create()..writeAsBytes(feedback.screenshot));
+      files.add(await File(tempPath + '/screenshot.png').create()
+        ..writeAsBytes(feedback.screenshot));
 
       final Email email = Email(
         body: feedback.text,
@@ -263,7 +279,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void sendFeedback() async{
+  void sendFeedback() async {
     final Email email = Email(
       body: 'Enter you feedback here...',
       subject: 'Draw Near - User Feedback',

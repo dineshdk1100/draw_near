@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/edit_profile_page.dart';
-import 'package:draw_near/screens/language.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/notification-service.dart';
@@ -45,6 +44,7 @@ class _SettingsState extends State<Settings> {
                     MaterialPageRoute(builder: (context) => LoginPage()));
               } else {
                 DownloadService.instance.removeLocalLastModified();
+                DownloadService.instance.initialize();
                 Provider.of<LoginController>(context, listen: false).logout();
 
                 //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> LoginPage()), (route) => false);
@@ -132,11 +132,12 @@ class _SettingsState extends State<Settings> {
             //trailing: Icon(Icons.navigate_next),
             title: Text("Edit profile"),
             trailing: Icon(Icons.navigate_next),
-            onTap: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                ).then((value) => setState((){}));
-
+            onTap: () {
+              Navigator.of(context)
+                  .push(
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  )
+                  .then((value) => setState(() {}));
             },
           ),
           Divider(),

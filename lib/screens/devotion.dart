@@ -2,21 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/author.dart';
 import 'package:draw_near/models/devotion.dart';
-import 'package:draw_near/screens/devotion-unavailable.dart';
 import 'package:draw_near/screens/song-details.dart';
 import 'package:draw_near/screens/verse-details.dart';
 import 'package:draw_near/services/author-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/user-service.dart';
-import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
-import 'author-details.dart';
 
 class DevotionPage extends StatefulWidget {
   final DateTime date;
@@ -46,7 +40,6 @@ class _DevotionPageState extends State<DevotionPage> {
       print(isDevotionAvailable);
       //Fluttertoast.showToast(msg: e.message);
     }
-
 
     super.initState();
   }
@@ -79,273 +72,305 @@ class _DevotionPageState extends State<DevotionPage> {
             fontStyle: FontStyle.italic));
     TextStyle? author = GoogleFonts.robotoSlab(
         textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-
             fontSize:
                 (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
                     UserService.instance.fontSize)));
 
     print(isDevotionAvailable);
-    return isDevotionAvailable == true ? Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        actions: [
-          ToggleButtons(
-              fillColor: Colors.transparent,
-              renderBorder: false,
-              children: [
-                Icon(Icons.menu),
-                Icon(Icons.reorder),
+    return isDevotionAvailable == true
+        ? Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              actions: [
+                ToggleButtons(
+                    fillColor: Colors.transparent,
+                    renderBorder: false,
+                    children: [
+                      Icon(Icons.menu),
+                      Icon(Icons.reorder),
+                    ],
+                    onPressed: (index) => setState(() {
+                          if (index == 0)
+                            UserService.instance.bodyTextStyleHeight = 1.7;
+                          else
+                            UserService.instance.bodyTextStyleHeight = 1.5;
+                          for (int i = 0; i < isSelected.length; i++)
+                            if (i == index)
+                              isSelected[i] = true;
+                            else
+                              isSelected[i] = false;
+                        }),
+                    isSelected: isSelected),
+                VerticalDivider(
+                  width: 32,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                IconButton(
+                    onPressed: UserService.instance.fontSize <= -2
+                        ? null
+                        : () {
+                            onFontSizeDecrease();
+                          },
+                    icon: Icon(MdiIcons.formatFontSizeDecrease)),
+                IconButton(
+                  onPressed: UserService.instance.fontSize >= 10
+                      ? null
+                      : () {
+                          onFontSizeIncrease();
+                        },
+                  icon: Icon(
+                    MdiIcons.formatFontSizeIncrease,
+                  ),
+                ),
               ],
-              onPressed: (index) => setState(() {
-                    if (index == 0)
-                      UserService.instance.bodyTextStyleHeight = 1.7;
-                    else
-                      UserService.instance.bodyTextStyleHeight = 1.5;
-                    for (int i = 0; i < isSelected.length; i++)
-                      if (i == index)
-                        isSelected[i] = true;
-                      else
-                        isSelected[i] = false;
-                  }),
-              isSelected: isSelected),
-          VerticalDivider(
-            width: 32,
-            indent: 10,
-            endIndent: 10,
-          ),
-          IconButton(
-              onPressed: UserService.instance.fontSize <= -2
-                  ? null
-                  : () {
-                      onFontSizeDecrease();
-                    },
-              icon: Icon(MdiIcons.formatFontSizeDecrease)),
-          IconButton(
-            onPressed: UserService.instance.fontSize >= 10
-                ? null
-                : () {
-                    onFontSizeIncrease();
-                  },
-            icon: Icon(
-              MdiIcons.formatFontSizeIncrease,
             ),
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(12),
-        children: [
-          Image.asset(
-            'assets/images/logo_transparent.png',
-            height: 60,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            _devotion.title ?? "",
-            style: headline4,
-            textAlign: TextAlign.center,
-          ),
-          Divider(height: 0,),
-          TextButton.icon(
-            icon: Text(
-              getFormattedDate(_devotion.date, context.locale.languageCode) ?? "",
-              textAlign: TextAlign.center,
-              style: bodyText2,
-            ),
-            label: Icon(Icons.edit, size: 16,),
-            onPressed: onOpenDatePicker,
-          ),
-          //SizedBox(height: 10),
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'song'.tr() + ':',
-                    //_devotion.timestamp.toIso8601String(),
-                    style: subtitle2,
+            body: ListView(
+              padding: EdgeInsets.all(12),
+              children: [
+                Image.asset(
+                  'assets/images/logo_transparent.png',
+                  height: 60,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  _devotion.title ?? "",
+                  style: headline4,
+                  textAlign: TextAlign.center,
+                ),
+                Divider(
+                  height: 0,
+                ),
+                TextButton.icon(
+                  icon: Text(
+                    getFormattedDate(
+                            _devotion.date, context.locale.languageCode) ??
+                        "",
+                    textAlign: TextAlign.center,
+                    style: bodyText2,
                   ),
-                  SizedBox(width: 1),
-                  TextButton.icon(
-                    label: Icon(Icons.navigate_next),
-                    icon: Text('#'+
-                      _devotion.songNumber[0] ?? "",
-                      style: bodyText2.copyWith(decoration: TextDecoration.underline ),
-                    ),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SongDetails(_devotion.song[0]))),
+                  label: Icon(
+                    Icons.edit,
+                    size: 16,
                   ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "bible_portion".tr() + ':',
-                    //_devotion.timestamp.toIso8601String(),
-                    style: subtitle2,
-                  ),
-                  SizedBox(width: 1),
-                  TextButton.icon(
-                    label: Icon(Icons.navigate_next),
-                    icon: Text(
-                      _devotion.biblePortion ?? "",overflow: TextOverflow.fade,
-                      style: bodyText2.copyWith(decoration: TextDecoration.underline ),
-                    ),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                VerseDetails(_devotion.verse[0]))),
-                  ),
-                ],
-              ),
-            ],
-          ),
-
-          SizedBox(height: 10),
-          DevotionCard(
-              _devotion.verseLine[0],
-              platformBrightness == Brightness.light
-                  ? HSLColor.fromColor(Color(0xFFe6adad))
-                      .withLightness(0.9)
-                      .withSaturation(0.75)
-                      .toColor()
-                  : Color(0xFFd98282)),
-          SizedBox(height: 3),
-          DevotionCard(
-              _devotion.body,
-              platformBrightness == Brightness.light
-                  ? Color(0xFFDDFFBC)
-                  : Color(0xFF4d9900)),
-          SizedBox(height: 3),
-          DevotionCard(
-              _devotion.reflectRespond,
-              platformBrightness == Brightness.light
-                  ? Color(0xFFFBC6A4)
-                  : Color(0xFFf7833b)),
-          SizedBox(height: 3),
-          DevotionCard(
-              _devotion.prayer,
-              platformBrightness == Brightness.light
-                  ? Color(0xFFDCD6F7)
-                  : Color(0xFF927fe6)),
-
-          SizedBox(height: 3),
-          _devotion.quote != null
-              ? ListTile(
-                  //isThreeLine: true,
-                  minLeadingWidth: 10,
-                  leading: Container(
-                      width: 3,
-                      color: Theme.of(context).textTheme.headline2?.color
-                      //padding: EdgeInsets.symmetric(horizontal: 16),
-                      ),
-                  title: RichText(
-                    textAlign: TextAlign.justify,
-                    text: TextSpan(
-                      text: _devotion.quote ?? "",
-                      style: quote,
+                  onPressed: onOpenDatePicker,
+                ),
+                //SizedBox(height: 10),
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                       // TextSpan(text: '  - '),
-                        TextSpan(text: '  '),
-                        TextSpan(
-                          text: _devotion.quoteAuthor ?? "",
-                          style: GoogleFonts.roboto(fontStyle: FontStyle.italic),
-                        )
+                        Text(
+                          'song'.tr() + ':',
+                          //_devotion.timestamp.toIso8601String(),
+                          style: subtitle2,
+                        ),
+                        SizedBox(width: 1),
+                        TextButton.icon(
+                          label: Icon(Icons.navigate_next),
+                          icon: Text(
+                            '#' + _devotion.songNumber[0] ?? "",
+                            style: bodyText2.copyWith(
+                                decoration: TextDecoration.underline),
+                          ),
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SongDetails(_devotion.song[0]))),
+                        ),
                       ],
                     ),
-                  ),
-                )
-              : Container(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "by".tr(),
-                //_devotion.timestamp.toIso8601String(),
-                style: subtitle2,
-              ),
-              TextButton.icon(
-                label: Icon(Icons.navigate_next),
-                icon: Text(
-                  _devotion.authorName[0] ?? "",
-                  style: author,
-                ),
-                onPressed: () => showModalBottomSheet(isScrollControlled: true,context: context, builder: (context){
-                    return Container(
-                        //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-                        height: 600,
-                        padding: EdgeInsets.all(16),
-                        child: ListView(
-                          shrinkWrap: true,
-                          children: [
-
-                            Container(
-                              height: 300,
-                              child: CircleAvatar(radius:20, backgroundImage: CachedNetworkImageProvider(authors.photo[0]['url'])),
-                              //child: CachedNetworkImage(imageUrl: author.photo[0]['url'],),
-                            ),
-                            SizedBox(height: 16,),
-                            Text(
-                              authors.name,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.playfairDisplay(
-                                textStyle: Theme.of(context).textTheme.headline4,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            Text(
-                              authors.description,
-                              style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w300, height: 1.5),
-                              textAlign: TextAlign.justify,
-                            )
-                          ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "bible_portion".tr() + ':',
+                          //_devotion.timestamp.toIso8601String(),
+                          style: subtitle2,
                         ),
-                      );
+                        SizedBox(width: 1),
+                        TextButton.icon(
+                          label: Icon(Icons.navigate_next),
+                          icon: Text(
+                            _devotion.biblePortion ?? "",
+                            overflow: TextOverflow.fade,
+                            style: bodyText2.copyWith(
+                                decoration: TextDecoration.underline),
+                          ),
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      VerseDetails(_devotion.verse[0]))),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
 
-    })
-                 /*   Navigator.push(
+                SizedBox(height: 10),
+                DevotionCard(
+                    _devotion.verseLine[0],
+                    platformBrightness == Brightness.light
+                        ? HSLColor.fromColor(Color(0xFFe6adad))
+                            .withLightness(0.9)
+                            .withSaturation(0.75)
+                            .toColor()
+                        : Color(0xFFd98282)),
+                SizedBox(height: 3),
+                DevotionCard(
+                    _devotion.body,
+                    platformBrightness == Brightness.light
+                        ? Color(0xFFDDFFBC)
+                        : Color(0xFF4d9900)),
+                SizedBox(height: 3),
+                DevotionCard(
+                    _devotion.reflectRespond,
+                    platformBrightness == Brightness.light
+                        ? Color(0xFFFBC6A4)
+                        : Color(0xFFf7833b)),
+                SizedBox(height: 3),
+                DevotionCard(
+                    _devotion.prayer,
+                    platformBrightness == Brightness.light
+                        ? Color(0xFFDCD6F7)
+                        : Color(0xFF927fe6)),
+
+                SizedBox(height: 3),
+                _devotion.quote != null
+                    ? ListTile(
+                        //isThreeLine: true,
+                        minLeadingWidth: 10,
+                        leading: Container(
+                            width: 3,
+                            color: Theme.of(context).textTheme.headline2?.color
+                            //padding: EdgeInsets.symmetric(horizontal: 16),
+                            ),
+                        title: RichText(
+                          textAlign: TextAlign.justify,
+                          text: TextSpan(
+                            text: _devotion.quote ?? "",
+                            style: quote,
+                            children: [
+                              // TextSpan(text: '  - '),
+                              TextSpan(text: '  '),
+                              TextSpan(
+                                text: _devotion.quoteAuthor ?? "",
+                                style: GoogleFonts.roboto(
+                                    fontStyle: FontStyle.italic),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "by".tr(),
+                      //_devotion.timestamp.toIso8601String(),
+                      style: subtitle2,
+                    ),
+                    TextButton.icon(
+                        label: Icon(Icons.navigate_next),
+                        icon: Text(
+                          _devotion.authorName[0] ?? "",
+                          style: author,
+                        ),
+                        onPressed: () => showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+                                height: 600,
+                                padding: EdgeInsets.all(16),
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  children: [
+                                    Container(
+                                      height: 300,
+                                      child: CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                                  authors.photo[0]['url'])),
+                                      //child: CachedNetworkImage(imageUrl: author.photo[0]['url'],),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    Text(
+                                      authors.name,
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.playfairDisplay(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .headline4,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 24,
+                                    ),
+                                    Text(
+                                      authors.description,
+                                      style: GoogleFonts.montserrat(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w300,
+                                          height: 1.5),
+                                      textAlign: TextAlign.justify,
+                                    )
+                                  ],
+                                ),
+                              );
+                            })
+                        /*   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             AuthorDetails(_devotion.author[0]))),*/
-              ),
-            ],
-          ),
-        ],
-      ),
-    )
-      :
-
-    Scaffold(
-      appBar: AppBar(title: Text('devotion_unavailable'.tr()),),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.speaker_notes_off_outlined, size: 180, color: Theme.of(context).textTheme.caption?.color!,
+                        ),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: 32,),
-            Text("devotion_unavailable_desc".tr(), style: TextStyle(fontSize: 17), textAlign: TextAlign.center,)
-          ],
-        ),
-      ),
-    );
+          )
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('devotion_unavailable'.tr()),
+            ),
+            body: Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.speaker_notes_off_outlined,
+                    size: 180,
+                    color: Theme.of(context).textTheme.caption?.color!,
+                  ),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  Text(
+                    "devotion_unavailable_desc".tr(),
+                    style: TextStyle(fontSize: 17),
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+            ),
+          );
   }
 
   void onOpenDatePicker() async {
@@ -406,7 +431,8 @@ class DevotionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle? bodyText = GoogleFonts.robotoSlab(
-        textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(height: UserService.instance.bodyTextStyleHeight,
+        textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+            height: UserService.instance.bodyTextStyleHeight,
             fontSize:
                 (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
                     UserService.instance.fontSize)));
@@ -426,6 +452,6 @@ class DevotionCard extends StatelessWidget {
   }
 }
 
-getFormattedDate(DateTime date, String locale ){
-  return DateFormat( "dd, MMMM yyyy",locale).format(date);
+getFormattedDate(DateTime date, String locale) {
+  return DateFormat("dd, MMMM yyyy", locale).format(date);
 }
