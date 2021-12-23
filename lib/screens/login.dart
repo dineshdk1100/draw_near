@@ -1,3 +1,5 @@
+import 'dart:io' show Directory, File, Platform;
+
 import 'package:country_code_picker/country_code_picker.dart';
 //import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/provider/login_controller.dart';
@@ -9,8 +11,8 @@ import 'package:draw_near/util/offline-alert.dart';
 import 'package:easy_localization/src/public_ext.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -82,8 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(children: <Widget>[
                             Text(
                               'login'.tr(),
-                              style: TextStyle(
-                                  fontSize: 20, color: Colors.black54),
+                              style: TextStyle(fontSize: 20),
                             ),
                             SizedBox(
                               height: 20,
@@ -106,24 +107,28 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               height: 5,
                             ),
-                            Container(
-                              child: Column(
-                                children: [
-                                  SignInButton(
-                                    Buttons.AppleDark,
-                                    //padding: EdgeInsets.all(8.0),
-                                    text: "Sign in with Apple",
-                                    onPressed: () async {
-                                      if (await isUserOffline(context)) return;
-                                      Provider.of<LoginController>(context,
-                                              listen: false)
-                                          .signInWithApple();
-                                    },
-                                  ),
-                                  //SizedBox(height: 20,),
-                                ],
-                              ),
-                            ),
+                            Platform.isIOS
+                                ? Container(
+                                    child: Column(
+                                      children: [
+                                        SignInButton(
+                                          Buttons.AppleDark,
+                                          //padding: EdgeInsets.all(8.0),
+                                          text: "Sign in with Apple",
+                                          onPressed: () async {
+                                            if (await isUserOffline(context))
+                                              return;
+                                            Provider.of<LoginController>(
+                                                    context,
+                                                    listen: false)
+                                                .signInWithApple();
+                                          },
+                                        ),
+                                        //SizedBox(height: 20,),
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
                             SizedBox(
                               height: 5,
                             ),
@@ -141,32 +146,41 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                 ),
                                 //SizedBox(height: 20,),
-                              ]
-                          ),
-                        ),
-                        SizedBox(height: 20,),
-                        //Text("Forgot Password?", style: TextStyle(color: Colors.grey),),
-                        Text("or".tr(), style: TextStyle(),),
-                        SizedBox(height: 20,),
-                        //SizedBox(height: 50,),
-                        Text("phone_number".tr(), style: TextStyle(),),
-                        SizedBox(
-                          width : 400,
-                          height: 55,
-                          child: CountryCodePicker(
-                            dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
-                            onChanged: (country){
-                              setState((){
-                                dialCodeDigits = country.dialCode!;
-                              });
-                          },
-                            initialSelection: "IN",
-                            showCountryOnly: false,
-                            showOnlyCountryWhenClosed: false,
-                            favorite: ["+91","IN", "+1","US"],
-                          ),
-                        ),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            //Text("Forgot Password?", style: TextStyle(color: Colors.grey),),
+                            Text(
+                              "or".tr(),
+                              style: TextStyle(),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            //SizedBox(height: 50,),
+                            Text(
+                              "phone_number".tr(),
+                              style: TextStyle(),
+                            ),
+                            SizedBox(
+                              width: 400,
+                              height: 55,
+                              child: CountryCodePicker(
+                                dialogBackgroundColor:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                onChanged: (country) {
+                                  setState(() {
+                                    dialCodeDigits = country.dialCode!;
+                                  });
+                                },
+                                initialSelection: "IN",
+                                showCountryOnly: false,
+                                showOnlyCountryWhenClosed: false,
+                                favorite: ["+91", "IN", "+1", "US"],
+                              ),
+                            ),
 
                             Container(
                               //height: 50,
@@ -175,19 +189,16 @@ class _LoginPageState extends State<LoginPage> {
                               //color: Color(0xff1d1d1d),
                               // borderRadius: BorderRadius.circular(15),
 
-                          child: TextFormField(
-                          decoration: InputDecoration(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    hintText: "phone_hint".tr(),
+                                    prefix: Padding(
+                                      padding: EdgeInsets.all(2),
+                                      child: Text(dialCodeDigits),
+                                    )),
 
-                            hintText: "phone_hint".tr(),
-                            prefix: Padding(
-                              padding: EdgeInsets.all(2),
-                              child: Text(dialCodeDigits),
-
-                            )
-                          ),
-
-                           keyboardType: TextInputType.phone,
-                           //validator: validateMobile,
+                                keyboardType: TextInputType.phone,
+                                //validator: validateMobile,
 
                                 controller: _controller,
                               ),
@@ -204,23 +215,22 @@ class _LoginPageState extends State<LoginPage> {
                                     onPrimary: Colors.white, // foreground
                                   ),
 
-                            onPressed: (){
-                              if(!validateMobile(_controller.text)) {
-                                Fluttertoast.showToast(
-                                    msg: 'Please enter valid mobile number');
-                                return;
-                              }
+                                  onPressed: () {
+                                    if (!validateMobile(_controller.text)) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'Please enter valid mobile number');
+                                      return;
+                                    }
 
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (c) =>
-                                        OTPControllerScreen(
-                                          phone: _controller.text,
-                                          codeDigits: dialCodeDigits,
-                                        )));
-                             // }
-
-                            },
-
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (c) => OTPControllerScreen(
+                                                  phone: _controller.text,
+                                                  codeDigits: dialCodeDigits,
+                                                )));
+                                    // }
+                                  },
 
                                   //child: Text('Verify',style: TextStyle(fontFamily: 'San Francisco',color: Colors.black,fontWeight: FontWeight.bold),),
                                   child: Text(
@@ -240,8 +250,7 @@ class _LoginPageState extends State<LoginPage> {
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return false;
-    }
-    else if (!regExp.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value)) {
       return false;
     }
     return true;

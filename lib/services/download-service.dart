@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:draw_near/services/author-service.dart';
+import 'package:draw_near/services/carousel-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/song-service.dart';
 import 'package:draw_near/services/theme-month-service.dart';
@@ -44,18 +45,14 @@ class DownloadService {
         retrievedDocCount += await _downloadSongs() ?? 0;
         retrievedDocCount += await _downloadVerses() ?? 0;
         retrievedDocCount += await _downloadAuthors() ?? 0;
-        await _downloadThemeMonths();
+        retrievedDocCount += await _downloadThemeMonths() ?? 0;
+        await _downloadCarouselImages();
         if (retrievedDocCount > 0) {
           _box.put(
               'lastModified', DateTime.now().toUtc().millisecondsSinceEpoch);
           Fluttertoast.showToast(msg: "Update complete");
         } else
           Fluttertoast.showToast(msg: "No new updates");
-        _box.put('lastModified', DateTime
-            .now()
-            .toUtc()
-            .millisecondsSinceEpoch);
-        Fluttertoast.showToast(msg: "Update complete");
         _subscription.cancel();
       }
     });
@@ -121,18 +118,31 @@ class DownloadService {
     return snapshots.docs.length;
   }
 
-  _downloadThemeMonths() async {
-
+  Future<int?> _downloadThemeMonths() async {
     ///iterate over months, fetch data from cloud and local and update the local data
-      var snapshots = await FirebaseFirestore.instance
-          .collection('themeMonth_$downloadingLocale')
-          .where('Last Modified Time',
-          isGreaterThanOrEqualTo: localLastModified - 3600000)
-          .get();
+    var snapshots = await FirebaseFirestore.instance
+        .collection('themeMonth_$downloadingLocale')
+        .where('Last Modified Time',
+            isGreaterThanOrEqualTo: localLastModified - 3600000)
+        .get();
 
-      print('\n\n Theme months \n\n');
-      print(localLastModified);
-      print(snapshots.docs.length);
-      ThemeMonthService.instance.saveThemeMonths(snapshots);
+    print('\n\n Theme months \n\n');
+    print(localLastModified);
+    print(snapshots.docs.length);
+    ThemeMonthService.instance.saveThemeMonths(snapshots);
+    return snapshots.docs.length;
+  }
+
+  Future<int?> _downloadCarouselImages() async {
+    ///iterate over months, fetch data from cloud and local and update the local data
+    var docSnap = await FirebaseFirestore.instance
+        .collection('common')
+        .doc('carouselImages_$downloadingLocale')
+        .get();
+
+    print('\n\n Carousel Images \n\n');
+    print(localLastModified);
+    CarouselImageService.instance.saveCarouselImages(docSnap);
+    return 0;
   }
 }
