@@ -111,12 +111,13 @@ class _language extends State<Language> {
               ),
               onPressed: () {
                 // if(hasValue()) {
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (c) => Onboarding(),
                 ));
                 // }
               },
-              child: Text('OK',
+              child: Text(
+                'OK',
                 style: TextStyle(
                     fontFamily: 'San Francisco',
                     color: Colors.black,
