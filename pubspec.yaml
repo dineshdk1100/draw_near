@@ -87,7 +87,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icons/logo_ios.png"
+  image_path: "assets/icons/icon.png"
   remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
