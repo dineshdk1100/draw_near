@@ -23,6 +23,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -289,5 +290,9 @@ class _HomePageState extends State<HomePage> {
     );
 
     await FlutterEmailSender.send(email);
+  }
+
+  void _launchURL(_url) async {
+    if (!await launch(_url)) ;
   }
 }
