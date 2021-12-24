@@ -17,9 +17,12 @@ import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback/feedback.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -71,13 +74,13 @@ class _HomePageState extends State<HomePage> {
           PopupMenuButton(
             itemBuilder: (context) => [
               PopupMenuItem(
-                child: Text("About us"),
+                child: Text("Go to website"),
                 value: 0,
               ),
               PopupMenuItem(child: Text("Report an issue"), value: 1),
               PopupMenuItem(child: Text("Feedback"), value: 2),
               PopupMenuItem(child: Text("Share this app"), value: 3),
-              PopupMenuItem(child: Text("Privacy Policy"), value: 4)
+             // PopupMenuItem(child: Text("Privacy Policy"), value: 4)
             ],
             onSelected: onPopUpMenuItemSelected,
           )
@@ -235,6 +238,7 @@ class _HomePageState extends State<HomePage> {
   void onPopUpMenuItemSelected(int value) {
     switch (value) {
       case 0:
+        Fluttertoast.showToast(msg: 'Website is under development!');
         break;
       case 1:
         sendReport();
@@ -275,7 +279,12 @@ class _HomePageState extends State<HomePage> {
         isHTML: false,
       );
 
-      await FlutterEmailSender.send(email);
+      try {
+        await FlutterEmailSender.send(email);
+      }on PlatformException catch(e){
+        Fluttertoast.showToast(msg: e.message ?? "Something went wrong!");
+        FirebaseCrashlytics.instance.recordError(e, null);
+      }
     });
   }
 
@@ -287,7 +296,11 @@ class _HomePageState extends State<HomePage> {
       cc: ['techcatalyst.solutions@gmail.com'],
       isHTML: false,
     );
-
-    await FlutterEmailSender.send(email);
+    try {
+      await FlutterEmailSender.send(email);
+    }on PlatformException catch(e){
+      Fluttertoast.showToast(msg: e.message ?? "Something went wrong!");
+      FirebaseCrashlytics.instance.recordError(e, null);
+    }
   }
 }

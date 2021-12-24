@@ -4,6 +4,7 @@ import 'package:draw_near/util/color_theme.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -84,6 +85,12 @@ class _ProfilepageState extends State<ProfilePage> {
                       ),
 
                       onPressed: () async {
+                        if (!validateMobile(user.phoneNumber ?? "")) {
+                          Fluttertoast.showToast(
+                              msg:
+                              'Please enter valid mobile number');
+                          return;
+                        }
                         await FirebaseFirestore.instance
                             .collection('users')
                             .doc(user.uid)
@@ -108,5 +115,15 @@ class _ProfilepageState extends State<ProfilePage> {
         ),
       ],
     );
+  }
+  bool validateMobile(String value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{5,16}$)';
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      return false;
+    } else if (!regExp.hasMatch(value)) {
+      return false;
+    }
+    return true;
   }
 }
