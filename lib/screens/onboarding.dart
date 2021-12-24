@@ -57,7 +57,7 @@ class _OnboardingState extends State<Onboarding> {
               },
               itemBuilder: (_, i) {
                 return Padding(
-                  padding: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(35),
                   child: Container(
                     alignment: Alignment.center,
                     child: Column(
