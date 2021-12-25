@@ -1,20 +1,15 @@
 import 'dart:io' show Directory, File, Platform;
 
 import 'package:country_code_picker/country_code_picker.dart';
-//import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/OTPController.dart';
-//import 'package:draw_near/provider/google_sign_in.dart';
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/offline-alert.dart';
 import 'package:easy_localization/src/public_ext.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:screen_loader/screen_loader.dart';
 

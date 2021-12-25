@@ -1,15 +1,8 @@
 import 'dart:async';
-import 'package:cross_connectivity/cross_connectivity.dart';
-import 'package:draw_near/provider/applesigninavailable.dart';
 import 'package:draw_near/provider/login_controller.dart';
-import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/language.dart';
-//import 'package:draw_near/screens/OTPController.dart';
-//import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/screens/login.dart';
-import 'package:draw_near/screens/onboarding.dart';
-import 'package:draw_near/screens/settings.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/theme-manager.dart';
@@ -21,9 +14,11 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
 
+final newVersion = NewVersion();
 void main() async {
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +27,7 @@ void main() async {
     await Hive.initFlutter();
     await Hive.openBox('draw_near');
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
 
     runApp(BetterFeedback(
       theme: FeedbackThemeData(drawColors: [Colors.red, Colors.green, Colors.blue]),

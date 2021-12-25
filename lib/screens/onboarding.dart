@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:draw_near/screens/initializer.dart';
-import 'package:draw_near/screens/login.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,11 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draw_near/models/theme_month.dart';
 import 'package:draw_near/services/theme-month-service.dart';
-import 'package:draw_near/services/theme-month-service.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:octo_image/octo_image.dart';
 
 class ThemeMonthDetails extends StatefulWidget {
   final String monthName;
