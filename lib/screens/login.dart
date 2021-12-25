@@ -16,6 +16,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:screen_loader/screen_loader.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -23,14 +24,16 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with ScreenLoader {
   String dialCodeDigits = "+91";
   TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: loginUI(),
+    return loadableWidget(
+      child: Scaffold(
+        body: loginUI(),
+      ),
     );
   }
 
@@ -97,9 +100,11 @@ class _LoginPageState extends State<LoginPage> {
                                   text: ("Sign in with Google"),
                                   onPressed: () async {
                                     if (await isUserOffline(context)) return;
-                                    Provider.of<LoginController>(context,
+
+                                    performFuture(Provider.of<LoginController>(
+                                            context,
                                             listen: false)
-                                        .googleLogin();
+                                        .googleLogin);
                                   },
                                 ),
                               ],
@@ -118,10 +123,11 @@ class _LoginPageState extends State<LoginPage> {
                                           onPressed: () async {
                                             if (await isUserOffline(context))
                                               return;
-                                            Provider.of<LoginController>(
-                                                    context,
-                                                    listen: false)
-                                                .signInWithApple();
+                                            performFuture(
+                                                Provider.of<LoginController>(
+                                                        context,
+                                                        listen: false)
+                                                    .signInWithApple);
                                           },
                                         ),
                                         //SizedBox(height: 20,),
@@ -140,9 +146,10 @@ class _LoginPageState extends State<LoginPage> {
                                   //padding: EdgeInsets.all(6.0),
                                   onPressed: () async {
                                     if (await isUserOffline(context)) return;
-                                    Provider.of<LoginController>(context,
+                                    performFuture(Provider.of<LoginController>(
+                                            context,
                                             listen: false)
-                                        .facebooklogin();
+                                        .facebooklogin);
                                   },
                                 ),
                                 //SizedBox(height: 20,),

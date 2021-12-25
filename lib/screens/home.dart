@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               PopupMenuItem(child: Text("Report an issue"), value: 1),
               PopupMenuItem(child: Text("Feedback"), value: 2),
               PopupMenuItem(child: Text("Share this app"), value: 3),
-             // PopupMenuItem(child: Text("Privacy Policy"), value: 4)
+              // PopupMenuItem(child: Text("Privacy Policy"), value: 4)
             ],
             onSelected: onPopUpMenuItemSelected,
           )
@@ -239,7 +239,7 @@ class _HomePageState extends State<HomePage> {
   void onPopUpMenuItemSelected(int value) {
     switch (value) {
       case 0:
-        Fluttertoast.showToast(msg: 'Website is under development!');
+        _launchURL('https://www.drawnear.life');
         break;
       case 1:
         sendReport();
@@ -282,7 +282,7 @@ class _HomePageState extends State<HomePage> {
 
       try {
         await FlutterEmailSender.send(email);
-      }on PlatformException catch(e){
+      } on PlatformException catch (e) {
         Fluttertoast.showToast(msg: e.message ?? "Something went wrong!");
         FirebaseCrashlytics.instance.recordError(e, null);
       }
@@ -299,13 +299,15 @@ class _HomePageState extends State<HomePage> {
     );
     try {
       await FlutterEmailSender.send(email);
-    }on PlatformException catch(e){
+    } on PlatformException catch (e) {
       Fluttertoast.showToast(msg: e.message ?? "Something went wrong!");
       FirebaseCrashlytics.instance.recordError(e, null);
     }
   }
 
   void _launchURL(_url) async {
-    if (!await launch(_url)) ;
+    if (!await launch(_url))
+      Fluttertoast.showToast(msg: 'Something went wrong!');
+    ;
   }
 }

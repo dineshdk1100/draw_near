@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draw_near/models/user.dart';
-import 'package:crypto/crypto.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -21,10 +18,10 @@ class LoginController with ChangeNotifier {
   //final user= FirebaseAuth.instance.currentUser!;
 
   // fucntion for google login
-  Future googleLogin() async {
+  Future<UserCredential?> googleLogin() async {
     final googleUser = await _googleSignIn.signIn();
     // inserting values to our user details model
-    if (googleUser == null) return;
+    if (googleUser == null) return null;
     googleSignInAccount = googleUser;
     final googleAuth = await googleUser.authentication;
 
@@ -111,8 +108,8 @@ class LoginController with ChangeNotifier {
     }
   }
 
-  Future<User> signInWithApple({List<Scope> scopes = const [ Scope.email,
-    Scope.fullName]}) async {
+  Future<User> signInWithApple(
+      {List<Scope> scopes = const [Scope.email, Scope.fullName]}) async {
     // 1. perform the sign-in request
     final result = await TheAppleSignIn.performRequests(
         [AppleIdRequest(requestedScopes: scopes)]);
@@ -132,29 +129,29 @@ class LoginController with ChangeNotifier {
         final firebaseUser = userCredential.user!;
         var displayName = "User";
 
-          final fullName = appleIdCredential.fullName;
-          if (fullName != null &&
-              fullName.givenName != null &&
-              fullName.familyName != null) {
-            displayName = '${fullName.givenName} ${fullName.familyName}';
-            await firebaseUser.updateDisplayName(displayName);
-          }
-
-          final email = appleIdCredential.email;
+        final fullName = appleIdCredential.fullName;
+        if (fullName != null &&
+            fullName.givenName != null &&
+            fullName.familyName != null) {
+          displayName = '${fullName.givenName} ${fullName.familyName}';
           await firebaseUser.updateDisplayName(displayName);
+        }
+
+        final email = appleIdCredential.email;
+        await firebaseUser.updateDisplayName(displayName);
 
         this.userDetails = new UserDetails(
-            userCredential.user!.uid,
-            displayName,
+            userCredential.user!.uid, displayName,
             email: email ?? "",
             photoURL: "https://www.google.co.in",
-            phoneNumber: ""
-        );
-        await  FirebaseFirestore.instance.collection('users').doc(userDetails?.uid).set(userDetails!.toJson());
+            phoneNumber: "");
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userDetails?.uid)
+            .set(userDetails!.toJson());
         UserService.instance.userDetails = this.userDetails!;
         UserService.instance.isLoggedIn = true;
         notifyListeners();
-
 
         return firebaseUser;
       case AuthorizationStatus.error:
