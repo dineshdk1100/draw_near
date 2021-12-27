@@ -14,11 +14,10 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
 
-final newVersion = NewVersion();
+
 void main() async {
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +45,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     UserService.instance.locale = context.locale.toString();
     ThemeData darkThemeData = ThemeData(
       textTheme: GoogleFonts.robotoTextTheme().merge(Typography.whiteHelsinki),
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
                 child: LoginPage(),
               )
             ],
-            child: MaterialApp(
+            child: MaterialApp(debugShowCheckedModeBanner: false,
               themeMode: themeMode,
               title: 'Draw Near',
               localizationsDelegates: context.localizationDelegates,

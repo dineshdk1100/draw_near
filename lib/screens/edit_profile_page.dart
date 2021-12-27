@@ -5,6 +5,7 @@ import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -26,9 +27,15 @@ class _ProfilepageState extends State<ProfilePage> {
 
   Widget profileView() {
     return Column(
+
       children: <Widget>[
+        SizedBox(height: 50),
+        Container(
+          child:  Text("profile_information".tr(), style: GoogleFonts.gentiumBasic(fontSize: 30),textAlign: TextAlign.left,),
+
+        ),
         //Padding(padding:EdgeInsets.all(30),
-        SizedBox(height: 56),
+        SizedBox(height: 5),
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: Padding(

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
@@ -108,7 +109,7 @@ class LoginController with ChangeNotifier {
     }
   }
 
-  Future<User> signInWithApple(
+  Future<User?> signInWithApple(
       {List<Scope> scopes = const [Scope.email, Scope.fullName]}) async {
     // 1. perform the sign-in request
     final result = await TheAppleSignIn.performRequests(
@@ -155,18 +156,14 @@ class LoginController with ChangeNotifier {
 
         return firebaseUser;
       case AuthorizationStatus.error:
-        throw PlatformException(
-          code: 'ERROR_AUTHORIZATION_DENIED',
-          message: result.error.toString(),
-        );
+        Fluttertoast.showToast(msg: "Something went wrong !");
+        break;
 
       case AuthorizationStatus.cancelled:
-        throw PlatformException(
-          code: 'ERROR_ABORTED_BY_USER',
-          message: 'Sign in aborted by user',
-        );
+        break;
       default:
         throw UnimplementedError();
+
     }
   }
 

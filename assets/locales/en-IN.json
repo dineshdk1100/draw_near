@@ -40,5 +40,6 @@
   "daily_reminder": "Daily Reminder",
   "notification_title": "It's Devotion Time",
   "notification_body": "Reminder to read your devotion everyday",
-  "profile_info": "Edit Profile"
+  "profile_info": "Edit Profile",
+  "profile_information":" Profile Information"
 }

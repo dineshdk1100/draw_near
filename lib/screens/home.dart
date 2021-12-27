@@ -46,8 +46,11 @@ class _HomePageState extends State<HomePage> {
   Devotion? devotion;
   ThemeMonth? themeMonth;
   List? images;
+  //final newVersion = NewVersion();
   @override
   void initState() {
+    //newVersion.showAlertIfNecessary(context: context);
+
     try {
       images = CarouselImageService.instance.getCarouselImages();
       print(images);
@@ -62,7 +65,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    newVersion.showAlertIfNecessary(context: context);
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(

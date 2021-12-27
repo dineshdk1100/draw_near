@@ -300,11 +300,16 @@ class _DevotionPageState extends State<DevotionPage> {
                                   children: [
                                     Container(
                                       height: 300,
-                                      child: CircleAvatar(
-                                          radius: 20,
-                                          backgroundImage:
-                                              CachedNetworkImageProvider(
-                                                  authors.photo[0]['url'])),
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: CircleAvatar(
+
+                                            radius: 120,
+
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    authors.photo[0]['url'])),
+                                      ),
                                       //child: CachedNetworkImage(imageUrl: author.photo[0]['url'],),
                                     ),
                                     SizedBox(

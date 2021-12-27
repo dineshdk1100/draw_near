@@ -18,6 +18,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		6267901E27776029003987EC /* Embed App Clips */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed App Clips";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -36,6 +46,24 @@
 		37790B81D9F31791EA46C071 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		6220AF4C275D206400339933 /* RunnerProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerProfile.entitlements; sourceTree = "<group>"; };
+		62678FFA27776024003987EC /* Draw_Near___Family_DevotionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Draw_Near___Family_DevotionApp.swift"; sourceTree = "<group>"; };
+		62678FFC27776024003987EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		62678FFE27776028003987EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6267900127776028003987EC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6267900327776028003987EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6267900427776028003987EC /* Draw_Near___Family_Devotion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Draw_Near___Family_Devotion.entitlements"; sourceTree = "<group>"; };
+		6267900D27776029003987EC /* Draw_Near___Family_DevotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Draw_Near___Family_DevotionTests.swift"; sourceTree = "<group>"; };
+		6267901727776029003987EC /* Draw_Near___Family_DevotionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Draw_Near___Family_DevotionUITests.swift"; sourceTree = "<group>"; };
+		6267901927776029003987EC /* Draw_Near___Family_DevotionUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Draw_Near___Family_DevotionUITestsLaunchTests.swift"; sourceTree = "<group>"; };
+		6267903127776348003987EC /* Draw_Near___Family_DevotionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Draw_Near___Family_DevotionApp.swift"; sourceTree = "<group>"; };
+		6267903327776348003987EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		626790352777634B003987EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		626790382777634B003987EC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6267903A2777634B003987EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6267903B2777634B003987EC /* Draw_Near___Family_Devotion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Draw_Near___Family_Devotion.entitlements"; sourceTree = "<group>"; };
+		626790442777634C003987EC /* Draw_Near___Family_DevotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Draw_Near___Family_DevotionTests.swift"; sourceTree = "<group>"; };
+		6267904E2777634C003987EC /* Draw_Near___Family_DevotionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Draw_Near___Family_DevotionUITests.swift"; sourceTree = "<group>"; };
+		626790502777634C003987EC /* Draw_Near___Family_DevotionUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Draw_Near___Family_DevotionUITestsLaunchTests.swift"; sourceTree = "<group>"; };
 		6276C8CD276F97F600F9C1D5 /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		6276C8CE276F97FD00F9C1D5 /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
 		62D6C558275115ED0060F2CA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -76,6 +104,82 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		62678FF927776024003987EC /* Draw Near - Family Devotion */ = {
+			isa = PBXGroup;
+			children = (
+				62678FFA27776024003987EC /* Draw_Near___Family_DevotionApp.swift */,
+				62678FFC27776024003987EC /* ContentView.swift */,
+				62678FFE27776028003987EC /* Assets.xcassets */,
+				6267900327776028003987EC /* Info.plist */,
+				6267900427776028003987EC /* Draw_Near___Family_Devotion.entitlements */,
+				6267900027776028003987EC /* Preview Content */,
+			);
+			path = "Draw Near - Family Devotion";
+			sourceTree = "<group>";
+		};
+		6267900027776028003987EC /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				6267900127776028003987EC /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		6267900C27776029003987EC /* Draw Near - Family DevotionTests */ = {
+			isa = PBXGroup;
+			children = (
+				6267900D27776029003987EC /* Draw_Near___Family_DevotionTests.swift */,
+			);
+			path = "Draw Near - Family DevotionTests";
+			sourceTree = "<group>";
+		};
+		6267901627776029003987EC /* Draw Near - Family DevotionUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6267901727776029003987EC /* Draw_Near___Family_DevotionUITests.swift */,
+				6267901927776029003987EC /* Draw_Near___Family_DevotionUITestsLaunchTests.swift */,
+			);
+			path = "Draw Near - Family DevotionUITests";
+			sourceTree = "<group>";
+		};
+		6267903027776348003987EC /* Draw Near - Family Devotion */ = {
+			isa = PBXGroup;
+			children = (
+				6267903127776348003987EC /* Draw_Near___Family_DevotionApp.swift */,
+				6267903327776348003987EC /* ContentView.swift */,
+				626790352777634B003987EC /* Assets.xcassets */,
+				6267903A2777634B003987EC /* Info.plist */,
+				6267903B2777634B003987EC /* Draw_Near___Family_Devotion.entitlements */,
+				626790372777634B003987EC /* Preview Content */,
+			);
+			path = "Draw Near - Family Devotion";
+			sourceTree = "<group>";
+		};
+		626790372777634B003987EC /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				626790382777634B003987EC /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		626790432777634C003987EC /* Draw Near - Family DevotionTests */ = {
+			isa = PBXGroup;
+			children = (
+				626790442777634C003987EC /* Draw_Near___Family_DevotionTests.swift */,
+			);
+			path = "Draw Near - Family DevotionTests";
+			sourceTree = "<group>";
+		};
+		6267904D2777634C003987EC /* Draw Near - Family DevotionUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6267904E2777634C003987EC /* Draw_Near___Family_DevotionUITests.swift */,
+				626790502777634C003987EC /* Draw_Near___Family_DevotionUITestsLaunchTests.swift */,
+			);
+			path = "Draw Near - Family DevotionUITests";
+			sourceTree = "<group>";
+		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +196,12 @@
 			children = (
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
+				62678FF927776024003987EC /* Draw Near - Family Devotion */,
+				6267900C27776029003987EC /* Draw Near - Family DevotionTests */,
+				6267901627776029003987EC /* Draw Near - Family DevotionUITests */,
+				6267903027776348003987EC /* Draw Near - Family Devotion */,
+				626790432777634C003987EC /* Draw Near - Family DevotionTests */,
+				6267904D2777634C003987EC /* Draw Near - Family DevotionUITests */,
 				97C146EF1CF9000F007C117D /* Products */,
 				292C8052A04FC1B3BBA55AED /* Pods */,
 				D2D61D0FA8DC9A3A5EFD8171 /* Frameworks */,
@@ -149,6 +259,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				4672FFABF3B1DB0E9D2583E4 /* [CP] Embed Pods Frameworks */,
 				19B1352ACBD2C202B3871537 /* [CP] Copy Pods Resources */,
+				6267901E27776029003987EC /* Embed App Clips */,
 			);
 			buildRules = (
 			);
@@ -165,6 +276,7 @@
 		97C146E61CF9000F007C117D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
@@ -237,7 +349,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
 		4672FFABF3B1DB0E9D2583E4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -380,6 +492,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerProfile.entitlements;
@@ -513,6 +626,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerDebug.entitlements;
@@ -537,6 +651,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerRelease.entitlements;
