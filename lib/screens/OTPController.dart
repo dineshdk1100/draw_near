@@ -81,7 +81,9 @@ class _OTPControllerScreenState extends State<OTPControllerScreen>
             title: Text("otp_verify".tr()),
             //backgroundColor: Colors.black,
           ),
-          body: Column(
+
+          body: SingleChildScrollView(
+            child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -178,7 +180,8 @@ class _OTPControllerScreenState extends State<OTPControllerScreen>
                     }),
               ),
             ],
-          )),
+          ),
+    ),),
     );
   }
 }
