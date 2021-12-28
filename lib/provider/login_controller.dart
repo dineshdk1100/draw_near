@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draw_near/models/user.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -157,13 +157,20 @@ class LoginController with ChangeNotifier {
         return firebaseUser;
       case AuthorizationStatus.error:
         Fluttertoast.showToast(msg: "Something went wrong !");
+        FirebaseCrashlytics.instance.setCustomKey(
+            'description', result.error?.localizedDescription ?? "");
+        FirebaseCrashlytics.instance.setCustomKey('recovery suggestion',
+            result.error?.localizedRecoverySuggestion ?? "");
+        FirebaseCrashlytics.instance.recordError(result.error, null,
+            reason: result.error?.localizedFailureReason);
         break;
 
       case AuthorizationStatus.cancelled:
         break;
       default:
-        throw UnimplementedError();
-
+        throw FirebaseCrashlytics.instance.recordError(
+            'Default case executed on Apple Sign In for Authorization status',
+            null);
     }
   }
 
