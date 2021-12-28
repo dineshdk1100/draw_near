@@ -28,8 +28,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../main.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -105,10 +103,10 @@ class _HomePageState extends State<HomePage> {
                 color: Theme.of(context).primaryColor,
               ),
               Positioned(
-                bottom: -70.0,
+                bottom: -120.0,
                 child: Container(
                   width: width,
-                  height: 200,
+                  height: height * 0.3,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: LinearGradient(
@@ -122,14 +120,19 @@ class _HomePageState extends State<HomePage> {
                   child: CarouselSlider.builder(
                     itemCount: images?.length ?? 0,
                     options: CarouselOptions(
-                        autoPlay: true, enlargeCenterPage: true),
+                        //height: height * 0.35,
+                        viewportFraction: MediaQuery.of(context).orientation ==
+                                Orientation.landscape
+                            ? 0.4
+                            : 0.8,
+                        autoPlay: true,
+                        enlargeCenterPage: true),
                     itemBuilder: (BuildContext context, int itemIndex,
                             int pageViewIndex) =>
                         Card(
                       clipBehavior: Clip.antiAlias,
                       child: OctoImage.fromSet(
-                        width: width,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                         image: CachedNetworkImageProvider(images?[itemIndex]
                                 ['url'] ??
                             carouselImageUrls[itemIndex]),
@@ -143,7 +146,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           SizedBox(
-            height: 64,
+            height: 100,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
