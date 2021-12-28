@@ -9,6 +9,7 @@ import 'package:draw_near/util/constants.dart';
 import 'package:draw_near/util/offline-alert.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:screen_loader/screen_loader.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
@@ -46,11 +47,11 @@ class _SettingsState extends State<Settings> with ScreenLoader {
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 } else {
                   DownloadService.instance.removeLocalLastModified();
-                  DownloadService.instance.initialize();
-                  performFuture(
+                  //DownloadService.instance.initialize();
+                  await performFuture(
                       Provider.of<LoginController>(context, listen: false)
                           .logout);
-
+                  Phoenix.rebirth(context);
                   //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> LoginPage()), (route) => false);
                 }
               },

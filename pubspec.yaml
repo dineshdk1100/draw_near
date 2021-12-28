@@ -79,6 +79,7 @@ dependencies:
   url_launcher: ^6.0.17
   screen_loader: ^4.0.1
   firebase_performance: ^0.8.0+3
+  flutter_phoenix: ^1.0.0
 
 dev_dependencies:
   flutter_test:
