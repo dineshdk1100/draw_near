@@ -17,13 +17,13 @@ class BaseHome extends StatefulWidget {
 class _BaseHomeState extends State<BaseHome> {
   PersistentTabController _controller = PersistentTabController(initialIndex: 0);
   Color navBarColor = Colors.white;
-  Color inactiveColor = Colors.black38;
+  Color inactiveColor = Colors.black;
 
   @override
   Widget build(BuildContext context) {
     print(MediaQuery.of(context).platformBrightness.toString());
     Theme.of(context).brightness == Brightness.dark ? navBarColor = Colors.black54 : navBarColor = Colors.white;
-    Theme.of(context).brightness == Brightness.dark ? inactiveColor = Colors.white70 : navBarColor = Colors.black38;
+    Theme.of(context).brightness == Brightness.dark ? inactiveColor = Colors.white70 : navBarColor = Colors.black;
 
     return PersistentTabView(
       context,

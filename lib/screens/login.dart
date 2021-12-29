@@ -150,6 +150,32 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                                 //SizedBox(height: 20,),
                               ]),
                             ),
+                            SizedBox(height: 5),
+                            Container(
+                               // margin: EdgeInsets.all(5),
+                                width: 220,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    //primary: Colors.blue.shade100, // background
+                                    // background
+                                    onPrimary: Colors.white, // foreground
+                                  ),
+
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pushReplacement(MaterialPageRoute(builder: (_) => BaseHome()));
+
+                                  },
+
+                                  child: Text(
+                                    'Continue as Guest',
+                                    style: TextStyle(
+                                        fontFamily: 'San Francisco',
+                                        //fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                ),),
+
                             SizedBox(
                               height: 20,
                             ),
@@ -239,7 +265,7 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                                     'Verify',
                                     style: TextStyle(
                                         fontFamily: 'San Francisco',
-                                        fontWeight: FontWeight.bold,
+                                       fontWeight: FontWeight.w600,
                                         color: Colors.black),
                                   ),
                                 ))
