@@ -31,13 +31,13 @@ class _InitializerState extends State<Initializer> {
     return ConnectivityBuilder(builder: (context, isConnected, status) {
       print(status.toString() + "s");
       if (isConnected == true) {
-        DownloadService.instance
-            .initialize()
-            .then((value) {
-              UserService.instance.isAppInitialized = true;
-              Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => LoginPage()));})
-            .catchError((e) {
+        DownloadService.instance.initialize().then((value) {
+          Future.delayed(Duration(seconds: 5), () {
+            UserService.instance.isAppInitialized = true;
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginPage()));
+          });
+        }).catchError((e) {
           print(e);
           Fluttertoast.showToast(msg: 'Something went wrong');
         });

@@ -43,8 +43,7 @@ class _SettingsState extends State<Settings> with ScreenLoader {
               onPressed: () async {
                 if (await isUserOffline(context)) return;
                 if (!UserService.instance.isLoggedIn) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  Phoenix.rebirth(context);
                 } else {
                   DownloadService.instance.removeLocalLastModified();
                   //DownloadService.instance.initialize();

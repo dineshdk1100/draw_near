@@ -23,7 +23,7 @@ class _BaseHomeState extends State<BaseHome> {
   Widget build(BuildContext context) {
     print(MediaQuery.of(context).platformBrightness.toString());
     Theme.of(context).brightness == Brightness.dark ? navBarColor = Colors.black54 : navBarColor = Colors.white;
-    Theme.of(context).brightness == Brightness.dark ? inactiveColor = Colors.white70 : navBarColor = Colors.black;
+    Theme.of(context).brightness == Brightness.dark ? inactiveColor = Colors.black87 : navBarColor = Colors.black87;
 
     return PersistentTabView(
       context,

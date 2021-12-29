@@ -157,7 +157,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen>
                     pinAnimationType: PinAnimationType.fade,
                     onSubmit: (pin) async {
                       try {
-                        await performFuture(() async {
+
                           UserCredential credential =
                               await FirebaseAuth.instance.signInWithCredential(
                                   PhoneAuthProvider.credential(
@@ -166,7 +166,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen>
                           await Provider.of<LoginController>(context,
                                   listen: false)
                               .phoneLogin(credential);
-                        });
+
                         Navigator.pop(context);
                       } catch (e) {
                         FocusScope.of(context).unfocus();
