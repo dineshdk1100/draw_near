@@ -287,18 +287,19 @@ class _DevotionPageState extends State<DevotionPage> {
                           _devotion.authorName[0] ?? "",
                           style: author,
                         ),
-                        onPressed: () => showModalBottomSheet(
+                        onPressed: () => showModalBottomSheet(shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))),
                             isScrollControlled: true,
                             context: context,
                             builder: (context) {
                               return Container(
-                                //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-                                height: 600,
+
+                                height: MediaQuery.of(context).size.height*0.6,
                                 padding: EdgeInsets.all(16),
                                 child: ListView(
                                   shrinkWrap: true,
                                   children: [
                                     Container(
+
                                       height: 300,
                                       child: FittedBox(
                                         fit: BoxFit.scaleDown,

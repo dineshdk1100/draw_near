@@ -26,7 +26,8 @@ class _ProfilepageState extends State<ProfilePage> {
   }
 
   Widget profileView() {
-    return Column(
+    return SingleChildScrollView(
+      child: Column(
 
       children: <Widget>[
         SizedBox(height: 50),
@@ -121,6 +122,7 @@ class _ProfilepageState extends State<ProfilePage> {
           ),
         ),
       ],
+      ),
     );
   }
   bool validateMobile(String value) {

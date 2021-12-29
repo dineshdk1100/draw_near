@@ -81,7 +81,9 @@ class _OTPControllerScreenState extends State<OTPControllerScreen>
             title: Text("otp_verify".tr()),
             //backgroundColor: Colors.black,
           ),
-          body: Column(
+
+          body: SingleChildScrollView(
+            child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -155,7 +157,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen>
                     pinAnimationType: PinAnimationType.fade,
                     onSubmit: (pin) async {
                       try {
-                        await performFuture(() async {
+
                           UserCredential credential =
                               await FirebaseAuth.instance.signInWithCredential(
                                   PhoneAuthProvider.credential(
@@ -164,7 +166,7 @@ class _OTPControllerScreenState extends State<OTPControllerScreen>
                           await Provider.of<LoginController>(context,
                                   listen: false)
                               .phoneLogin(credential);
-                        });
+
                         Navigator.pop(context);
                       } catch (e) {
                         FocusScope.of(context).unfocus();
@@ -178,7 +180,8 @@ class _OTPControllerScreenState extends State<OTPControllerScreen>
                     }),
               ),
             ],
-          )),
+          ),
+    ),),
     );
   }
 }

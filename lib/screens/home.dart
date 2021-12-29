@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                         Card(
                       clipBehavior: Clip.antiAlias,
                       child: OctoImage.fromSet(
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         image: CachedNetworkImageProvider(images?[itemIndex]
                                 ['url'] ??
                             carouselImageUrls[itemIndex]),
