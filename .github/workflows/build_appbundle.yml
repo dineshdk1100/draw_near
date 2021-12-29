@@ -21,7 +21,7 @@ jobs:
         with:
           flutter-version: '2.5.3'
         name: Setup Flutter
-      - run: echo $KEY_JKS > upload-keystore.jks && flutter pub get && flutter build appbundle --release
+      - run: flutter pub get && flutter build appbundle --release
         name: Run Build
       - uses: actions/upload-artifact@v2
         with:
