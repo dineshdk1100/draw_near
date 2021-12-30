@@ -27,7 +27,7 @@ jobs:
         with:
           flutter-version: ${{ env.flutter_version }}
         name: Setup Flutter
-      - run: echo "${{ env.KEY_JKS }}" | base64 --decode > upload-keystore.jks && flutter pub get && flutter build appbundle --release
+      - run: echo "${{ env.KEY_JKS }}" | base64 --decode > android/upload-keystore.jks && flutter pub get && flutter build appbundle --release
         name: Run Build
       - uses: actions/upload-artifact@v2
         with:
