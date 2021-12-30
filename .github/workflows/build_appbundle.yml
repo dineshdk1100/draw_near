@@ -6,6 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+        flutter_version: '2.5.3'
         KEY_JKS: ${{ secrets.KEY_JKS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -17,11 +18,16 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
         name: Setup Java
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v2
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.5.3'
+          flutter-version: ${{ env.flutter_version }}
         name: Setup Flutter
-      - run: flutter pub get && flutter build appbundle --release
+      - run: echo "${{ env.KEY_JKS }}" | base64 --decode > upload-keystore.jks && flutter pub get && flutter build appbundle --release
         name: Run Build
       - uses: actions/upload-artifact@v2
         with:
