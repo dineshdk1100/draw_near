@@ -137,6 +137,7 @@ class UserService {
   }
 
   removeUserDetails() {
+    _userDetails = UserDetails.fromJson(data);
     _baseBox.delete('userDetails');
   }
 

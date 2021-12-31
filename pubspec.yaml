@@ -80,6 +80,7 @@ dependencies:
   screen_loader: ^4.0.1
   firebase_performance: ^0.8.0+3
   flutter_phoenix: ^1.0.0
+  upgrader: ^3.11.1
 
 dev_dependencies:
   flutter_test:
