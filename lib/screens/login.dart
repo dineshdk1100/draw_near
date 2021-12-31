@@ -4,6 +4,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/OTPController.dart';
 import 'package:draw_near/screens/base-home.dart';
+import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/offline-alert.dart';
 import 'package:easy_localization/src/public_ext.dart';
@@ -152,29 +153,29 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                             ),
                             SizedBox(height: 5),
                             Container(
-                               // margin: EdgeInsets.all(5),
-                                width: 220,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    //primary: Colors.blue.shade100, // background
-                                    // background
-                                    onPrimary: Colors.white, // foreground
-                                  ),
-
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pushReplacement(MaterialPageRoute(builder: (_) => BaseHome()));
-
-                                  },
-
-                                  child: Text(
-                                    'Continue as Guest',
-                                    style: TextStyle(
-                                        fontFamily: 'San Francisco',
-                                        //fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                  ),
-                                ),),
+                              // margin: EdgeInsets.all(5),
+                              width: 220,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  //primary: Colors.blue.shade100, // background
+                                  // background
+                                  onPrimary: Colors.white, // foreground
+                                ),
+                                onPressed: () {
+                                  UserService.instance.isGuest = true;
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (_) => BaseHome()));
+                                },
+                                child: Text(
+                                  'Continue as Guest',
+                                  style: TextStyle(
+                                      fontFamily: 'San Francisco',
+                                      //fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
 
                             SizedBox(
                               height: 20,
@@ -265,7 +266,7 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                                     'Verify',
                                     style: TextStyle(
                                         fontFamily: 'San Francisco',
-                                       fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.w600,
                                         color: Colors.black),
                                   ),
                                 ))
