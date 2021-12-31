@@ -18,6 +18,15 @@ class UserService {
   late double _fontSize;
   late double _bodyTextStyleHeight;
   late bool _isLoggedIn;
+  late bool _isGuest;
+
+  bool get isGuest => _isGuest;
+
+  set isGuest(bool value) {
+    _isGuest = value;
+    _baseBox.put('guest', value);
+  }
+
   late String _theme;
   late TimeOfDay _reminderTime;
   late bool _isReminderOn;
@@ -34,6 +43,7 @@ class UserService {
     _bodyTextStyleHeight =
         _baseBox.get('bodyTextStyleHeight', defaultValue: 1.55);
     _isLoggedIn = _baseBox.get('loggedIn', defaultValue: false);
+    _isGuest = _baseBox.get('guest', defaultValue: false);
     _isAppInitialized = _baseBox.get('app_initialized', defaultValue: false);
     _fontSize = _baseBox.get('fontSize', defaultValue: 0.toDouble());
     _theme = _baseBox.get('theme', defaultValue: "system");

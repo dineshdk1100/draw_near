@@ -287,26 +287,27 @@ class _DevotionPageState extends State<DevotionPage> {
                           _devotion.authorName[0] ?? "",
                           style: author,
                         ),
-                        onPressed: () => showModalBottomSheet(shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(60), topRight: Radius.circular(60))),
+                        onPressed: () => showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(60),
+                                    topRight: Radius.circular(60))),
                             isScrollControlled: true,
                             context: context,
                             builder: (context) {
                               return Container(
-
-                                height: MediaQuery.of(context).size.height*0.6,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.6,
                                 padding: EdgeInsets.all(16),
                                 child: ListView(
                                   shrinkWrap: true,
                                   children: [
                                     Container(
-
                                       height: 300,
                                       child: FittedBox(
                                         fit: BoxFit.scaleDown,
                                         child: CircleAvatar(
-
                                             radius: 120,
-
                                             backgroundImage:
                                                 CachedNetworkImageProvider(
                                                     authors.photo[0]['url'])),
@@ -386,9 +387,17 @@ class _DevotionPageState extends State<DevotionPage> {
       firstDate: DateTime(_devotion.date.year, 1, 1),
       lastDate: DateTime(_devotion.date.year, 12, 31),
     );
-    if (date != null)
-      Navigator.pushReplacement(
+
+    if (date != null) {
+      if (date.isAfter(DateTime.now())) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('devotion_denied'.tr()),
+        ));
+        return;
+      }
+      Navigator.push(
           context, MaterialPageRoute(builder: (context) => DevotionPage(date)));
+    }
   }
 
   // void showFontSizeDialog(context) {

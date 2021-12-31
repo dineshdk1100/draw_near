@@ -175,7 +175,7 @@ class _HomePageState extends State<HomePage> {
 
                   title: DateTime.now().year == 2021
                       ? Text("Gratitude")
-                      : Text(themeMonth?.fullMonth ?? "Unavailable"),
+                      : Text(themeMonth?.title ?? "Unavailable"),
                   subtitle: Text('theme_month'.tr(namedArgs: {
                     'month': DateFormat("MMMM", context.locale.languageCode)
                         .format(DateTime.now())

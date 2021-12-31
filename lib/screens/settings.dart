@@ -14,8 +14,6 @@ import 'package:provider/provider.dart';
 import 'package:screen_loader/screen_loader.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
 
-import 'login.dart';
-
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
 
@@ -134,6 +132,7 @@ class _SettingsState extends State<Settings> with ScreenLoader {
                 : Container(),
             ListTile(
               //trailing: Icon(Icons.navigate_next),
+              enabled: UserService.instance.isLoggedIn,
               title: Text("Edit profile"),
               trailing: Icon(Icons.navigate_next),
               onTap: () {

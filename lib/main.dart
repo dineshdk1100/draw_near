@@ -114,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(milliseconds: 1500), () {
       if (UserService.instance.isAppInitialized) {
         DownloadService.instance.initialize();
-        if (UserService.instance.isLoggedIn)
+        if (UserService.instance.isLoggedIn || UserService.instance.isGuest)
           Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (_) => BaseHome()));
         else
