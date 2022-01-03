@@ -10,6 +10,7 @@ import 'package:draw_near/services/user-service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DevotionPage extends StatefulWidget {
@@ -389,7 +390,8 @@ class _DevotionPageState extends State<DevotionPage> {
     );
 
     if (date != null) {
-      if (date.isAfter(DateTime.now())) {
+      if (Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear >
+          Jiffy.unix(DateTime.now().millisecondsSinceEpoch).dayOfYear) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('devotion_denied'.tr()),
         ));

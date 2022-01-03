@@ -53,6 +53,23 @@ class _language extends State<Language> {
           ),
         ),
         Divider(),
+        ListTile(
+          title: Flexible(
+            child: DropdownButton(
+              onChanged: onSelectLanguage,
+              value: context.locale.toString(),
+              items: AVAILABLE_LANGUAGES.keys
+                  .map((lang) => DropdownMenuItem(
+                        enabled: lang == 'en_IN' ? true : false,
+                        child:
+                            Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
+                        value: lang,
+                      ))
+                  .toList(),
+            ),
+          ),
+        ),
+        Divider(),
         /* ListTile(
             //isThreeLine: true,
               onTap: (){

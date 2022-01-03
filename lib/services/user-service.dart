@@ -55,6 +55,17 @@ class UserService {
         hour: int.parse(reminderTimeString.split(':')[0]),
         minute: int.parse(reminderTimeString.split(':')[1]));
     _isReminderOn = _baseBox.get('reminder', defaultValue: false);
+
+    FirebaseCrashlytics.instance
+        .setCustomKey('bodyTextStyleHeight', bodyTextStyleHeight);
+    FirebaseCrashlytics.instance.setCustomKey('fontSize', fontSize);
+    FirebaseCrashlytics.instance
+        .setCustomKey('app_initialized', isAppInitialized);
+    FirebaseCrashlytics.instance.setCustomKey('loggedIn', isLoggedIn);
+    FirebaseCrashlytics.instance.setCustomKey('theme', theme);
+    FirebaseCrashlytics.instance.setCustomKey('locale', locale);
+    FirebaseCrashlytics.instance
+        .setCustomKey('reminder_time', reminderTimeString);
   }
 
   bool get isReminderOn => _isReminderOn;
