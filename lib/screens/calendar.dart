@@ -1,6 +1,7 @@
 import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/util/color_theme.dart';
+import 'package:draw_near/util/helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
@@ -41,14 +42,18 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(onPressed: onOpenDatePicker, label: Text('select_date'.tr()), icon: Icon(Icons.today), ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: onOpenDatePicker,
+        label: Text('select_date'.tr()),
+        icon: Icon(Icons.today),
+      ),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.navigate_before),
           onPressed: getPreviousWeek,
         ),
         title: Text(
-          DateFormat( "MMMM",context.locale.languageCode).format(weekEndDate),
+          DateFormat("MMMM", context.locale.languageCode).format(weekEndDate),
           style: Theme.of(context).textTheme.headline6,
         ),
         centerTitle: true,
@@ -95,21 +100,20 @@ class _CalendarPageState extends State<CalendarPage> {
     });
   }
 
-  void onOpenDatePicker() async{
+  void onOpenDatePicker() async {
     var date = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(selectedDate.year, 1, 1),
         lastDate: DateTime(selectedDate.year, 12, 31),
         selectableDayPredicate: (DateTime date) {
-          if(date.isSameDayAs(DateTime.now())) return true;
-          return DevotionService.instance.devotionsMap.containsKey(Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString());
-        }
-
-    );
-    if(date!=null) {
-     if(date.isAfter(DateTime.now()))
-     {
+          if (date.isSameDayAs(DateTime.now())) return true;
+          return DevotionService.instance.devotionsMap.containsKey(
+              Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString());
+        });
+    if (date != null) {
+      if (Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear >
+          Jiffy.unix(DateTime.now().millisecondsSinceEpoch).dayOfYear) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('devotion_denied'.tr()),
         ));
@@ -119,7 +123,6 @@ class _CalendarPageState extends State<CalendarPage> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => DevotionPage(date)));
     }
-
   }
 }
 
@@ -139,7 +142,8 @@ class DayCard extends StatelessWidget {
               style: Theme.of(context).textTheme.headline6,
             ),
             Text(
-              getFormattedWeekDay(date, context.locale.languageCode).toUpperCase(),
+              getFormattedWeekDay(date, context.locale.languageCode)
+                  .toUpperCase(),
               style: Theme.of(context).textTheme.caption,
             )
           ],
@@ -150,8 +154,12 @@ class DayCard extends StatelessWidget {
             height: date.isSameDayAs(DateTime.now()) ? 72 : 56,
             alignment: Alignment.centerLeft,
             child: Text(
-              devotionTitle, overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.subtitle1?.copyWith(color: date.isAfter(DateTime.now())? Theme.of(context).textTheme.caption?.color : Theme.of(context).textTheme.subtitle1?.color),
+              devotionTitle,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                  color: date.isAfter(DateTime.now())
+                      ? Theme.of(context).textTheme.caption?.color
+                      : Theme.of(context).textTheme.subtitle1?.color),
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -162,14 +170,19 @@ class DayCard extends StatelessWidget {
             ),
           ),
         ),
-        onTap: date.isAfter(DateTime.now())
+        onTap: Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear >
+                Jiffy.unix(DateTime.now().millisecondsSinceEpoch).dayOfYear
             ? () {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text('devotion_denied'.tr()),
                 ));
               }
             : devotionTitle == "devotion_unavailable".tr()
-                ? (){ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Devotion not available for the selected date")));}
+                ? () {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            "Devotion not available for the selected date")));
+                  }
                 : () {
                     navigateToDevotionPage(context);
                   });
@@ -181,13 +194,6 @@ class DayCard extends StatelessWidget {
   }
 }
 
-extension IsSameDay on DateTime {
-  bool isSameDayAs(DateTime other) {
-    return year == other.year && month == other.month && day == other.day;
-  }
+getFormattedWeekDay(DateTime date, String locale) {
+  return DateFormat("E", locale).format(date);
 }
-
-getFormattedWeekDay(DateTime date, String locale ){
-  return DateFormat( "E",locale).format(date);
-}
-
