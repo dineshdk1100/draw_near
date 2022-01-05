@@ -15,6 +15,7 @@
   "author": "Author",
   "about_author": "About the @:author",
   "bible_portion": "Bible Ref.",
+  "bible_por": "Bible Portion",
   "devotion_denied": "Future devotions cannot be viewed now",
   "devotion_unavailable": "Stay tuned!",
   "devotion_unavailable_desc": "Devotions will be available everyday starting from January 1, 2022. You can access other devotions from the Calendar page by selecting January 2021 for now or set a reminder from the Account page and we will remind you to read everyday.",
@@ -41,5 +42,6 @@
   "notification_title": "It's Devotion Time",
   "notification_body": "Reminder to read your devotion everyday",
   "profile_info": "Edit Profile",
-  "profile_information":" Profile Information"
+  "profile_information":"Profile Information",
+  "monthly_theme": "Theme of the Month"
 }

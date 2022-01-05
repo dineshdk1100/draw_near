@@ -174,7 +174,7 @@ class _DevotionPageState extends State<DevotionPage> {
                         ),
                         SizedBox(width: 1),
                         TextButton.icon(
-                          label: Icon(Icons.navigate_next),
+                          label: Icon(Icons.play_arrow),
                           icon: Text(
                             '#' + _devotion.songNumber[0] ?? "",
                             style: bodyText2.copyWith(
@@ -199,7 +199,7 @@ class _DevotionPageState extends State<DevotionPage> {
                         ),
                         SizedBox(width: 1),
                         TextButton.icon(
-                          label: Icon(Icons.navigate_next),
+                          label: Icon(Icons.play_arrow),
                           icon: Text(
                             _devotion.biblePortion ?? "",
                             overflow: TextOverflow.fade,
@@ -221,29 +221,26 @@ class _DevotionPageState extends State<DevotionPage> {
                 DevotionCard(
                     _devotion.verseLine[0],
                     platformBrightness == Brightness.light
-                        ? HSLColor.fromColor(Color(0xFFe6adad))
-                            .withLightness(0.9)
-                            .withSaturation(0.75)
-                            .toColor()
-                        : Color(0xFFd98282)),
+                        ? Colors.black26
+                        : Colors.black26),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.body,
                     platformBrightness == Brightness.light
-                        ? Color(0xFFDDFFBC)
-                        : Color(0xFF4d9900)),
+                        ? Colors.black12
+                        : Colors.black12),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.reflectRespond,
                     platformBrightness == Brightness.light
-                        ? Color(0xFFFBC6A4)
-                        : Color(0xFFf7833b)),
+                        ? Colors.black26
+                        : Colors.black26),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.prayer,
                     platformBrightness == Brightness.light
-                        ? Color(0xFFDCD6F7)
-                        : Color(0xFF927fe6)),
+                        ? Colors.black12
+                        : Colors.black12),
 
                 SizedBox(height: 3),
                 _devotion.quote != null

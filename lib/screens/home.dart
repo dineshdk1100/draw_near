@@ -26,7 +26,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:upgrader/upgrader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
@@ -91,8 +90,8 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: UpgradeAlert(canDismissDialog: false,showIgnore: false,showLater: false,
-        child: ListView(
+      body:
+         ListView(
           shrinkWrap: true,
           children: [
             Stack(
@@ -153,6 +152,41 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.local_library_outlined),
+                      title: Text(devotion?.title ?? "devotion_unavailable".tr()),
+                      subtitle: Text('devotion_day'.tr()),
+                    ),
+                    Divider(),
+                    Container(
+                      decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text(
+                          devotion?.body ?? "devotion_unavailable_desc".tr(),
+                          textAlign: TextAlign.justify,
+                          maxLines: 6,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis),
+                      foregroundDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    TextButton(
+                        onPressed:
+                        (devotion != null) ? navigateToDevotionPage : null,
+                        child: Text('read_more'.tr().toUpperCase()))
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
                 child: Badge(
                   animationType: BadgeAnimationType.scale,
                   shape: BadgeShape.circle,
@@ -187,44 +221,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.local_library_outlined),
-                      title: Text(devotion?.title ?? "devotion_unavailable".tr()),
-                      subtitle: Text('devotion_day'.tr()),
-                    ),
-                    Divider(),
-                    Container(
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Text(
-                          devotion?.body ?? "devotion_unavailable_desc".tr(),
-                          textAlign: TextAlign.justify,
-                          maxLines: 6,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis),
-                      foregroundDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    TextButton(
-                        onPressed:
-                            (devotion != null) ? navigateToDevotionPage : null,
-                        child: Text('read_more'.tr().toUpperCase()))
-                  ],
-                ),
-              ),
-            ),
+
           ],
         ),
-      ),
+
     );
   }
 

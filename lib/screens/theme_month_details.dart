@@ -1,5 +1,6 @@
 import 'package:draw_near/models/theme_month.dart';
 import 'package:draw_near/services/theme-month-service.dart';
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,6 +24,9 @@ class _ThemeMonthDetailsState extends State<ThemeMonthDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('monthly_theme'.tr()),
+        ),
         body: SizedBox.expand(
           child: Container(
             //decoration: BoxDecoration(color: Theme.of(context).primaryColor),

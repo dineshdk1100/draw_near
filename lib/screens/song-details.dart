@@ -24,6 +24,9 @@ class _SongDetailsState extends State<SongDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        title: Text('song'.tr()),
+        ),
       body: SizedBox.expand(
         child: Container(
           //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
