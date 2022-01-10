@@ -77,9 +77,7 @@ class _SongDetailsState extends State<SongDetails> {
   }
 
   initializeVideoController() {
-    videoId = YoutubePlayer.convertUrlToId(
-            "https://www.youtube.com/watch?v=ZYzxalQ6Lg8") ??
-        "";
+    videoId = YoutubePlayer.convertUrlToId(song.videoLink ?? "") ?? "";
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
       flags: YoutubePlayerFlags(
