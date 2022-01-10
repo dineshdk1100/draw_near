@@ -36,109 +36,61 @@ class _language extends State<Language> {
               SizedBox(
                 height: 20,
               ),
-              ListTile(
-                isThreeLine: true,
-                title: Text("change_lang".tr() + '  (மொழியை மாற்றவும்)'),
-                subtitle: Text("change_lang_desc".tr()),
-                trailing: DropdownButton(
-                  onChanged: onSelectLanguage,
-                  value: context.locale.toString(),
-                  items: AVAILABLE_LANGUAGES.keys
-                      .map((lang) =>
-                      DropdownMenuItem(
-                        enabled: lang == 'en_IN' ? true : false,
-                        child: Text(
-                            AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
-                        value: lang,
-                      ))
-                      .toList(),
-                ),
-              ),
+              // ListTile(
+              //   isThreeLine: true,
+              //   title: Text("change_lang".tr() + '  (மொழியை மாற்றவும்)'),
+              //   subtitle: Text("change_lang_desc".tr()),
+              //   trailing: DropdownButton(
+              //     onChanged: onSelectLanguage,
+              //     value: context.locale.toString(),
+              //     items: AVAILABLE_LANGUAGES.keys
+              //         .map((lang) =>
+              //         DropdownMenuItem(
+              //           enabled: lang == 'en_IN' ? true : false,
+              //           child: Text(
+              //               AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
+              //           value: lang,
+              //         ))
+              //         .toList(),
+              //   ),
+              // ),
               Divider(),
-              /* ListTile(
-              //isThreeLine: true,
-                onTap: (){
-        SizedBox(
-          height: 20,
-        ),
         ListTile(
-          isThreeLine: true,
-          title: Text("change_lang".tr() + '  (மொழியை மாற்றவும்)'),
-          subtitle: Text("change_lang_desc".tr()),
-          trailing: DropdownButton(
-            onChanged: onSelectLanguage,
-            value: context.locale.toString(),
-            items: AVAILABLE_LANGUAGES.keys
-                .map((lang) => DropdownMenuItem(
-                      enabled: lang == 'en_IN' ? true : false,
-                      child: Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
-                      value: lang,
-                    ))
-                .toList(),
-          ),
+          //isThreeLine: true,
+          title: Center(child: Text("change_lang".tr() + '  (மொழியை மாற்றவும்)')),
+          subtitle: Center(child: Text("change_lang_desc".tr())),
+          // trailing: DropdownButton(
+          //   onChanged: onSelectLanguage,
+          //   value: context.locale.toString(),
+          //   items: AVAILABLE_LANGUAGES.keys
+          //       .map((lang) => DropdownMenuItem(
+          //             enabled: lang == 'en_IN' ? true : false,
+          //             child: Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
+          //             value: lang,
+          //           ))
+          //       .toList(),
+          // ),
         ),
-        Divider(),
+
         ListTile(
-          title: Flexible(
-            child: DropdownButton(
-              onChanged: onSelectLanguage,
-              value: context.locale.toString(),
-              items: AVAILABLE_LANGUAGES.keys
-                  .map((lang) => DropdownMenuItem(
-                        enabled: lang == 'en_IN' ? true : false,
-                        child:
-                            Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
-                        value: lang,
-                      ))
-                  .toList(),
+          title: Center(
+            child: Flexible(
+              child: DropdownButton(
+                onChanged: onSelectLanguage,
+                value: context.locale.toString(),
+                items: AVAILABLE_LANGUAGES.keys
+                    .map((lang) => DropdownMenuItem(
+                          enabled: lang == 'en_IN' ? true : false,
+                          child:
+                              Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
+                          value: lang,
+                        ))
+                    .toList(),
+              ),
             ),
           ),
         ),
         Divider(),
-         ListTile(
-            //isThreeLine: true,
-              onTap: (){
-
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Select theme'),
-                        content: Container(
-                          height: 180,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListTile(
-                                  leading: Icon(Icons.light_mode),
-                                  title: Text("Light theme"),
-                                  onTap: () { Navigator.pop(context); ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.light);}
-
-                              ),
-                              ListTile(
-                                  leading: Icon(Icons.dark_mode),
-                                  title: Text("Dark theme"),
-                                  onTap: ()  { Navigator.pop(context); ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.dark);}
-
-                              ),
-                              ListTile(
-                                  leading: Icon(Icons.brightness_4),
-                                  title: Text("System theme"),
-                                  onTap: ()  { Navigator.pop(context);  ThemeModeHandler.of(context)?.saveThemeMode(ThemeMode.system);}
-
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                title: Text("theme".tr()),
-                //subtitle: Text(UserService.instance.theme.toString().capitalize().tr()),
-                trailing: Icon(Icons.arrow_forward_ios)
-            ), */
-
 
               SizedBox(
                 height: 20,
