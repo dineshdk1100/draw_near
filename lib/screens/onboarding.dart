@@ -43,6 +43,7 @@ class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Column(
         children: [
           Expanded(
@@ -56,12 +57,12 @@ class _OnboardingState extends State<Onboarding> {
               },
               itemBuilder: (_, i) {
                 return Padding(
-                  padding: const EdgeInsets.all(35),
+                  padding: const EdgeInsets.all(28),
                   child: Container(
                     alignment: Alignment.center,
                     child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(padding: EdgeInsets.all(10),
                         child: Image.asset(
@@ -71,7 +72,7 @@ class _OnboardingState extends State<Onboarding> {
                     Text(
                           contents[i].title,
                           style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 23,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -139,6 +140,7 @@ class _OnboardingState extends State<Onboarding> {
           )
         ],
       ),
+
     );
   }
 

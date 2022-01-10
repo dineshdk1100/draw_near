@@ -184,13 +184,13 @@ class DayCard extends StatelessWidget {
                             "Devotion not available for the selected date")));
                   }
                 : () {
-                    navigateToDevotionPage(context);
+                    navigateToDevotionPage(context, date);
                   });
   }
 
-  void navigateToDevotionPage(context) {
+  void navigateToDevotionPage(context, DateTime date) {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => DevotionPage(DateTime.now())));
+        MaterialPageRoute(builder: (context) => DevotionPage(date)));
   }
 }
 

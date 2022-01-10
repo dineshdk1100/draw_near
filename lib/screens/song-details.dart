@@ -27,6 +27,27 @@ class _SongDetailsState extends State<SongDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        title: Text('song'.tr()),
+        ),
+      body: SizedBox.expand(
+        child: Container(
+          //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+          padding: EdgeInsets.all(16),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              // CircleAvatar(
+              //   child: OctoImage.fromSet(
+              //     fit: BoxFit.cover,
+              //     image: CachedNetworkImageProvider(
+              //         carouselImageUrls[itemIndex]),
+              //     octoSet: OctoSet.circularIndicatorAndIcon(
+              //         showProgress: true),
+              //   ),
+              // ),
+
+              Text('song'.tr() +  song.number ,style: GoogleFonts.abrilFatface(
         body: SizedBox.expand(
       child: Container(
         //decoration: BoxDecoration(color: Theme.of(context).primaryColor),

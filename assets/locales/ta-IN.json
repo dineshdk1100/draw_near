@@ -12,7 +12,8 @@
   "song": "பாடல்",
   "by": "தொகுப்பாளர்",
   "about_author": "@:author விவரம்",
-  "bible_portion": "பைபிள் பிரிவு",
+  "bible_portion": "பைபிள் குறிப்பு",
+  "bible_por": "பைபிள் பகுதி",
   "devotion_denied": "எதிர்கால பிரார்தனைகளை இப்போது பார்க்க முடியாது",
   "devotion_unavailable": "பிரார்தனை இல்லை",
   "devotion_unavailable_desc": "கொடுக்கப்பட்ட தேதிக்கு பிரார்தனை இல்லை",
@@ -34,5 +35,6 @@
   "otp_verify": "OTP சரிபார்ப்பு",
   "otp_digits": "6 இலக்க OTP ஐ உள்ளிடவும்",
   "profile_info": "சுயவிவரத்தைத் திருத்தவும்",
-  "profile_information":"சுயவிவரத் தகவல்"
+  "profile_information":"சுயவிவரத் தகவல்",
+  "monthly_theme": "மாதாந்திர தலைப்பு"
 }

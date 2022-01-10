@@ -113,6 +113,7 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                                     child: Column(
                                       children: [
                                         SignInButton(
+
                                           Buttons.AppleDark,
                                           //padding: EdgeInsets.all(8.0),
                                           text: "Sign in with Apple",

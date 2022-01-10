@@ -53,7 +53,8 @@ class _DevotionPageState extends State<DevotionPage> {
         textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
             fontSize:
                 (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
-                    UserService.instance.fontSize)));
+                    UserService.instance.fontSize),
+        ));
     TextStyle? subtitle2 = GoogleFonts.roboto(
         textStyle: Theme.of(context).textTheme.subtitle2?.copyWith(
             fontSize:
@@ -156,7 +157,7 @@ class _DevotionPageState extends State<DevotionPage> {
                   ),
                   label: Icon(
                     Icons.edit,
-                    size: 16,
+                    size: 20,
                   ),
                   onPressed: onOpenDatePicker,
                 ),
@@ -175,7 +176,7 @@ class _DevotionPageState extends State<DevotionPage> {
                         ),
                         SizedBox(width: 1),
                         TextButton.icon(
-                          label: Icon(Icons.navigate_next),
+                          label: Icon(Icons.open_in_new),
                           icon: Text(
                             '#' + _devotion.songNumber[0] ?? "",
                             style: bodyText2.copyWith(
@@ -200,7 +201,7 @@ class _DevotionPageState extends State<DevotionPage> {
                         ),
                         SizedBox(width: 1),
                         TextButton.icon(
-                          label: Icon(Icons.navigate_next),
+                          label: Icon(Icons.open_in_new),
                           icon: Text(
                             _devotion.biblePortion ?? "",
                             overflow: TextOverflow.fade,
@@ -222,29 +223,50 @@ class _DevotionPageState extends State<DevotionPage> {
                 DevotionCard(
                     _devotion.verseLine[0],
                     platformBrightness == Brightness.light
-                        ? HSLColor.fromColor(Color(0xFFe6adad))
-                            .withLightness(0.9)
-                            .withSaturation(0.75)
-                            .toColor()
-                        : Color(0xFFd98282)),
+                        ? HSLColor.fromColor(Color(0xffe2a2e7))
+                        .withLightness(0.9)
+                        .withSaturation(0.55)
+                        .toColor()
+                        : HSLColor.fromColor(Color(0xffe2a2e7))
+                        .withLightness(0.9)
+                        .withSaturation(0.55)
+                        .toColor()),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.body,
                     platformBrightness == Brightness.light
-                        ? Color(0xFFDDFFBC)
-                        : Color(0xFF4d9900)),
+                        ? HSLColor.fromColor(Color(0xffbecde0))
+                        .withLightness(0.9)
+                        .withSaturation(0.55)
+                        .toColor()
+                        : HSLColor.fromColor(Color(0xffbecde0))
+                        .withLightness(0.9)
+                        .withSaturation(0.55)
+                        .toColor()),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.reflectRespond,
                     platformBrightness == Brightness.light
-                        ? Color(0xFFFBC6A4)
-                        : Color(0xFFf7833b)),
+                        ? HSLColor.fromColor(Color(0xFFEAD377))
+                        .withLightness(0.83)
+                        .withSaturation(0.75)
+                        .toColor()
+                        : HSLColor.fromColor(Color(0xFFECD98C))
+                        .withLightness(0.8)
+                        .withSaturation(0.75)
+                        .toColor()),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.prayer,
                     platformBrightness == Brightness.light
-                        ? Color(0xFFDCD6F7)
-                        : Color(0xFF927fe6)),
+                        ? HSLColor.fromColor(Color(0xFF8985F5))
+                        .withLightness(0.85)
+                        .withSaturation(0.55)
+                        .toColor()
+                        : HSLColor.fromColor(Color(0xFFCF88FC))
+                        .withLightness(0.85)
+                        .withSaturation(0.55)
+                        .toColor()),
 
                 SizedBox(height: 3),
                 _devotion.quote != null
@@ -452,7 +474,8 @@ class DevotionCard extends StatelessWidget {
             height: UserService.instance.bodyTextStyleHeight,
             fontSize:
                 (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
-                    UserService.instance.fontSize)));
+                    UserService.instance.fontSize),
+            color: Colors.black));
     return Card(
       child: Container(
         decoration:

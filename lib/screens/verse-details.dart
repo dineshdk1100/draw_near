@@ -26,6 +26,9 @@ class _VerseDetailsState extends State<VerseDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        title: Text("bible_por".tr()),
+        ),
       body: SizedBox.expand(
         child: Container(
           //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
@@ -43,7 +46,7 @@ class _VerseDetailsState extends State<VerseDetails> {
               //   ),
               // ),
 
-              Text("Bible Portion", style: GoogleFonts.abrilFatface(fontSize: 32),),
+              Text("bible_por".tr(), style: GoogleFonts.abrilFatface(fontSize: 32),),
               SizedBox(height: 24,),
               Text(verse.fullVerse, style: GoogleFonts.montserrat( fontSize: 16, fontWeight: FontWeight.w300, height: 1.5),)
             ],
