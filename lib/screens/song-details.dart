@@ -28,73 +28,66 @@ class _SongDetailsState extends State<SongDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        title: Text('song'.tr()),
+          title: Text('song'.tr()),
         ),
-      body: SizedBox.expand(
-        child: Container(
-          //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-          padding: EdgeInsets.all(16),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              // CircleAvatar(
-              //   child: OctoImage.fromSet(
-              //     fit: BoxFit.cover,
-              //     image: CachedNetworkImageProvider(
-              //         carouselImageUrls[itemIndex]),
-              //     octoSet: OctoSet.circularIndicatorAndIcon(
-              //         showProgress: true),
-              //   ),
-              // ),
-
-              Text('song'.tr() +  song.number ,style: GoogleFonts.abrilFatface(
-        body: SizedBox.expand(
-      child: Container(
-        //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-        padding: EdgeInsets.all(16),
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Text(
-              'song'.tr() + ' ' + song.number,
-              style: GoogleFonts.abrilFatface(
-                textStyle: Theme.of(context).textTheme.headline4,
+        body: YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            controller: _controller,
+            showVideoProgressIndicator: true,
+            progressIndicatorColor: Theme.of(context).toggleableActiveColor,
+          ),
+          builder: (context, player) => SizedBox.expand(
+            child: Container(
+              //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+              //padding: EdgeInsets.all(16),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'song'.tr() + ' ' + song.number,
+                      style: GoogleFonts.abrilFatface(
+                        textStyle: Theme.of(context).textTheme.headline4,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  player,
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      song.body,
+                      style: GoogleFonts.lora(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20,
+                          height: 1.5),
+                    ),
+                  )
+                ],
               ),
             ),
-            SizedBox(
-              height: 16,
-            ),
-            YoutubePlayer(
-              controller: _controller,
-              showVideoProgressIndicator: true,
-              progressIndicatorColor: Theme.of(context).toggleableActiveColor,
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              song.body,
-              style: GoogleFonts.lora(
-                  fontStyle: FontStyle.italic, fontSize: 20, height: 1.5),
-            )
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 
   initializeVideoController() {
+    videoId = YoutubePlayer.convertUrlToId(
+            "https://www.youtube.com/watch?v=ZYzxalQ6Lg8") ??
+        "";
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
       flags: YoutubePlayerFlags(
-        autoPlay: true,
-        mute: true,
+        autoPlay: false,
+        mute: false,
       ),
     );
 
-    videoId = YoutubePlayer.convertUrlToId(
-            "https://www.youtube.com/watch?v=ZYzbalQ6Lg8") ??
-        "";
     print(videoId); // BBAyRBTfsOU
   }
 }
