@@ -11,7 +11,8 @@ Song _$SongFromJson(Map<String, dynamic> json) => Song(
       json['Body'] as String,
       (json['Devotions'] as List<dynamic>).map((e) => e as String).toList(),
       json['Number'] as String,
-      json['Song name']  ?? "" as String,
+      json['Song name'] as String,
+      json['Youtube Link'] as String,
       json['Last Modified Time'] as int,
     );
 
@@ -21,5 +22,6 @@ Map<String, dynamic> _$SongToJson(Song instance) => <String, dynamic>{
       'Devotions': instance.devotions,
       'Number': instance.number,
       'Song name': instance.songName,
+      'Youtube Link': instance.videoLink,
       'Last Modified Time': instance.lastModifiedTime,
     };

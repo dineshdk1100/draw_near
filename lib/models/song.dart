@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'song.g.dart';
 
+part 'song.g.dart';
 
 @JsonSerializable()
 class Song {
@@ -14,21 +14,15 @@ class Song {
   String number;
   @JsonKey(name: 'Song name')
   String songName;
+  @JsonKey(name: 'Youtube Link')
+  String videoLink;
   @JsonKey(name: 'Last Modified Time')
   int lastModifiedTime;
 
-  Song(
-      this.recordId,
-      this.body, 
-      this.devotions, 
-      this.number,
-      this.songName,
-      this.lastModifiedTime
-      );
+  Song(this.recordId, this.body, this.devotions, this.number, this.songName,
+      this.videoLink, this.lastModifiedTime);
 
-  factory Song.fromJson(Map<String, dynamic> json) =>
-      _$SongFromJson(json);
+  factory Song.fromJson(Map<String, dynamic> json) => _$SongFromJson(json);
 
   Map<String, dynamic> toJson() => _$SongToJson(this);
-
 }
