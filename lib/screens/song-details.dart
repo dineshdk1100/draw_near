@@ -1,8 +1,10 @@
 import 'package:draw_near/models/song.dart';
+import 'package:draw_near/screens/video-fullscreen.dart';
 import 'package:draw_near/services/song-service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class SongDetails extends StatefulWidget {
@@ -33,8 +35,25 @@ class _SongDetailsState extends State<SongDetails> {
         body: YoutubePlayerBuilder(
           player: YoutubePlayer(
             controller: _controller,
+            controlsTimeOut: Duration(seconds: 10),
             showVideoProgressIndicator: true,
-            progressIndicatorColor: Theme.of(context).toggleableActiveColor,
+            bottomActions: [
+              const SizedBox(width: 14.0),
+              CurrentPosition(),
+              const SizedBox(width: 8.0),
+              ProgressBar(
+                isExpanded: true,
+                colors: ProgressBarColors(),
+              ),
+              RemainingDuration(),
+              const PlaybackSpeedButton(),
+              IconButton(icon: Icon(Icons.fullscreen, color: Colors.white,), onPressed: ()=> pushNewScreen(
+                context,
+                screen: VideoFullScreen(_controller),
+                withNavBar: false, // OPTIONAL VALUE. True by default.
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              ),),
+            ],
           ),
           builder: (context, player) => SizedBox.expand(
             child: Container(
@@ -83,6 +102,9 @@ class _SongDetailsState extends State<SongDetails> {
       flags: YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
+      controlsVisibleAtStart: true,
+
+        //enableCaption: true,
       ),
     );
 

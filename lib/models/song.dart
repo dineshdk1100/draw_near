@@ -12,14 +12,13 @@ class Song {
   List<String> devotions;
   @JsonKey(name: 'Number')
   String number;
-  @JsonKey(name: 'Song name')
-  String songName;
+
   @JsonKey(name: 'Youtube Link')
   String videoLink;
   @JsonKey(name: 'Last Modified Time')
   int lastModifiedTime;
 
-  Song(this.recordId, this.body, this.devotions, this.number, this.songName,
+  Song(this.recordId, this.body, this.devotions, this.number,
       this.videoLink, this.lastModifiedTime);
 
   factory Song.fromJson(Map<String, dynamic> json) => _$SongFromJson(json);
