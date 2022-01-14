@@ -3,7 +3,8 @@ import 'package:draw_near/services/song-service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+//import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class SongDetails extends StatefulWidget {
   final String recordId;
@@ -26,13 +27,7 @@ class _SongDetailsState extends State<SongDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayerBuilder(
-        player: YoutubePlayer(
-          controller: _controller,
-          controlsTimeOut: Duration(seconds: 3),
-          showVideoProgressIndicator: true,
-        ),
-        builder: (context, player) => Scaffold(
+    return Scaffold(
               appBar: AppBar(
                 title: Text('song'.tr()),
               ),
@@ -55,7 +50,9 @@ class _SongDetailsState extends State<SongDetails> {
                       SizedBox(
                         height: 8,
                       ),
-                      player,
+                      YoutubePlayerIFrame(
+                        controller: _controller,
+                      ),
                       SizedBox(
                         height: 8,
                       ),
@@ -73,16 +70,19 @@ class _SongDetailsState extends State<SongDetails> {
                   ),
                 ),
               ),
-            ));
+            );
   }
 
   initializeVideoController() {
-    videoId = YoutubePlayer.convertUrlToId(song.videoLink ?? "") ?? "";
+    videoId = YoutubePlayerController.convertUrlToId(song.videoLink ?? "") ?? "";
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
+      params: YoutubePlayerParams(
         autoPlay: false,
         mute: false,
+        showFullscreenButton: true,
+        showControls: true,
+        strictRelatedVideos: true
 
         //enableCaption: true,
       ),

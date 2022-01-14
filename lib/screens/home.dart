@@ -27,7 +27,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -49,7 +51,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     //newVersion.showAlertIfNecessary(context: context);
-
+    RemoteConfig.instance.fetchAndActivate();
+    remoteConfig.get
     try {
       images = CarouselImageService.instance.getCarouselImages();
       print(images);
@@ -92,6 +95,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body:
+      //UpgradeAlert(canDismissDialog: false,showIgnore: false,showLater: true,
          ListView(
           shrinkWrap: true,
           children: [
@@ -225,7 +229,7 @@ class _HomePageState extends State<HomePage> {
 
           ],
         ),
-
+      //),
     );
   }
 

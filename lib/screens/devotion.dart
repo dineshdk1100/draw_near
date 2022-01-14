@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class DevotionPage extends StatefulWidget {
   final DateTime date;
@@ -182,11 +183,13 @@ class _DevotionPageState extends State<DevotionPage> {
                             style: bodyText2.copyWith(
                                 decoration: TextDecoration.underline),
                           ),
-                          onPressed: () => Navigator.push(
-                              context,
+                           onPressed: () =>
+                               //pushNewScreen(context, screen: SongDetails(_devotion.song[0]), withNavBar: false),
+                          Navigator.push(
+                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      SongDetails(_devotion.song[0]))),
+                                     SongDetails(_devotion.song[0]))),
                         ),
                       ],
                     ),

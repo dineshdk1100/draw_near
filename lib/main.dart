@@ -18,6 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
+import 'package:upgrader/upgrader.dart';
 
 void main() async {
   runZonedGuarded<Future<void>>(() async {
@@ -131,7 +132,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: UpgradeAlert(canDismissDialog: false,showIgnore: false,showLater: true,
+      dialogStyle: UpgradeDialogStyle.cupertino,
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -150,6 +153,7 @@ class _SplashScreenState extends State<SplashScreen> {
             )
           ],
         ),
+      ),
       ),
     );
   }
