@@ -260,13 +260,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
-  csslib:
-    dependency: transitive
-    description:
-      name: csslib
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.17.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -288,48 +281,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.6"
-  device_info_plus:
-    dependency: transitive
-    description:
-      name: device_info_plus
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.1"
-  device_info_plus_linux:
-    dependency: transitive
-    description:
-      name: device_info_plus_linux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
-  device_info_plus_macos:
-    dependency: transitive
-    description:
-      name: device_info_plus_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.1"
-  device_info_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: device_info_plus_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.0"
-  device_info_plus_web:
-    dependency: transitive
-    description:
-      name: device_info_plus_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
-  device_info_plus_windows:
-    dependency: transitive
-    description:
-      name: device_info_plus_windows
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   easy_localization:
     dependency: "direct main"
     description:
@@ -707,13 +658,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  html:
-    dependency: transitive
-    description:
-      name: html
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.15.0"
   http:
     dependency: transitive
     description:
@@ -840,13 +784,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
-  os_detect:
-    dependency: transitive
-    description:
-      name: os_detect
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   package_config:
     dependency: transitive
     description:
@@ -855,7 +792,7 @@ packages:
     source: hosted
     version: "2.0.2"
   package_info_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: package_info_plus
       url: "https://pub.dartlang.org"
@@ -1230,6 +1167,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+  store_redirect:
+    dependency: "direct main"
+    description:
+      name: store_redirect
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   stream_channel:
     dependency: transitive
     description:
@@ -1321,13 +1265,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
-  upgrader:
-    dependency: "direct main"
-    description:
-      name: upgrader
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.12.1"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1398,13 +1335,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  version:
-    dependency: transitive
-    description:
-      name: version
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   watcher:
     dependency: transitive
     description:
