@@ -326,6 +326,6 @@ class _HomePageState extends State<HomePage> {
   void _launchURL(_url) async {
     if (!await launch(_url))
       Fluttertoast.showToast(msg: 'Something went wrong!');
-    ;
+
   }
 }

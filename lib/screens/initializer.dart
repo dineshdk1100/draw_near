@@ -32,7 +32,7 @@ class _InitializerState extends State<Initializer> {
       print(status.toString() + "s");
       if (isConnected == true) {
         DownloadService.instance.initialize().then((value) {
-          Future.delayed(Duration(seconds: 6), () {
+          Future.delayed(Duration(seconds: 7), () {
             UserService.instance.isAppInitialized = true;
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => LoginPage()));
