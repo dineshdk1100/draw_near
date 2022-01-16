@@ -84,7 +84,7 @@ dependencies:
   #youtube_player_flutter: ^8.0.0
   youtube_player_iframe: ^2.2.2
   firebase_remote_config: ^1.0.4
-  new_version: ^0.3.0
+
 
 
 dev_dependencies:
