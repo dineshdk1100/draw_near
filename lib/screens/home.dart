@@ -28,7 +28,6 @@ import 'package:octo_image/octo_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -50,8 +49,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     //newVersion.showAlertIfNecessary(context: context);
-    //RemoteConfig.instance.fetchAndActivate();
-    //remoteConfig.get
+
     try {
       images = CarouselImageService.instance.getCarouselImages();
       print(images);
@@ -94,140 +92,145 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body:
-      //UpgradeAlert(canDismissDialog: false,showIgnore: false,showLater: true,
-         ListView(
-          shrinkWrap: true,
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.center,
-              children: <Widget>[
-                Container(
+          //UpgradeAlert(canDismissDialog: false,showIgnore: false,showLater: true,
+          ListView(
+        shrinkWrap: true,
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: <Widget>[
+              Container(
+                width: width,
+                height: height * 0.19,
+                color: Theme.of(context).primaryColor,
+              ),
+              Positioned(
+                bottom: -120.0,
+                child: Container(
                   width: width,
-                  height: height * 0.19,
-                  color: Theme.of(context).primaryColor,
-                ),
-                Positioned(
-                  bottom: -120.0,
-                  child: Container(
-                    width: width,
-                    height: height * 0.3,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                            colors: [
-                              Theme.of(context).primaryColor,
-                              Theme.of(context).scaffoldBackgroundColor
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter)),
-                    margin: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-                    child: CarouselSlider.builder(
-                      itemCount: images?.length ?? 0,
-                      options: CarouselOptions(
-                          //height: height * 0.35,
-                          viewportFraction: MediaQuery.of(context).orientation ==
-                                  Orientation.landscape
-                              ? 0.4
-                              : 0.8,
-                          autoPlay: true,
-                          enlargeCenterPage: true),
-                      itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) =>
-                          Card(
-                        clipBehavior: Clip.antiAlias,
-                        child: OctoImage.fromSet(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(images?[itemIndex]
-                                  ['url'] ??
-                              carouselImageUrls[itemIndex]),
-                          octoSet: OctoSet.circularIndicatorAndIcon(
-                              showProgress: true),
-                        ),
+                  height: height * 0.3,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                          colors: [
+                            Theme.of(context).primaryColor,
+                            Theme.of(context).scaffoldBackgroundColor
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter)),
+                  margin: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+                  child: CarouselSlider.builder(
+                    itemCount: images?.length ?? 0,
+                    options: CarouselOptions(
+                        //height: height * 0.35,
+                        viewportFraction: MediaQuery.of(context).orientation ==
+                                Orientation.landscape
+                            ? 0.4
+                            : 0.8,
+                        autoPlay: true,
+                        enlargeCenterPage: true),
+                    itemBuilder: (BuildContext context, int itemIndex,
+                            int pageViewIndex) =>
+                        Card(
+                      clipBehavior: Clip.antiAlias,
+                      child: OctoImage.fromSet(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(images?[itemIndex]
+                                ['url'] ??
+                            carouselImageUrls[itemIndex]),
+                        octoSet: OctoSet.circularIndicatorAndIcon(
+                            showProgress: true),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 100,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.local_library_outlined),
-                      title: Text(devotion?.title ?? "devotion_unavailable".tr(),style: GoogleFonts.montserrat(fontWeight: FontWeight.bold,fontSize: 18, color: Theme.of(context).textTheme.headline4?.color)),
-                      subtitle: Text('devotion_day'.tr(),style: TextStyle(fontSize: 16)),
-                    ),
-                    Divider(),
-                    Container(
-                      decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Text(
-                          devotion?.body ?? "devotion_unavailable_desc".tr(),
-                          textAlign: TextAlign.justify,
-                          maxLines: 6,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis),
-                      foregroundDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    TextButton(
-                        onPressed:
-                        (devotion != null) ? navigateToDevotionPage : null,
-                        child: Text('read_more'.tr().toUpperCase()))
-                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                child: Badge(
-                  animationType: BadgeAnimationType.scale,
-                  shape: BadgeShape.circle,
-                  badgeColor: Color(pastelThemePrimaryValue),
-                  //elevation: 0,
-                  badgeContent: Icon(
-                    Icons.notifications,
-                    size: 16,
-                    color: Colors.white,
+            ],
+          ),
+          SizedBox(
+            height: 100,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.local_library_outlined),
+                    title: Text(devotion?.title ?? "devotion_unavailable".tr(),
+                        style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color:
+                                Theme.of(context).textTheme.headline4?.color)),
+                    subtitle: Text('devotion_day'.tr(),
+                        style: TextStyle(fontSize: 16)),
                   ),
-                  position: BadgePosition.topEnd(),
-                  borderRadius: BorderRadius.circular(5),
-                  showBadge: DateTime.now().day == 1,
-                  child: ListTile(
-                    trailing: Icon(Icons.navigate_next),
-                    leading: Icon(Icons.accessibility_new_outlined),
-                    /* title: Text("Gratitude"),
+                  Divider(),
+                  Container(
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text(
+                        devotion?.body ?? "devotion_unavailable_desc".tr(),
+                        textAlign: TextAlign.justify,
+                        maxLines: 6,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis),
+                    foregroundDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  TextButton(
+                      onPressed:
+                          (devotion != null) ? navigateToDevotionPage : null,
+                      child: Text('read_more'.tr().toUpperCase()))
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              child: Badge(
+                animationType: BadgeAnimationType.scale,
+                shape: BadgeShape.circle,
+                badgeColor: Color(pastelThemePrimaryValue),
+                //elevation: 0,
+                badgeContent: Icon(
+                  Icons.notifications,
+                  size: 16,
+                  color: Colors.white,
+                ),
+                position: BadgePosition.topEnd(),
+                borderRadius: BorderRadius.circular(5),
+                showBadge: DateTime.now().day == 1,
+                child: ListTile(
+                  trailing: Icon(Icons.navigate_next),
+                  leading: Icon(Icons.accessibility_new_outlined),
+                  /* title: Text("Gratitude"),
                     subtitle: Text('theme_month'.tr(namedArgs: {
                       'month': DateFormat("MMMM", context.locale.languageCode)
                           .format(DateTime.now())
                     })),*/
 
-                    title: DateTime.now().year == 2021
-                        ? Text("Gratitude")
-                        : Text(themeMonth?.title ?? "Unavailable"),
-                    subtitle: Text('theme_month'.tr(namedArgs: {
-                      'month': DateFormat("MMMM", context.locale.languageCode)
-                          .format(DateTime.now())
-                    })),
-                    onTap: navigateToThemePage,
-                  ),
+                  title: DateTime.now().year == 2021
+                      ? Text("Gratitude")
+                      : Text(themeMonth?.title ?? "Unavailable"),
+                  subtitle: Text('theme_month'.tr(namedArgs: {
+                    'month': DateFormat("MMMM", context.locale.languageCode)
+                        .format(DateTime.now())
+                  })),
+                  onTap: navigateToThemePage,
                 ),
               ),
             ),
-
-          ],
-        ),
+          ),
+        ],
+      ),
       //),
     );
   }
@@ -290,7 +293,7 @@ class _HomePageState extends State<HomePage> {
         body: feedback.text,
         subject: 'Draw Near - Report an issue',
         recipients: ['drawnear2022@gmail.com'],
-        cc: ['techcatalyst.solutions@gmail.com','drawnear.dev@gmail.com'],
+        cc: ['techcatalyst.solutions@gmail.com', 'drawnear.dev@gmail.com'],
         attachmentPaths: files.map((file) => file.path).toList(),
         isHTML: false,
       );
@@ -323,6 +326,6 @@ class _HomePageState extends State<HomePage> {
   void _launchURL(_url) async {
     if (!await launch(_url))
       Fluttertoast.showToast(msg: 'Something went wrong!');
-    ;
+
   }
 }
