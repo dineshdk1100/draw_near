@@ -38,8 +38,8 @@ class DownloadService {
         if (DateTime.now()
                 .difference(
                     DateTime.fromMillisecondsSinceEpoch(localLastModified))
-                .inHours <
-            12) return;
+                .inMinutes <
+            60) return;
         Fluttertoast.showToast(msg: "Checking for devotion updates");
         retrievedDocCount += await _downloadDevotions() ?? 0;
         retrievedDocCount += await _downloadSongs() ?? 0;
