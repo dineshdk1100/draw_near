@@ -82,7 +82,7 @@ class _language extends State<Language> {
                 value: context.locale.toString(),
                 items: AVAILABLE_LANGUAGES.keys
                     .map((lang) => DropdownMenuItem(
-                          enabled: lang == 'en_IN' ? true : false,
+                          enabled: lang != 'hi_IN' ? true : false,
                           child:
                               Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
                           value: lang,

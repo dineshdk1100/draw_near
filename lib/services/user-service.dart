@@ -15,6 +15,7 @@ class UserService {
   late String _locale;
   late UserDetails _userDetails;
   late bool _isAppInitialized;
+  late bool _isTamilInitialized;
   late double _fontSize;
   late double _bodyTextStyleHeight;
   late bool _isLoggedIn;
@@ -45,6 +46,8 @@ class UserService {
     _isLoggedIn = _baseBox.get('loggedIn', defaultValue: false);
     _isGuest = _baseBox.get('guest', defaultValue: false);
     _isAppInitialized = _baseBox.get('app_initialized', defaultValue: false);
+    _isTamilInitialized =
+        _baseBox.get('tamil_initialized', defaultValue: false);
     _fontSize = _baseBox.get('fontSize', defaultValue: 0.toDouble());
     _theme = _baseBox.get('theme', defaultValue: "system");
     _userDetails = UserDetails.fromJson(jsonDecode(
@@ -124,11 +127,18 @@ class UserService {
   }
 
   bool get isAppInitialized => _isAppInitialized;
+  bool get isTamilInitialized => _isTamilInitialized;
 
   set isAppInitialized(bool value) {
     _isAppInitialized = value;
     _baseBox.put('app_initialized', value);
     FirebaseCrashlytics.instance.setCustomKey('app_initialized', value);
+  }
+
+  set isTamilInitialized(bool value) {
+    _isTamilInitialized = value;
+    _baseBox.put('tamil_initialized', value);
+    FirebaseCrashlytics.instance.setCustomKey('tamil_initialized', value);
   }
 
   double get fontSize => _fontSize;

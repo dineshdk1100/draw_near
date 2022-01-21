@@ -185,7 +185,7 @@ class _SettingsState extends State<Settings> with ScreenLoader {
                           child:
                               Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
                           value: lang,
-                          enabled: lang == 'en_IN' ? true : false,
+                          enabled: lang != 'hi_IN' ? true : false,
                         ))
                     .toList(),
               ),
@@ -303,6 +303,9 @@ class _SettingsState extends State<Settings> with ScreenLoader {
     var localeTemp = value.toString().split('_');
     context.setLocale(Locale(localeTemp[0], localeTemp[1]));
     UserService.instance.locale = value;
+    if (UserService.instance.locale == 'ta_IN' &&
+        !UserService.instance.isTamilInitialized)
+      performFuture(DownloadService.instance.initialize);
   }
 
   void onOpenTimePicker() async {

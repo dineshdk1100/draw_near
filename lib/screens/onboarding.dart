@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:draw_near/screens/initializer.dart';
+import 'package:draw_near/screens/onboard_content.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:draw_near/screens/onboard_content.dart';
 
 class Onboarding extends StatefulWidget {
   @override
@@ -43,7 +41,6 @@ class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Column(
         children: [
           Expanded(
@@ -64,12 +61,14 @@ class _OnboardingState extends State<Onboarding> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(padding: EdgeInsets.all(10),
-                        child: Image.asset(
-                          contents[i].image,
-                          height: 230,
-                        ),),
-                    Text(
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Image.asset(
+                            contents[i].image,
+                            height: 230,
+                          ),
+                        ),
+                        Text(
                           contents[i].title,
                           style: TextStyle(
                             fontSize: 23,
@@ -77,17 +76,18 @@ class _OnboardingState extends State<Onboarding> {
                           ),
                         ),
                         SizedBox(height: 15),
-                new Expanded(child: new SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: new Text(
-                          contents[i].description,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                            fontSize: 18,
-                            //color: Colors.black54,
-                          ),
-                        )
-                ),),
+                        new Expanded(
+                          child: new SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: new Text(
+                                contents[i].description,
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  //color: Colors.black54,
+                                ),
+                              )),
+                        ),
                       ],
                     ),
                   ),
@@ -95,19 +95,15 @@ class _OnboardingState extends State<Onboarding> {
               },
             ),
           ),
-
-
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 contents.length,
-                    (index) => buildDot(index, context),
+                (index) => buildDot(index, context),
               ),
             ),
           ),
-
-
           Container(
             height: 60,
             margin: EdgeInsets.all(30),
@@ -140,7 +136,6 @@ class _OnboardingState extends State<Onboarding> {
           )
         ],
       ),
-
     );
   }
 
