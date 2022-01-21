@@ -74,6 +74,8 @@ class _SongDetailsState extends State<SongDetails> {
   }
 
   initializeVideoController() {
+    print(song.videoLink);
+    print(song.videoLink ?? "");
     videoId = YoutubePlayerController.convertUrlToId(song.videoLink ?? "") ?? "";
     _controller = YoutubePlayerController(
       initialVideoId: videoId,

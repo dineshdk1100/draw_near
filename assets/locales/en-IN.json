@@ -8,8 +8,17 @@
   "change_lang_desc": "Changes the language for app interface and devotions",
   "unknown_lang": "Unknown language",
   "logout": "Logout",
+
   "login": "LOGIN",
-  "song": "Song",
+  "sign_in_google": "Sign in with Google",
+  "sign_in_apple": "Sign in with Apple",
+  "sign_in_facebook": "Sign in with Facebook",
+  "continue_as_guest": "Continue as Guest",
+  "phone_number": "Continue with Phone Number",
+  "or":"OR",
+  "phone_hint": "Enter your phone number",
+
+
   "by": "By - ",
   "song": "Song ",
   "author": "Author",
@@ -20,9 +29,8 @@
   "devotion_unavailable": "Stay tuned!",
   "devotion_unavailable_desc": "Devotions will be available everyday starting from January 1, 2022. You can access other devotions from the Calendar page by selecting January 2021 for now or set a reminder from the Account page and we will remind you to read everyday.",
   "read_more": "Read More",
-  "theme": "App Theme",
-  "phone_number": "Continue with Phone Number",
-  "or":"OR",
+
+
   "theme": "App Theme",
   "select_theme": "Select theme",
   "light": "Light Theme",
@@ -31,8 +39,8 @@
   "home": "Home",
   "calendar": "Calendar",
   "account": "Account",
-  "select_date": "Select date",
-  "phone_hint": "Enter your phone number",
+
+
   "otp_text":"Verification code sent to this phone number",
   "otp_verify": "OTP Verification",
   "otp_digits": "ENTER 6 DIGIT OTP",

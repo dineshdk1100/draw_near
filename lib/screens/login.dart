@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                               children: [
                                 SignInButton(
                                   Buttons.GoogleDark,
-                                  text: ("Sign in with Google"),
+                                  text: ('sign_in_google'.tr()),
                                   onPressed: () async {
                                     if (await isUserOffline(context)) return;
 
@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
 
                                           Buttons.AppleDark,
                                           //padding: EdgeInsets.all(8.0),
-                                          text: "Sign in with Apple",
+                                          text: 'sign_in_apple'.tr(),
                                           onPressed: () async {
                                             if (await isUserOffline(context))
                                               return;
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                               child: Column(children: [
                                 SignInButton(
                                   Buttons.Facebook,
-                                  text: "Sign in with Facebook",
+                                  text: 'sign_in_facebook'.tr(),
                                   //padding: EdgeInsets.all(6.0),
                                   onPressed: () async {
                                     if (await isUserOffline(context)) return;
@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                                           builder: (_) => BaseHome()));
                                 },
                                 child: Text(
-                                  'Continue as Guest',
+                                  'continue_as_guest'.tr(),
                                   style: TextStyle(
                                       fontFamily: 'San Francisco',
                                       //fontWeight: FontWeight.bold,
