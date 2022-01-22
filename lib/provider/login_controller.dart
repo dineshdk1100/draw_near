@@ -93,9 +93,7 @@ class LoginController with ChangeNotifier {
   Future phoneLogin(UserCredential value) async {
     if (value.user != null) {
       this.userDetails = new UserDetails(value.user!.uid, "User",
-          email: "",
-          photoURL: "https://www.google.co.in",
-          phoneNumber: value.user?.phoneNumber);
+          email: "", photoURL: "", phoneNumber: value.user?.phoneNumber);
 
       await FirebaseFirestore.instance
           .collection('users')
@@ -143,9 +141,7 @@ class LoginController with ChangeNotifier {
 
         this.userDetails = new UserDetails(
             userCredential.user!.uid, displayName,
-            email: email ?? "",
-            photoURL: "https://www.google.co.in",
-            phoneNumber: "");
+            email: email ?? "", photoURL: "", phoneNumber: "");
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userDetails?.uid)

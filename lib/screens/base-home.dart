@@ -1,10 +1,12 @@
 import 'package:draw_near/screens/calendar.dart';
 import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/screens/settings.dart';
+import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/update-service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -16,6 +18,12 @@ class BaseHome extends StatefulWidget {
 }
 
 class _BaseHomeState extends State<BaseHome> {
+  @override
+  initState() {
+    DownloadService.instance.initialize(loadInBackground: true);
+    super.initState();
+  }
+
   PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
   Color navBarColor = Colors.white;

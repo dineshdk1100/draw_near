@@ -75,8 +75,8 @@ class _CalendarPageState extends State<CalendarPage> {
           shrinkWrap: true,
           itemCount: 7,
           itemBuilder: (context, index) {
-            return DayCard(weekStartDate.add(Duration(days: index)),
-                devotions[index]?.title ?? "devotion_unavailable".tr());
+            return DayCard(
+                weekStartDate.add(Duration(days: index)), devotions[index]);
           }),
     );
   }
@@ -120,6 +120,7 @@ class _CalendarPageState extends State<CalendarPage> {
         return;
       }
       selectedDate = date;
+
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => DevotionPage(date)));
     }
@@ -127,12 +128,13 @@ class _CalendarPageState extends State<CalendarPage> {
 }
 
 class DayCard extends StatelessWidget {
-  DateTime date;
-  String devotionTitle;
-  DayCard(this.date, this.devotionTitle);
+  final DateTime date;
+  final Devotion? devotion;
+  DayCard(this.date, this.devotion);
 
   @override
   Widget build(BuildContext context) {
+    print(devotion);
     return ListTile(
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -154,7 +156,9 @@ class DayCard extends StatelessWidget {
             height: date.isSameDayAs(DateTime.now()) ? 72 : 56,
             alignment: Alignment.centerLeft,
             child: Text(
-              devotionTitle,
+              devotion?.title.trim().length != 0
+                  ? devotion?.title ?? 'devotion_unavailable'.tr()
+                  : 'devotion_unavailable'.tr(),
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.subtitle1?.copyWith(
                   color: date.isAfter(DateTime.now())
@@ -177,20 +181,22 @@ class DayCard extends StatelessWidget {
                   content: Text('devotion_denied'.tr()),
                 ));
               }
-            : devotionTitle == "devotion_unavailable".tr()
+            : devotion == null || devotion?.title.trim().length == 0
                 ? () {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                             "Devotion not available for the selected date")));
                   }
                 : () {
+                    print(date);
+                    print('date');
                     navigateToDevotionPage(context, date);
                   });
   }
 
   void navigateToDevotionPage(context, DateTime date) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => DevotionPage(date)));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DevotionPage(date)));
   }
 }
 

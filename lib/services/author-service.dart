@@ -18,23 +18,27 @@ class AuthorService {
           "id": "attLRT8AgGmcRdHHM",
           "width": 1152,
           "height": 1152,
-          "url": "https://dl.airtable.com/.attachments/04b89561e5ad56d2f26f7c401ad87055/0ac78ccc/American_Crew_-_Official_Supplier_to_Men",
+          "url":
+              "https://dl.airtable.com/.attachments/04b89561e5ad56d2f26f7c401ad87055/0ac78ccc/American_Crew_-_Official_Supplier_to_Men",
           "filename": "American_Crew_-_Official_Supplier_to_Men",
           "size": 116815,
           "type": "image/jpeg",
           "thumbnails": {
             "small": {
-              "url": "https://dl.airtable.com/.attachmentThumbnails/449f9dcaad9e48da6f33d026bd01fc64/a5fb4863",
+              "url":
+                  "https://dl.airtable.com/.attachmentThumbnails/449f9dcaad9e48da6f33d026bd01fc64/a5fb4863",
               "width": 36,
               "height": 36
             },
             "large": {
-              "url": "https://dl.airtable.com/.attachmentThumbnails/4969035ecc995bf6f6f1fc312d2faaf3/b5e7a956",
+              "url":
+                  "https://dl.airtable.com/.attachmentThumbnails/4969035ecc995bf6f6f1fc312d2faaf3/b5e7a956",
               "width": 512,
               "height": 512
             },
             "full": {
-              "url": "https://dl.airtable.com/.attachmentThumbnails/6b2ab79dbb792d0ba3eb48341d01ca55/fbab98b7",
+              "url":
+                  "https://dl.airtable.com/.attachmentThumbnails/6b2ab79dbb792d0ba3eb48341d01ca55/fbab98b7",
               "width": 3000,
               "height": 3000
             }
@@ -44,18 +48,18 @@ class AuthorService {
       12345678);
 
   static final AuthorService instance = AuthorService._internal();
- 
-  AuthorService._internal(){
+
+  AuthorService._internal() {
     getAuthorsForCurrentLocale();
   }
 
-  getAuthorsForCurrentLocale(){
-    this.authorsMap = jsonDecode(box.get('authors_${UserService.instance.locale}', defaultValue: '{}'));
-
+  getAuthorsForCurrentLocale() {
+    this.authorsMap = jsonDecode(
+        box.get('authors_${UserService.instance.locale}', defaultValue: '{}'));
   }
 
   Author getAuthor(String recordId) {
-    //return _author;
+    if (!authorsMap.containsKey(recordId)) throw AuthorNotFoundException();
     return Author.fromJson(authorsMap[recordId]);
   }
 
@@ -65,11 +69,11 @@ class AuthorService {
 
   void saveAuthors(QuerySnapshot<Map<String, dynamic>> snapshots) {
     snapshots.docs.forEach((doc) {
-      print(doc.data());
+      //print(doc.data());
       AuthorService.instance.saveAuthor(doc.id, doc.data());
     });
     box.put('authors_${UserService.instance.locale}', jsonEncode(authorsMap));
-
   }
-
 }
+
+class AuthorNotFoundException implements Exception {}

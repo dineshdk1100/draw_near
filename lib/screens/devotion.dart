@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class DevotionPage extends StatefulWidget {
   final DateTime date;
@@ -30,19 +29,26 @@ class _DevotionPageState extends State<DevotionPage> {
   late Brightness platformBrightness;
   List<bool> isSelected = [false, true];
 
+  bool isAuthorAvailable = true;
+
   @override
   void initState() {
     print("in init state");
     try {
       _devotion = DevotionService.instance.getDevotionForDate(widget.date);
+      isDevotionAvailable = _devotion.title.trim().length != 0;
       authors = AuthorService.instance.getAuthor(_devotion.author[0]);
     } on DevotionNotFoundException catch (e) {
       print("devotion not found");
       isDevotionAvailable = false;
-      print(isDevotionAvailable);
       //Fluttertoast.showToast(msg: e.message);
+    } on AuthorNotFoundException catch (e) {
+      isAuthorAvailable = false;
+      print("author not found");
+      //Fluttertoast.showToast(msg: e.message);
+    } catch (e) {
+      isDevotionAvailable = false;
     }
-
     super.initState();
   }
 
@@ -52,10 +58,10 @@ class _DevotionPageState extends State<DevotionPage> {
     //final args = ModalRoute.of(context)!.settings.arguments as Map;
     TextStyle? bodyText2 = GoogleFonts.robotoSlab(
         textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-            fontSize:
-                (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
-                    UserService.instance.fontSize),
-        ));
+              fontSize:
+                  (Theme.of(context).textTheme.bodyText2!.fontSize!.toDouble() +
+                      UserService.instance.fontSize),
+            ));
     TextStyle? subtitle2 = GoogleFonts.roboto(
         textStyle: Theme.of(context).textTheme.subtitle2?.copyWith(
             fontSize:
@@ -183,13 +189,13 @@ class _DevotionPageState extends State<DevotionPage> {
                             style: bodyText2.copyWith(
                                 decoration: TextDecoration.underline),
                           ),
-                           onPressed: () =>
-                               //pushNewScreen(context, screen: SongDetails(_devotion.song[0]), withNavBar: false),
-                          Navigator.push(
-                               context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                     SongDetails(_devotion.song[0]))),
+                          onPressed: () =>
+                              //pushNewScreen(context, screen: SongDetails(_devotion.song[0]), withNavBar: false),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          SongDetails(_devotion.song[0]))),
                         ),
                       ],
                     ),
@@ -227,49 +233,49 @@ class _DevotionPageState extends State<DevotionPage> {
                     _devotion.verseLine[0],
                     platformBrightness == Brightness.light
                         ? HSLColor.fromColor(Color(0xffe2a2e7))
-                        .withLightness(0.9)
-                        .withSaturation(0.55)
-                        .toColor()
+                            .withLightness(0.9)
+                            .withSaturation(0.55)
+                            .toColor()
                         : HSLColor.fromColor(Color(0xffe2a2e7))
-                        .withLightness(0.9)
-                        .withSaturation(0.55)
-                        .toColor()),
+                            .withLightness(0.9)
+                            .withSaturation(0.55)
+                            .toColor()),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.body,
                     platformBrightness == Brightness.light
                         ? HSLColor.fromColor(Color(0xffbecde0))
-                        .withLightness(0.9)
-                        .withSaturation(0.55)
-                        .toColor()
+                            .withLightness(0.9)
+                            .withSaturation(0.55)
+                            .toColor()
                         : HSLColor.fromColor(Color(0xffbecde0))
-                        .withLightness(0.9)
-                        .withSaturation(0.55)
-                        .toColor()),
+                            .withLightness(0.9)
+                            .withSaturation(0.55)
+                            .toColor()),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.reflectRespond,
                     platformBrightness == Brightness.light
                         ? HSLColor.fromColor(Color(0xFFEAD377))
-                        .withLightness(0.83)
-                        .withSaturation(0.75)
-                        .toColor()
+                            .withLightness(0.83)
+                            .withSaturation(0.75)
+                            .toColor()
                         : HSLColor.fromColor(Color(0xFFECD98C))
-                        .withLightness(0.8)
-                        .withSaturation(0.75)
-                        .toColor()),
+                            .withLightness(0.8)
+                            .withSaturation(0.75)
+                            .toColor()),
                 SizedBox(height: 3),
                 DevotionCard(
                     _devotion.prayer,
                     platformBrightness == Brightness.light
                         ? HSLColor.fromColor(Color(0xFF8985F5))
-                        .withLightness(0.85)
-                        .withSaturation(0.55)
-                        .toColor()
+                            .withLightness(0.85)
+                            .withSaturation(0.55)
+                            .toColor()
                         : HSLColor.fromColor(Color(0xFFCF88FC))
-                        .withLightness(0.85)
-                        .withSaturation(0.55)
-                        .toColor()),
+                            .withLightness(0.85)
+                            .withSaturation(0.55)
+                            .toColor()),
 
                 SizedBox(height: 3),
                 _devotion.quote != null
@@ -313,60 +319,63 @@ class _DevotionPageState extends State<DevotionPage> {
                           _devotion.authorName[0] ?? "",
                           style: author,
                         ),
-                        onPressed: () => showModalBottomSheet(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(60),
-                                    topRight: Radius.circular(60))),
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (context) {
-                              return Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.6,
-                                padding: EdgeInsets.all(16),
-                                child: ListView(
-                                  shrinkWrap: true,
-                                  children: [
-                                    Container(
-                                      height: 300,
-                                      child: FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: CircleAvatar(
-                                            radius: 120,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                                    authors.photo[0]['url'])),
-                                      ),
-                                      //child: CachedNetworkImage(imageUrl: author.photo[0]['url'],),
+                        onPressed: isAuthorAvailable
+                            ? () => showModalBottomSheet(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(60),
+                                        topRight: Radius.circular(60))),
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.6,
+                                    padding: EdgeInsets.all(16),
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      children: [
+                                        Container(
+                                          height: 300,
+                                          child: FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            child: CircleAvatar(
+                                                radius: 120,
+                                                backgroundImage:
+                                                    CachedNetworkImageProvider(
+                                                        authors.photo[0]
+                                                            ['url'])),
+                                          ),
+                                          //child: CachedNetworkImage(imageUrl: author.photo[0]['url'],),
+                                        ),
+                                        SizedBox(
+                                          height: 16,
+                                        ),
+                                        Text(
+                                          authors.name,
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.playfairDisplay(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .headline4,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 24,
+                                        ),
+                                        Text(
+                                          authors.description,
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w300,
+                                              height: 1.5),
+                                          textAlign: TextAlign.justify,
+                                        )
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 16,
-                                    ),
-                                    Text(
-                                      authors.name,
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.playfairDisplay(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .headline4,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 24,
-                                    ),
-                                    Text(
-                                      authors.description,
-                                      style: GoogleFonts.montserrat(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                          height: 1.5),
-                                      textAlign: TextAlign.justify,
-                                    )
-                                  ],
-                                ),
-                              );
-                            })
+                                  );
+                                })
+                            : null
                         /*   Navigator.push(
                     context,
                     MaterialPageRoute(

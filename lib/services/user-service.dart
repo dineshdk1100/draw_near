@@ -15,7 +15,11 @@ class UserService {
   late String _locale;
   late UserDetails _userDetails;
   late bool _isAppInitialized;
-  late bool _isTamilInitialized;
+  Map<String, bool> _downloadedLangMap = {
+    'en_IN': false,
+    'ta_IN': false,
+    'hi_IN': false
+  };
   late double _fontSize;
   late double _bodyTextStyleHeight;
   late bool _isLoggedIn;
@@ -46,8 +50,8 @@ class UserService {
     _isLoggedIn = _baseBox.get('loggedIn', defaultValue: false);
     _isGuest = _baseBox.get('guest', defaultValue: false);
     _isAppInitialized = _baseBox.get('app_initialized', defaultValue: false);
-    _isTamilInitialized =
-        _baseBox.get('tamil_initialized', defaultValue: false);
+    _downloadedLangMap = Map.castFrom(jsonDecode(_baseBox.get('language_map',
+        defaultValue: jsonEncode(_downloadedLangMap))));
     _fontSize = _baseBox.get('fontSize', defaultValue: 0.toDouble());
     _theme = _baseBox.get('theme', defaultValue: "system");
     _userDetails = UserDetails.fromJson(jsonDecode(
@@ -127,7 +131,7 @@ class UserService {
   }
 
   bool get isAppInitialized => _isAppInitialized;
-  bool get isTamilInitialized => _isTamilInitialized;
+  Map<String, bool> get downloadedLangMap => _downloadedLangMap;
 
   set isAppInitialized(bool value) {
     _isAppInitialized = value;
@@ -135,10 +139,10 @@ class UserService {
     FirebaseCrashlytics.instance.setCustomKey('app_initialized', value);
   }
 
-  set isTamilInitialized(bool value) {
-    _isTamilInitialized = value;
-    _baseBox.put('tamil_initialized', value);
-    FirebaseCrashlytics.instance.setCustomKey('tamil_initialized', value);
+  modifyDownloadedLangMap(String lang, bool value) {
+    _downloadedLangMap[lang] = value;
+    _baseBox.put('language_map', jsonEncode(_downloadedLangMap));
+    FirebaseCrashlytics.instance.setCustomKey('language_map', value);
   }
 
   double get fontSize => _fontSize;
@@ -174,5 +178,9 @@ class UserService {
         (value) => jsonDecode(value).length);
 
     return map;
+  }
+
+  bool isCurrentLangDownloaded() {
+    return downloadedLangMap[locale] ?? false;
   }
 }

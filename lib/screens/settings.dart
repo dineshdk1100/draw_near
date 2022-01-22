@@ -1,15 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/edit_profile_page.dart';
+import 'package:draw_near/screens/initializer.dart';
+import 'package:draw_near/services/author-service.dart';
+import 'package:draw_near/services/carousel-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/notification-service.dart';
+import 'package:draw_near/services/song-service.dart';
+import 'package:draw_near/services/theme-month-service.dart';
 import 'package:draw_near/services/user-service.dart';
+import 'package:draw_near/services/verse-service.dart';
 import 'package:draw_near/util/constants.dart';
 import 'package:draw_near/util/offline-alert.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:screen_loader/screen_loader.dart';
 import 'package:theme_mode_handler/theme_mode_handler.dart';
@@ -83,23 +90,33 @@ class _SettingsState extends State<Settings> with ScreenLoader {
                 ),
                 Positioned(
                   bottom: -50.0,
-                  child: CachedNetworkImage(
-                    height: 100,
-                    fit: BoxFit.cover,
-                    imageUrl: UserService.instance.userDetails.photoURL ?? '',
-                    errorWidget: (context, s, _) => CircleAvatar(
-                      radius: 80,
-                      child: Icon(
-                        Icons.person,
-                        size: 80,
-                        color: Colors.white,
-                      ),
-                    ),
-                    imageBuilder: (context, provider) => CircleAvatar(
-                      radius: 60,
-                      backgroundImage: provider,
-                    ),
-                  ),
+                  child: UserService.instance.userDetails.photoURL == ''
+                      ? CircleAvatar(
+                          radius: 80,
+                          child: Icon(
+                            Icons.person,
+                            size: 80,
+                            color: Colors.white,
+                          ),
+                        )
+                      : CachedNetworkImage(
+                          height: 100,
+                          fit: BoxFit.cover,
+                          imageUrl:
+                              UserService.instance.userDetails.photoURL ?? '',
+                          errorWidget: (context, s, _) => CircleAvatar(
+                            radius: 80,
+                            child: Icon(
+                              Icons.person,
+                              size: 80,
+                              color: Colors.white,
+                            ),
+                          ),
+                          imageBuilder: (context, provider) => CircleAvatar(
+                            radius: 60,
+                            backgroundImage: provider,
+                          ),
+                        ),
                 ),
               ],
             ),
@@ -185,7 +202,9 @@ class _SettingsState extends State<Settings> with ScreenLoader {
                           child:
                               Text(AVAILABLE_LANGUAGES[lang] ?? 'unknown_lang'),
                           value: lang,
-                          enabled: lang != 'hi_IN' ? true : false,
+                          enabled: lang != UserService.instance.locale
+                              ? true
+                              : false,
                         ))
                     .toList(),
               ),
@@ -298,14 +317,24 @@ class _SettingsState extends State<Settings> with ScreenLoader {
     );
   }
 
-  onSelectLanguage(value) {
-    if (value == null) return;
+  onSelectLanguage(value) async {
+    if (value == null || value == 'hi_IN') return;
     var localeTemp = value.toString().split('_');
-    context.setLocale(Locale(localeTemp[0], localeTemp[1]));
+    await context.setLocale(Locale(localeTemp[0], localeTemp[1]));
     UserService.instance.locale = value;
-    if (UserService.instance.locale == 'ta_IN' &&
-        !UserService.instance.isTamilInitialized)
-      performFuture(DownloadService.instance.initialize);
+    print(context.locale);
+    print(UserService.instance.downloadedLangMap);
+    if (!UserService.instance.isCurrentLangDownloaded())
+      pushNewScreen(context, screen: Initializer(false), withNavBar: false);
+    else {
+      DevotionService.instance.getDevotionsForCurrentLocale();
+      SongService.instance.getSongsForCurrentLocale();
+      VerseService.instance.getVersesForCurrentLocale();
+      ThemeMonthService.instance.getThemeMonthsForCurrentLocale();
+      AuthorService.instance.getAuthorsForCurrentLocale();
+      CarouselImageService.instance.getCarouselImagesForCurrentLocale();
+      DownloadService.instance.initialize(loadInBackground: true);
+    }
   }
 
   void onOpenTimePicker() async {
