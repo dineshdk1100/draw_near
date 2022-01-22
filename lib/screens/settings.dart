@@ -134,7 +134,7 @@ class _SettingsState extends State<Settings> with ScreenLoader {
             ListTile(
               //trailing: Icon(Icons.navigate_next),
               enabled: UserService.instance.isLoggedIn,
-              title: Text("Edit profile"),
+              title: Text("edit_profile".tr()),
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.of(context)
@@ -193,7 +193,7 @@ class _SettingsState extends State<Settings> with ScreenLoader {
             Divider(),
             ListTile(
               minVerticalPadding: 0,
-              title: Text("daily_reminder".tr()),
+              title: Text('daily_reminder'.tr()),
               trailing: Switch.adaptive(
                   value: UserService.instance.isReminderOn,
                   onChanged: (newValue) => setState(() {
@@ -222,7 +222,7 @@ class _SettingsState extends State<Settings> with ScreenLoader {
             ),
             ListTile(
               minVerticalPadding: 0,
-              title: Text('Reminder not working ?'),
+              title: Text('reminder_not_working'.tr()),
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 //NotificationService.instance.showNotification();
