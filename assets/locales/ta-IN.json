@@ -10,6 +10,10 @@
   "logout": "வெளியேறு",
 
   "login": "உள்நுழை",
+  "sign_in_google": "Google மூலம் உள்நுழையவும்",
+  "sign_in_apple": "Apple மூலம் உள்நுழையவும்",
+  "sign_in_facebook": "Facebook மூலம் உள்நுழையவும்",
+  "continue_as_guest": "விருந்தினராக தொடரவும்",
   "phone_number": "தொலைபேசி எண்ணுடன் தொடரவும்",
   "or": "அல்லது",
   "phone_hint": "உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்",
@@ -37,13 +41,13 @@
   "edit_profile": "சுயவிவரத்தைத் திருத்து",
   "daily_reminder":"தினசரி நினைவூட்டல்",
   "reminder_not_working":"நினைவூட்டல் வேலை செய்யவில்லை",
-  "select_time": "தேர்ந்தெடுக்க ேரம்",
+  "select_time": "தேர்ந்தெடுக்க நேரம்",
 
   "select_date": "தேதி தேர்வு",
   "otp_text": "சரிபார்ப்புக் குறியீடு இந்த ஃபோன் எண்ணுக்கு அனுப்பப்பட்டது",
   "otp_verify": "OTP சரிபார்ப்பு",
   "otp_digits": "6 இலக்க OTP ஐ உள்ளிடவும்",
-  "profile_info": "சுயவிவரத்தைத் திருத்தவும்",
+  "profile_info": "சுயவிவரம்",
   "profile_information":"சுயவிவரத் தகவல்",
   "monthly_theme": "மாதாந்திர தலைப்பு"
 }

@@ -2,6 +2,7 @@ import 'package:draw_near/screens/calendar.dart';
 import 'package:draw_near/screens/home.dart';
 import 'package:draw_near/screens/settings.dart';
 import 'package:draw_near/services/download-service.dart';
+import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/update-service.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,6 +22,7 @@ class _BaseHomeState extends State<BaseHome> {
   @override
   initState() {
     DownloadService.instance.initialize(loadInBackground: true);
+    print(UserService.instance.downloadedLangMap);
     super.initState();
   }
 
