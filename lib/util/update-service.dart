@@ -19,7 +19,7 @@ class UpdateService {
 
     await RemoteConfig.instance.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: Duration(seconds: 10),
-      minimumFetchInterval: Duration(hours: 1),
+      minimumFetchInterval: Duration(minutes: 15),
     ));
     RemoteConfig.instance.ensureInitialized().then((value) {
       RemoteConfig.instance.fetchAndActivate();
