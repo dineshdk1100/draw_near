@@ -1,5 +1,6 @@
-import 'package:draw_near/screens/initializer.dart';
+import 'package:draw_near/screens/login.dart';
 import 'package:draw_near/screens/onboard_content.dart';
+import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -113,10 +114,11 @@ class _OnboardingState extends State<Onboarding> {
                   currentIndex == contents.length - 1 ? "Continue" : "Next"),
               onPressed: () {
                 if (currentIndex == contents.length - 1) {
+                  UserService.instance.isAppInitialized = true;
                   Navigator.pushReplacement(
                     context,
                     CupertinoPageRoute(
-                      builder: (_) => Initializer(),
+                      builder: (_) => LoginPage(),
                     ),
                   );
                 }

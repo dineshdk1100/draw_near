@@ -4,6 +4,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/OTPController.dart';
 import 'package:draw_near/screens/base-home.dart';
+import 'package:draw_near/screens/initializer.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/offline-alert.dart';
@@ -113,7 +114,6 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                                     child: Column(
                                       children: [
                                         SignInButton(
-
                                           Buttons.AppleDark,
                                           //padding: EdgeInsets.all(8.0),
                                           text: 'sign_in_apple'.tr(),
@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
                                   UserService.instance.isGuest = true;
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                          builder: (_) => BaseHome()));
+                                          builder: (_) => Initializer(true)));
                                 },
                                 child: Text(
                                   'continue_as_guest'.tr(),
@@ -293,10 +293,10 @@ class _LoginPageState extends State<LoginPage> with ScreenLoader {
         builder: (context, models, child) {
       if (models.userDetails != null) {
         return Center(
-          child: BaseHome(),
+          child: UserService.instance.isCurrentLangDownloaded()
+              ? BaseHome()
+              : Initializer(true),
         );
-        Navigator.push(
-            context, new MaterialPageRoute(builder: (context) => BaseHome()));
       } else {
         return loginControllers(context);
       }

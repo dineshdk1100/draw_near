@@ -24,21 +24,26 @@ class DownloadService {
   late StreamSubscription _subscription;
 
   removeLocalLastModified() {
-    _box.delete('lastModified');
+    if (downloadingLocale == 'en_IN')
+      _box.delete('lastModified');
+    else
+      _box.delete('tamilLastModified');
   }
 
-  Future<void> initialize({bool loadInBackground = true}) async {
+  Future<int> initialize({bool loadInBackground = true}) async {
+    int count = 0;
     if (!loadInBackground)
-      await downloadData();
+      count = await downloadData();
     else {
       _subscription =
           Connectivity().onConnectivityChanged.listen((event) async {
         if (event != ConnectivityStatus.none) {
-          await downloadData();
+           count = await downloadData();
           _subscription.cancel();
         }
       });
     }
+    return count;
   }
 
   downloadData() async {
@@ -49,8 +54,8 @@ class DownloadService {
         .difference(DateTime.now()));
     if (DateTime.now()
             .difference(DateTime.fromMillisecondsSinceEpoch(localLastModified))
-            .inHours <
-        12) return;
+            .inMinutes <
+        60) return retrievedDocCount;
     Fluttertoast.showToast(msg: "Checking for devotion updates");
     retrievedDocCount += await _downloadDevotions() ?? 0;
     retrievedDocCount += await _downloadSongs() ?? 0;
@@ -63,6 +68,7 @@ class DownloadService {
       Fluttertoast.showToast(msg: "Update complete");
     } else
       Fluttertoast.showToast(msg: "No new updates");
+    return retrievedDocCount;
   }
 
   Future<int?> _downloadDevotions() async {

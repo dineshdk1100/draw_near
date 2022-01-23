@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:draw_near/provider/login_controller.dart';
 import 'package:draw_near/screens/base-home.dart';
+import 'package:draw_near/screens/initializer.dart';
 import 'package:draw_near/screens/language.dart';
 import 'package:draw_near/screens/login.dart';
-import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/user-service.dart';
 import 'package:draw_near/util/color_theme.dart';
 import 'package:draw_near/util/theme-manager.dart';
@@ -113,11 +113,14 @@ class _SplashScreenState extends State<SplashScreen> {
         .setUserIdentifier(UserService.instance.userDetails.uid);
     Timer(Duration(milliseconds: 1500), () {
       if (UserService.instance.isAppInitialized) {
-        DownloadService.instance.initialize();
-        if (UserService.instance.isLoggedIn || UserService.instance.isGuest)
-          Navigator.of(context)
-              .pushReplacement(MaterialPageRoute(builder: (_) => BaseHome()));
-        else
+        if (UserService.instance.isLoggedIn || UserService.instance.isGuest) {
+          if (UserService.instance.isCurrentLangDownloaded())
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (_) => BaseHome()));
+          else
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => Initializer(true)));
+        } else
           Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
       } else {

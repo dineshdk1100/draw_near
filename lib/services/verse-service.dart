@@ -21,12 +21,13 @@ class VerseService {
   factory VerseService() {
     return instance;
   }
-  VerseService._internal(){
-getVersesForCurrentLocale();
+  VerseService._internal() {
+    getVersesForCurrentLocale();
   }
 
   getVersesForCurrentLocale() {
-    this.versesMap = jsonDecode(box.get('verses_${UserService.instance.locale}', defaultValue: '{}'));
+    this.versesMap = jsonDecode(
+        box.get('verses_${UserService.instance.locale}', defaultValue: '{}'));
   }
 
   Verse getVerse(String recordId) {
@@ -40,12 +41,12 @@ getVersesForCurrentLocale();
 
   void saveVerses(QuerySnapshot<Map<String, dynamic>> snapshots) {
     snapshots.docs.forEach((doc) {
-      print(doc.data());
+      //print(doc.data());
       VerseService.instance.saveVerse(doc.id, doc.data());
     });
     box.put('verses_${UserService.instance.locale}', jsonEncode(versesMap));
     FirebaseCrashlytics.instance.setCustomKey('Verse size', versesMap.length);
-    FirebaseCrashlytics.instance.setCustomKey('Verse records', versesMap.keys.toString());
+    FirebaseCrashlytics.instance
+        .setCustomKey('Verse records', versesMap.keys.toString());
   }
-
 }
