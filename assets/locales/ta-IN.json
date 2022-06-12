@@ -1,4 +1,6 @@
 {
+  "initialising": "தொடங்குகிறது",
+  "offline": "இணைய இணைப்பு இல்லை",
   "welcome": "வணக்கம் {name}",
   "devotion_day": "இன்றைய பிரார்தனை",
   "theme_month": "{month} தலைப்பு",

@@ -28,66 +28,65 @@ class _SongDetailsState extends State<SongDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-              appBar: AppBar(
-                title: Text('song'.tr()),
-              ),
-              body: SizedBox.expand(
-                child: Container(
-                  //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-                  //padding: EdgeInsets.all(16),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'song'.tr() + ' ' + song.number,
-                          style: GoogleFonts.abrilFatface(
-                            textStyle: Theme.of(context).textTheme.headline4,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      YoutubePlayerIFrame(
-                        controller: _controller,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          song.body,
-                          style: GoogleFonts.lora(
-                              fontStyle: FontStyle.italic,
-                              fontSize: 20,
-                              height: 1.5),
-                        ),
-                      )
-                    ],
+      appBar: AppBar(
+        title: Text('song'.tr()),
+      ),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+        //padding: EdgeInsets.all(16),
+        children: [
+          YoutubePlayerIFrame(
+            controller: _controller,
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'song'.tr() + ' ' + song.number,
+                    style: GoogleFonts.abrilFatface(
+                      textStyle: Theme.of(context).textTheme.headline4,
+                    ),
                   ),
                 ),
-              ),
-            );
+                SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    song.body,
+                    style: GoogleFonts.lora(
+                        fontStyle: FontStyle.italic, fontSize: 20, height: 1.5),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   initializeVideoController() {
     print(song.videoLink);
     print(song.videoLink ?? "");
-    videoId = YoutubePlayerController.convertUrlToId(song.videoLink ?? "") ?? "";
+    videoId =
+        YoutubePlayerController.convertUrlToId(song.videoLink ?? "") ?? "";
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
       params: YoutubePlayerParams(
-        autoPlay: false,
-        mute: false,
-        showFullscreenButton: true,
-        showControls: true,
-        strictRelatedVideos: true
+          autoPlay: false,
+          mute: false,
+          showFullscreenButton: true,
+          showControls: true,
+          strictRelatedVideos: true
 
-        //enableCaption: true,
-      ),
+          //enableCaption: true,
+          ),
     );
 
     print(videoId); // BBAyRBTfsOU

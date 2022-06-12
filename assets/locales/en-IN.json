@@ -1,4 +1,6 @@
 {
+  "initialising": "Initialising",
+  "offline": "You are Offline",
   "welcome": "Hi {name}",
   "devotion_day": "Devotion of the day",
   "theme_month": "Theme for {month}",
