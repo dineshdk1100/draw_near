@@ -8,6 +8,7 @@ import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/devotion.dart';
 import 'package:draw_near/models/theme_month.dart';
 import 'package:draw_near/screens/devotion.dart';
+import 'package:draw_near/screens/initializer.dart';
 import 'package:draw_near/screens/theme_month_details.dart';
 import 'package:draw_near/services/carousel-service.dart';
 import 'package:draw_near/services/devotion-service.dart';
@@ -26,8 +27,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../services/author-service.dart';
+import '../services/download-service.dart';
+import '../services/song-service.dart';
+import '../services/verse-service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -50,15 +57,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     //newVersion.showAlertIfNecessary(context: context);
 
-    try {
-      images = CarouselImageService.instance.getCarouselImages();
-      print(images);
-      themeMonth = ThemeMonthService.instance
-          .getThemeMonth(MONTHS_IN_YEAR[DateTime.now().month - 1]);
-      devotion = _devotionService.getDevotionForDate(DateTime.now());
-    } on DevotionNotFoundException catch (e) {
-      //Fluttertoast.showToast(msg: e.message);
-    }
+    _initialize();
     super.initState();
   }
 
@@ -150,6 +149,52 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(
             height: 100,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              OutlinedButton(
+                onPressed: () => onSelectLanguage('ta_IN'),
+                child: Text(
+                  "தமிழ்",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).textTheme.bodyText1?.color),
+                ),
+                style: context.locale.toString() == 'ta_IN'
+                    ? OutlinedButton.styleFrom(
+                        backgroundColor: Color(pastelThemePrimaryValue))
+                    : OutlinedButton.styleFrom(),
+              ),
+              OutlinedButton(
+                onPressed: () => onSelectLanguage('en_IN'),
+                child: Text(
+                  "English",
+                  style: TextStyle(
+                      fontSize: 17,
+                      color: Theme.of(context).textTheme.bodyText1?.color),
+                ),
+                style: context.locale.toString() == 'en_IN'
+                    ? OutlinedButton.styleFrom(
+                        backgroundColor: Color(pastelThemePrimaryValue))
+                    : OutlinedButton.styleFrom(),
+              ),
+              OutlinedButton(
+                onPressed: () => Fluttertoast.showToast(msg: "Coming soon!"),
+                child: Text(
+                  "हिन्दी",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).textTheme.bodyText1?.color),
+                ),
+                style: context.locale.toString() == 'hi_IN'
+                    ? OutlinedButton.styleFrom(
+                        backgroundColor: Color(pastelThemePrimaryValue))
+                    : OutlinedButton.styleFrom(),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -307,6 +352,27 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  onSelectLanguage(value) async {
+    if (value == null || value == 'hi_IN') return;
+    var localeTemp = value.toString().split('_');
+    await context.setLocale(Locale(localeTemp[0], localeTemp[1]));
+    UserService.instance.locale = value;
+    print(context.locale);
+    print(UserService.instance.downloadedLangMap);
+    if (!UserService.instance.isCurrentLangDownloaded())
+      pushNewScreen(context, screen: Initializer(false), withNavBar: false);
+    else {
+      DevotionService.instance.getDevotionsForCurrentLocale();
+      SongService.instance.getSongsForCurrentLocale();
+      VerseService.instance.getVersesForCurrentLocale();
+      ThemeMonthService.instance.getThemeMonthsForCurrentLocale();
+      AuthorService.instance.getAuthorsForCurrentLocale();
+      CarouselImageService.instance.getCarouselImagesForCurrentLocale();
+      _initialize();
+      DownloadService.instance.initialize(loadInBackground: true);
+    }
+  }
+
   void sendFeedback() async {
     final Email email = Email(
       body: 'Enter you feedback here...',
@@ -326,5 +392,19 @@ class _HomePageState extends State<HomePage> {
   void _launchURL(_url) async {
     if (!await launch(_url))
       Fluttertoast.showToast(msg: 'Something went wrong!');
+  }
+
+  void _initialize() {
+    {
+      try {
+        images = CarouselImageService.instance.getCarouselImages();
+        print(images);
+        themeMonth = ThemeMonthService.instance
+            .getThemeMonth(MONTHS_IN_YEAR[DateTime.now().month - 1]);
+        devotion = _devotionService.getDevotionForDate(DateTime.now());
+      } on DevotionNotFoundException catch (e) {
+        //Fluttertoast.showToast(msg: e.message);
+      }
+    }
   }
 }

@@ -2,9 +2,9 @@ import 'package:cross_connectivity/cross_connectivity.dart';
 import 'package:draw_near/screens/base-home.dart';
 import 'package:draw_near/services/download-service.dart';
 import 'package:draw_near/services/user-service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 //
 class Initializer extends StatefulWidget {
@@ -58,11 +58,11 @@ class _InitializerState extends State<Initializer> {
                       children: [
                         isConnected != true
                             ? Text(
-                                'You are Offline',
+                                'offline'.tr(),
                                 style: Theme.of(context).textTheme.headline6,
                               )
                             : Text(
-                                'Initialising',
+                                'initialising'.tr(),
                                 style: Theme.of(context).textTheme.headline6,
                               ),
                         SizedBox(
@@ -105,7 +105,9 @@ class _InitializerState extends State<Initializer> {
             context, MaterialPageRoute(builder: (context) => BaseHome()));
       else
         //Phoenix.rebirth(context);
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => BaseHome()),(Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => BaseHome()),
+            (Route<dynamic> route) => false);
     });
   }
 }

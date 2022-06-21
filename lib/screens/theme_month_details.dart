@@ -30,23 +30,26 @@ class _ThemeMonthDetailsState extends State<ThemeMonthDetails> {
         body: SizedBox.expand(
           child: Container(
             //decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: ListView(
               shrinkWrap: true,
               children: [
-
-                Text(themeMonth.title ,style: GoogleFonts.abrilFatface(
-                  textStyle: Theme.of(context).textTheme.headline4,
-                ),),
-                SizedBox(height: 24,),
-                Text(themeMonth.description, style: GoogleFonts.montserrat( fontSize: 16, height: 1.5),)
+                Text(
+                  themeMonth.title,
+                  style: GoogleFonts.abrilFatface(
+                    textStyle: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Text(
+                  themeMonth.description,
+                  style: GoogleFonts.montserrat(fontSize: 16, height: 1.5),
+                )
               ],
             ),
-
           ),
-        )
-    );
+        ));
   }
 }
-
-
