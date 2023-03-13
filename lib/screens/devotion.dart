@@ -33,9 +33,11 @@ class _DevotionPageState extends State<DevotionPage> {
 
   @override
   void initState() {
-    print("in init state");
+    print("in init stateee");
     try {
       _devotion = DevotionService.instance.getDevotionForDate(widget.date);
+      print('check');
+      print(_devotion);
       isDevotionAvailable = _devotion.title.trim().length != 0;
       authors = AuthorService.instance.getAuthor(_devotion.author[0]);
     } on DevotionNotFoundException catch (e) {
@@ -157,7 +159,7 @@ class _DevotionPageState extends State<DevotionPage> {
                 TextButton.icon(
                   icon: Text(
                     getFormattedDate(
-                            _devotion.date, context.locale.languageCode) ??
+                            widget.date, context.locale.languageCode) ??
                         "",
                     textAlign: TextAlign.center,
                     style: bodyText2,
@@ -418,9 +420,9 @@ class _DevotionPageState extends State<DevotionPage> {
   void onOpenDatePicker() async {
     var date = await showDatePicker(
       context: context,
-      initialDate: _devotion.date,
-      firstDate: DateTime(_devotion.date.year, 1, 1),
-      lastDate: DateTime(_devotion.date.year, 12, 31),
+      initialDate: widget.date,
+      firstDate: DateTime(widget.date.year, 1, 1),
+      lastDate: DateTime(widget.date.year, 12, 31),
     );
 
     if (date != null) {
@@ -505,5 +507,9 @@ class DevotionCard extends StatelessWidget {
 }
 
 getFormattedDate(DateTime date, String locale) {
+  print(date);
+  // DateTime ne = DateTime(DateTime.now().year, date.month, date.day);
+  // print('dd');
+  // print(ne);
   return DateFormat("dd, MMMM yyyy", locale).format(date);
 }

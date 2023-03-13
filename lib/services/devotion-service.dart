@@ -53,6 +53,8 @@ class DevotionService {
     print(devotionsMap.containsKey(
         Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString()));
     print('here here here');
+    print(Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString());
+    print(devotionsMap.keys);
     print(devotionsMap[
         Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString()]);
     if (!devotionsMap.containsKey(

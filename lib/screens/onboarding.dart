@@ -109,7 +109,7 @@ class _OnboardingState extends State<Onboarding> {
             height: 60,
             margin: EdgeInsets.all(30),
             width: double.infinity,
-            child: FlatButton(
+            child: TextButton(
               child: Text(
                   currentIndex == contents.length - 1 ? "Continue" : "Next"),
               onPressed: () {
@@ -129,11 +129,14 @@ class _OnboardingState extends State<Onboarding> {
               },
               //color: Colors.blue.shade100,
               //textColor: Colors.black,
-              color: Color(pastelThemePrimaryValue),
-              //textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
+              // buttonStyle.backgroundColor: Color(pastelThemePrimaryValue),
+              // //textColor: Colors.white,
+              // shape: RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.circular(20),
+              // ),
+              style: ButtonStyle(
+                
+              ), 
             ),
           )
         ],

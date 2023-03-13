@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io' show Directory, File, Platform;
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as Badge;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:draw_near/exceptions/devotion-not-found.dart';
@@ -240,9 +240,9 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
-              child: Badge(
-                animationType: BadgeAnimationType.scale,
-                shape: BadgeShape.circle,
+              child: Badge.Badge(
+                animationType: Badge.BadgeAnimationType.scale,
+                shape: Badge.BadgeShape.circle,
                 badgeColor: Color(pastelThemePrimaryValue),
                 //elevation: 0,
                 badgeContent: Icon(
@@ -250,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                   size: 16,
                   color: Colors.white,
                 ),
-                position: BadgePosition.topEnd(),
+                position: Badge.BadgePosition.topEnd(),
                 borderRadius: BorderRadius.circular(5),
                 showBadge: DateTime.now().day == 1,
                 child: ListTile(
