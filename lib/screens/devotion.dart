@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:draw_near/constants/strings.dart';
 import 'package:draw_near/exceptions/devotion-not-found.dart';
 import 'package:draw_near/models/author.dart';
 import 'package:draw_near/models/devotion.dart';
@@ -134,6 +136,17 @@ class _DevotionPageState extends State<DevotionPage> {
                         },
                   icon: Icon(
                     MdiIcons.formatFontSizeIncrease,
+                  ),
+                ),
+                VerticalDivider(
+                  width: 32,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                IconButton(
+                  onPressed: onSharedata,
+                  icon: Icon(
+                    Icons.share,
                   ),
                 ),
               ],
@@ -474,6 +487,28 @@ class _DevotionPageState extends State<DevotionPage> {
       UserService.instance.fontSize -= 2;
     });
   }
+
+  void onSharedata() async {
+    var shareText = StringsProvider.getLocalisedString("devotionOfDay",
+                    UserService.instance.locale) +
+                    StringsProvider.emptylines +
+                    _devotion.title +
+                    StringsProvider.emptylines +
+                    _devotion.verseLine[0] +
+                    StringsProvider.emptylines +
+                     _devotion.body.substring(0, 1200) + "..." +
+                     StringsProvider.emptylines +
+                     StringsProvider.downloadLink +
+                     StringsProvider.emptyline +
+                     StringsProvider.androidLink +
+                     StringsProvider.emptyline +
+                     StringsProvider.iosLink;
+  await Share.share(
+    shareText,
+    subject: StringsProvider.getLocalisedString("devotionOfDay",
+                    UserService.instance.locale)
+  );
+}
 }
 
 class DevotionCard extends StatelessWidget {

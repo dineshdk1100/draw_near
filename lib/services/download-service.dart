@@ -50,8 +50,6 @@ class DownloadService {
     int retrievedDocCount = 0;
     downloadingLocale = UserService.instance.locale;
     localLastModified = getLocalLastModified();
-    print(DateTime.fromMillisecondsSinceEpoch(localLastModified)
-        .difference(DateTime.now()));
     if (DateTime.now()
             .difference(DateTime.fromMillisecondsSinceEpoch(localLastModified))
             .inMinutes <
@@ -113,8 +111,6 @@ class DownloadService {
         .where('Last Modified Time',
             isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
-
-    print('\n\n Songs \n\n');
     SongService.instance.saveSongs(snapshots);
     return snapshots.docs.length;
   }
@@ -125,8 +121,6 @@ class DownloadService {
         .where('Last Modified Time',
             isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
-
-    print('\n\n Verses \n\n');
     VerseService.instance.saveVerses(snapshots);
     return snapshots.docs.length;
   }
@@ -137,8 +131,6 @@ class DownloadService {
         .where('Last Modified Time',
             isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
-
-    print('\n\n Authors \n\n');
     AuthorService.instance.saveAuthors(snapshots);
     return snapshots.docs.length;
   }
@@ -150,10 +142,6 @@ class DownloadService {
         .where('Last Modified Time',
             isGreaterThanOrEqualTo: localLastModified - 3600000)
         .get();
-
-    print('\n\n Theme months \n\n');
-    print(localLastModified);
-    print(snapshots.docs.length);
     ThemeMonthService.instance.saveThemeMonths(snapshots);
     return snapshots.docs.length;
   }
@@ -164,9 +152,6 @@ class DownloadService {
         .collection('common')
         .doc('carouselImages_$downloadingLocale')
         .get();
-
-    print('\n\n Carousel Images \n\n');
-    print(localLastModified);
     CarouselImageService.instance.saveCarouselImages(docSnap);
     return 0;
   }

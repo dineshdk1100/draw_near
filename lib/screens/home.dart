@@ -45,8 +45,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> carouselImageUrls = [
-    'https://images.pexels.com/photos/1005417/pexels-photo-1005417.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/589802/pexels-photo-589802.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+    'https://drive.google.com/uc?export=view&id=1QGG8-xDqAzDX7abqyxVNcEEKZk64eOdL',
+    'https://drive.google.com/uc?export=view&id=1QGG8-xDqAzDX7abqyxVNcEEKZk64eOdL'
   ];
   DevotionService _devotionService = DevotionService.instance;
   Devotion? devotion;
@@ -398,7 +398,6 @@ class _HomePageState extends State<HomePage> {
     {
       try {
         images = CarouselImageService.instance.getCarouselImages();
-        print(images);
         themeMonth = ThemeMonthService.instance
             .getThemeMonth(MONTHS_IN_YEAR[DateTime.now().month - 1]);
         devotion = _devotionService.getDevotionForDate(DateTime.now());

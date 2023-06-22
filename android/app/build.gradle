@@ -42,8 +42,8 @@ android {
         applicationId "com.techcatalyst.draw_near"
         multiDexEnabled true
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
+        targetSdkVersion 31
+        versionCode 8
         versionName flutterVersionName
     }
 
