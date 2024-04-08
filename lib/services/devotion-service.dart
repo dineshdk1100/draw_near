@@ -46,23 +46,14 @@ class DevotionService {
   }
 
   Devotion getDevotionForDate(DateTime date) {
-    print(date.toString());
-    print(Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear);
-    //devotionsMap.forEach((key, value) {print(key); print(value.toString());});
-    //return _devotion;
-    print(devotionsMap.containsKey(
-        Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString()));
-    print('here here here');
-    print(Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString());
-    print(devotionsMap.keys);
-    print(devotionsMap[
-        Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString()]);
-    if (!devotionsMap.containsKey(
-        Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString())) {
+
+    String devotionDate = Jiffy.unix(date.millisecondsSinceEpoch).date.toString();
+    String devotionMonth = Jiffy.unix(date.millisecondsSinceEpoch).month.toString();
+    String devotionMapKey = devotionDate+devotionMonth;  
+    if (!devotionsMap.containsKey(devotionMapKey)) {
       throw DevotionNotFoundException("devotion_unavailable_desc".tr());
     } else {
-      return Devotion.fromJson(devotionsMap[
-          Jiffy.unix(date.millisecondsSinceEpoch).dayOfYear.toString()]);
+      return Devotion.fromJson(devotionsMap[devotionMapKey]);
     }
   }
 
@@ -93,9 +84,13 @@ class DevotionService {
 
   void saveDevotions(QuerySnapshot<Map<String, dynamic>> snapshots) {
     snapshots.docs.forEach((doc) {
-      //print(doc.data());
+      // print(doc.data());
+      String devotionDate = Jiffy(doc.data()['Date'], 'yyyy-MM-dd').date.toString();
+      String devotionMonth = Jiffy(doc.data()['Date'], 'yyyy-MM-dd').month.toString();
+      String devotionMapKey = devotionDate+devotionMonth;
+
       DevotionService.instance.saveDevotionForDate(
-          Jiffy(doc.data()['Date'], 'yyyy-MM-dd').dayOfYear.toString(),
+          devotionMapKey,
           doc.data());
     });
     box.put(UserService.instance.locale, jsonEncode(devotionsMap));
